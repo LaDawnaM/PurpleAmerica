@@ -33,12 +33,12 @@ public class PoliticalMap {
 
         
         //makes it so that you can see the pen.
-        StdDraw.setPenRadius(0.01);//changes the pen size
+        StdDraw.setPenRadius(0.0001);//changes the pen size
         StdDraw.setPenColor(StdDraw.BLACK);//changes the pen color
         
         //Draws points at the highest and lowest points of the graph
-        for(int i=0; i<=2; i++){
-            StdDraw.point(Math.abs(StdIn.readChar()/300), Math.abs(StdIn.readChar()/300));//scan.nextInt(), scan.nextInt());
+        for(int i=0; i<2; i++){
+            StdDraw.point(Math.abs(StdIn.readDouble()/300), Math.abs(StdIn.readDouble()/300));//scan.nextInt(), scan.nextInt());
         }//end for
         
             int number = StdIn.readInt();//Gets the number of countries that make up the state
@@ -48,10 +48,11 @@ public class PoliticalMap {
         /*for(int i=0; i<=number; i++){
             
             //Discards the name of the country, and the abbreviation of the state */
-            StdIn.readString();
-            StdIn.readString();
-            
-            int numberTwo = StdIn.readChar();//scan.nextInt();//Gets the number of points that make up the country
+            StdIn.readString();            
+            StdIn.readString();            
+            StdIn.readString();            
+            StdIn.readString();            
+            int numberTwo = StdIn.readInt();//scan.nextInt();//Gets the number of points that make up the country
             
             //scrolls through all of the provided points, and plots them accordingly
             /*for(int z=0; z<numberTwo; z=z+2){
@@ -61,24 +62,22 @@ public class PoliticalMap {
         }//end for*/
                     
         ////////////////////////////////////////////////////////////////////////
-        
-            System.out.println(numberTwo);
-            
-        double[] x = new double[numberTwo];
-        double[] y = new double[numberTwo];
+                    
+        double[] x = new double[numberTwo+10];
+        double[] y = new double[numberTwo+10];
         
         
-        for(int z=0; z<=number; z++){
+        //for(int z=0; z<=number; z++){
         
-            for(int i=0; i<=numberTwo; i++){
-                x[i] = (StdIn.readChar()/300);
-                y[i] = (StdIn.readChar()/300);
+            for(int i=0; i<numberTwo; i++){
+                x[i] = Math.abs(StdIn.readDouble()/300);
+                y[i] = Math.abs(StdIn.readDouble()/300);
             }
 
 
             StdDraw.polygon(x, y);
             
-        }
+        //}
         
     }
 }
