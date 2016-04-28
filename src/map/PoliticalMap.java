@@ -21,6 +21,9 @@ import java.util.*;
  * @author 
  */
 public class PoliticalMap {
+    
+    static int numberTwo;
+    
     public static void main(String[] args) throws Exception{
         
         ////////////////////////////////////////////////////////////////////////
@@ -42,42 +45,65 @@ public class PoliticalMap {
         }//end for
         
             int number = StdIn.readInt();//Gets the number of countries that make up the state
-        
+                        
+            boolean keepGoing;
         
         //Plots the points of the country.
-        /*for(int i=0; i<=number; i++){
+        for(int z=0; z<number; z++){    
+            //Discards the name of the country, and the abbreviation of the state 
             
-            //Discards the name of the country, and the abbreviation of the state */
-            StdIn.readString();            
-            StdIn.readString();            
-            StdIn.readString();            
-            StdIn.readString();            
-            int numberTwo = StdIn.readInt();//scan.nextInt();//Gets the number of points that make up the country
+            boolean bad = true;
+            String next;
             
-            //scrolls through all of the provided points, and plots them accordingly
-            /*for(int z=0; z<numberTwo; z=z+2){
-                StdDraw.point(Math.abs(scan.nextInt()/300), Math.abs(scan.nextInt()/300));//Draws the point
-            }//end for
-            
-        }//end for*/
+            while(bad){
+                if(StdIn.hasNextChar()){
+                    next = StdIn.readString();
                     
-        ////////////////////////////////////////////////////////////////////////
+                    System.out.println("next: " +  next);
                     
-        double[] x = new double[numberTwo+10];
-        double[] y = new double[numberTwo+10];
-        
-        
-        //for(int z=0; z<=number; z++){
-        
-            for(int i=0; i<numberTwo; i++){
-                x[i] = Math.abs(StdIn.readDouble()/300);
-                y[i] = Math.abs(StdIn.readDouble()/300);
+                    
+                    if((next.charAt(0)<65)){
+
+                        for(int i=0; i<next.length(); i++){
+                            
+                            numberTwo = Integer.parseInt(next);
+                        }
+                        
+                        
+                        bad = false;
+                    }
+                    
+                }
+                else{
+                    bad = false;
+                    keepGoing = false;
+                }
+                
             }
-
-
-            StdDraw.polygon(x, y);
+        
+                               
+        ////////////////////////////////////////////////////////////////////////
+        
+            System.out.println(numberTwo);
             
-        //}
+        if(keepGoing = true){
+            double[] x = new double[numberTwo+10];
+            double[] y = new double[numberTwo+10];
+
+            for(int i=0; i<numberTwo; i++){
+                    
+                    x[i] = Math.abs(StdIn.readDouble()/300);
+                    y[i] = Math.abs(StdIn.readDouble()/300);
+                }
+
+                StdDraw.polygon(x, y);
+                
+                numberTwo = 0;
+            }
+            
+        
+        
+        }
         
     }
 }
