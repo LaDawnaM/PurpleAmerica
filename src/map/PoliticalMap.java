@@ -33,7 +33,7 @@ public class PoliticalMap {
          "LA.txt", "MA.txt", "MD.txt", "ME.txt", "MI.txt", "MN.txt", "MO.txt", "MS.txt", "MT.txt", "NC.txt", "ND.txt", "NE.txt", "NH.txt", "NJ.txt", "NM.txt", "NV.txt", "NY.txt", "OH.txt", "OK.txt",
                  "OR.txt", "PA.txt", "RI.txt", "SC.txt", "SD.txt", "TN.txt", "TX.txt", "UT.txt", "VA.txt", "VT.txt", "WA.txt", "WI.txt", "WV.txt", "WY.txt"};
         
-        StdDraw.setCanvasSize(1200, 600);
+        StdDraw.setCanvasSize(1200, 600);//sets the canvas size
         
         //Causes the program to repeat until all the countries in the states have been built.
         while(holder < abbreviations.length){
@@ -108,16 +108,17 @@ public class PoliticalMap {
                 //Sets up the data to draw the shape
                 if(keepGoing == true){
                     //Creates arrays to hold the latitude and longitude
-                    double[] latitude = new double[numberTwo+10];
-                    double[] longitude = new double[numberTwo+10];
+                    double[] latitude = new double[numberTwo];
+                    double[] longitude = new double[numberTwo];
 
                     for(int i=0; i<numberTwo; i++){
-                        StdDraw.point(Math.abs(scan.nextDouble()/200), Math.abs(scan.nextDouble()/150));
-                        //latitude[i] = Math.abs(scan.nextDouble()/200);
-                        //longitude[i] = Math.abs(scan.nextDouble()/250);
+                        //Puts the data into the arrays for the map
+                        latitude[i] = Math.abs(scan.nextDouble()/200);
+                        longitude[i] = Math.abs(scan.nextDouble()/200);
+                        
                     }//end for
 
-                    //StdDraw.polygon(latitude, longitude);//Draws the shape.
+                    StdDraw.polygon(latitude, longitude);//Draws the shape.
 
                     numberTwo = 0;//Resets the number of states to be drawn to zero.
 
