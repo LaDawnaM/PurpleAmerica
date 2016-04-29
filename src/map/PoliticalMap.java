@@ -42,8 +42,6 @@ public class PoliticalMap {
             String fileName = abbreviations[holder];//Selects the country to be drawn.
             holder++;//Increments the number to ensure none of  the states are constantly repeated.
             
-            System.out.println(fileName);//Prints the name of the state currently being drawn [[unneccessary]]
-              
             File file = new File("C:\\Users\\hcps-mcenhimlr\\Documents\\(6) Programming\\Java\\NetBeans\\GitHub\\Purple America\\PurpleAmerica\\src\\data\\" + fileName);//Creates a file of the state about to be drawn.
             Scanner scan = new Scanner(file);//Makes the scanner to read from the file.
             
@@ -109,21 +107,58 @@ public class PoliticalMap {
                 //Sets up the data to draw the shape
                 if(keepGoing == true){
                     
-                    //Creates arrays to hold the latitude and longitude
-                    double[] latitude = new double[numberTwo];
-                    double[] longitude = new double[numberTwo];
+                    //This conditional repositios Alaska
+                    if(fileName.equals("AK.txt")){
+                        //Creates arrays to hold the latitude and longitude
+                        double[] latitude = new double[numberTwo];
+                        double[] longitude = new double[numberTwo];
 
-                    for(int i=0; i<numberTwo; i++){
-                        //Puts the data into the arrays for the map, proportionate to the size
-                        latitude[i] = Math.abs(((scan.nextDouble()+50)/62)+.26);
-                        longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-3.0001);
+                        for(int i=0; i<numberTwo; i++){
+                            //Puts the data into the arrays for the map, proportionate to the size
+                            latitude[i] = Math.abs(((scan.nextDouble()+50)/230)+1.3);
+                            longitude[i] = Math.abs(((scan.nextDouble()+50)/100)-.95);
 
-                    }//end for
+                        }//end for
 
-                    StdDraw.polygon(latitude, longitude);//Draws the shape.
+                        StdDraw.polygon(latitude, longitude);//Draws the shape.
 
-                    numberTwo = 0;//Resets the number of states to be drawn to zero.
-                                        
+                        numberTwo = 0;//Resets the number of states to be drawn to zero.
+                    }//end if
+                    //This conditional handles Hawaii
+                    else if(fileName.equals("HI.txt")){
+                        //Creates arrays to hold the latitude and longitude
+                        double[] latitude = new double[numberTwo];
+                        double[] longitude = new double[numberTwo];
+
+                        for(int i=0; i<numberTwo; i++){
+                            //Puts the data into the arrays for the map, proportionate to the size
+                            latitude[i] = Math.abs(((scan.nextDouble())/80)+1.90);
+                            longitude[i] = Math.abs(((scan.nextDouble())/40)-.4);
+
+                        }//end for
+
+                        StdDraw.polygon(latitude, longitude);//Draws the shape.
+
+                        numberTwo = 0;//Resets the number of states to be drawn to zero.
+                    }//end if
+                    //This conditional handles the normal states.
+                    else{
+                        //Creates arrays to hold the latitude and longitude
+                        double[] latitude = new double[numberTwo];
+                        double[] longitude = new double[numberTwo];
+
+                        for(int i=0; i<numberTwo; i++){
+                            //Puts the data into the arrays for the map, proportionate to the size
+                            latitude[i] = Math.abs(((scan.nextDouble()+50)/62)+.26);
+                            longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);
+
+                        }//end for
+
+                        StdDraw.polygon(latitude, longitude);//Draws the shape.
+
+                        numberTwo = 0;//Resets the number of states to be drawn to zero.
+                    }//end else        
+                    
                 }//end if
                 
             }//end for
