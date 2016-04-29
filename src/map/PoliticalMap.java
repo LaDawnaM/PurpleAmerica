@@ -53,7 +53,8 @@ public class PoliticalMap {
 
             //Draws points at the highest and lowest points of the graph
             for(int i=0; i<2; i++){
-                StdDraw.point(Math.abs(scan.nextDouble()/300), Math.abs(scan.nextDouble()/300));
+                scan.nextDouble();
+                scan.nextDouble();
             }//end for
 
                 int number = scan.nextInt();//Gets the number of countries that make up the state
@@ -112,9 +113,9 @@ public class PoliticalMap {
                     double[] longitude = new double[numberTwo];
 
                     for(int i=0; i<numberTwo; i++){
-                        //Puts the data into the arrays for the map
-                        latitude[i] = Math.abs(scan.nextDouble()/200);
-                        longitude[i] = Math.abs(scan.nextDouble()/200);
+                        //Puts the data into the arrays for the map, proportionate to the size
+                        latitude[i] = Math.abs(((scan.nextDouble()+50)/62)+.26);
+                        longitude[i] = Math.abs(((scan.nextDouble()+50)/45)-1.4);
                         
                     }//end for
 
