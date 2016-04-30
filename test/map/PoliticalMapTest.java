@@ -19,9 +19,10 @@ public class PoliticalMapTest {
 
     /**
      * Test of main method, of class PoliticalMap.
+     * @throws java.lang.Exception
      */
     @Test
-    public void testMain() {
+    public void testMain() throws Exception {
         System.out.println("main");
         String[] args = null;
         PoliticalMap.main(args);
