@@ -121,6 +121,7 @@ public class PoliticalMap {
 
                         }//end for
 
+                        
                         StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
 
                         numberTwo = 0;//Resets the number of states to be drawn to zero.
