@@ -12,6 +12,7 @@
  */
 package map;
 import edu.princeton.cs.introcs.*;
+import static edu.princeton.cs.introcs.StdDraw.RED;
 //import data.AK;
 import java.io.*;
 import java.util.*;
@@ -42,7 +43,7 @@ public class PoliticalMap {
             String fileName = abbreviations[holder];//Selects the country to be drawn.
             holder++;//Increments the number to ensure none of  the states are constantly repeated.
             
-            File file = new File("C:\\Users\\hcps-mcenhimlr\\Documents\\(6) Programming\\Java\\NetBeans\\GitHub\\Purple America\\PurpleAmerica\\src\\data\\" + fileName);//Creates a file of the state about to be drawn.
+            File file = new File("C:\\Users\\hcps-lesleyjm\\Documents\\NetBeansProjects\\PurpleAmerica\\src\\data\\" + fileName);//Creates a file of the state about to be drawn.
             Scanner scan = new Scanner(file);//Makes the scanner to read from the file.
             
             //makes it so that you can see the pen.
@@ -120,7 +121,7 @@ public class PoliticalMap {
 
                         }//end for
 
-                        StdDraw.polygon(latitude, longitude);//Draws the shape.
+                        StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
 
                         numberTwo = 0;//Resets the number of states to be drawn to zero.
                     }//end if
@@ -137,7 +138,7 @@ public class PoliticalMap {
 
                         }//end for
 
-                        StdDraw.polygon(latitude, longitude);//Draws the shape.
+                        StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
 
                         numberTwo = 0;//Resets the number of states to be drawn to zero.
                     }//end if
@@ -153,8 +154,8 @@ public class PoliticalMap {
                             longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);
 
                         }//end for
-
-                        StdDraw.polygon(latitude, longitude);//Draws the shape.
+                        StdDraw.setPenColor(RED);
+                        StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
 
                         numberTwo = 0;//Resets the number of states to be drawn to zero.
                     }//end else        
