@@ -9,7 +9,7 @@
  * 
  * Future/possible improvements:
  *
- * THE PULL WORKED. CONGRATULATATIONS!
+ * 
  *
  */
 package map;
@@ -106,6 +106,111 @@ public class PoliticalMap {
 
                 }//end while
 
+                ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
+
+                    int holdYear = 1960;//temporarily chooses the year to get the election data from
+            
+                    String name = abbreviations[holder-1];//gets the full state name.
+                    String nameFinal = "";//initializes the String for the name of the state
+
+                    for(int i=0; i<2; i++){
+                        nameFinal = nameFinal + name.charAt(i);//compiles the name of the state the election is in
+                    }//end for
+
+                    fileName = (nameFinal + holdYear + ".txt");//Compiles the different parts of the fileName to get the .txt file name
+
+                    File fileElec = new File("C:\\Users\\hcps-mcenhimlr\\Documents\\(6) Programming\\Java\\NetBeans\\GitHub\\Purple America\\PurpleAmerica\\src\\data\\" + fileName);//Creates a file of the state about to be drawn.
+                    Scanner scanElec = new Scanner(fileElec);//Makes the scanner to read from the file.                    
+                    
+                    boolean countryDivisor = true;//lets the program know if it needs to continue the loop to get the country election results
+                    scanElec.nextLine();//gets rid of the introductory line
+                    
+                    //Creates Strings to hold the election results for each party
+                    int republican;
+                    int democratic;
+                    int independent;
+                    
+                    //gets the election results
+                    while(countryDivisor){
+                        if(scanElec.hasNext()){//checks to see if the country has election data
+                            //gets the initial
+                            String hold = scanElec.next();//holds the full line from the .txt file
+                            
+                            //creates strings to hold the broken down portion of hold.
+                            String holderTwo = "";
+                            String holder = "";
+                            
+                            //finds the country name
+                            for(int i=0; i<hold.length(); i++){
+                                if(hold.charAt(i) == 44){//checks to see if the String has reached a comma
+                                    //if so, it runs through the string up until the comma, and sets that as the country name
+                                    for(int e=0; e<i; e++){
+                                        holder = holder + hold.charAt(e);
+                                    }
+                                    //sets booleans to discern republican from democratic from independent.
+                                    boolean repub = true;
+                                    boolean demo = true;
+                                    
+                                    //seperates the election results by party
+                                    for(int e=i+1; e<hold.length(); e++){
+                                        holder = holder + hold.charAt(e);//starts reading in the numbers
+                                        
+                                        //the first comma becomes republican
+                                        if(hold.charAt(e) == 44 && repub == true){//checks to see if it's encountered a comma
+                                            republican = Integer.parseInt(holderTwo);//sets the republican value to the current answer
+                                            holderTwo = "";//resets HolderTwo
+                                            repub = false;//points the program towards democratic next time
+                                        }//end if
+                                        
+                                        //the second comma becomes democratic
+                                        else if(hold.charAt(e) == 44 && repub == false){
+                                            democratic = Integer.parseInt(holderTwo);//sets the democratic value to the current answer
+                                            holderTwo = "";//resets HolderTwo
+                                            demo = false;//points the program towards independent next time
+                                        }//end else if
+                                        
+                                        //the third comma is independent
+                                        else if(hold.charAt(e) == 44 && demo == false){
+                                            independent = Integer.parseInt(holderTwo);//resets HolderTwo
+                                            holderTwo = "";//resets holderTwo
+                                            
+                                            //resets the party discerning booleans to their initial state
+                                            repub = true;
+                                            demo = true;
+                                            e = hold.length()+1;
+                                        }//end else if
+                                        
+                                        //no commas have been encountered thus far
+                                        else{
+                                            holderTwo = holderTwo + hold.charAt(e);//tacks the current number on to the end, & repeats the process
+                                        }//end else
+                                        
+                                    }//end for
+                                    
+                                    i = hold.length()+1;//ends the for loop
+                                
+                                }//end for
+                                
+                            }//end for
+                            
+                            hold = holder;//sets the original hold to the temporary holder value
+                            holder = "";//resets holder
+                            
+                            //checks to see if the program had located the correct country.
+                            if(hold.equals(countryName)){
+                                countryDivisor = false;//tells the while loop to end
+                            }//end if
+                            
+                        }//end if
+                    
+                        else{
+                            countryDivisor = false;//tells the while loop to end
+                        }//end else
+
+                    }//end while
+                    ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
                 
                 //Sets up the data to draw the shape
                 if(keepGoing == true){
@@ -157,7 +262,7 @@ public class PoliticalMap {
                             longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);
 
                         }//end for
-                        StdDraw.setPenColor(RED);
+                        StdDraw.setPenColor(StdDraw.RED);
                         StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
 
                         numberTwo = 0;//Resets the number of states to be drawn to zero.
