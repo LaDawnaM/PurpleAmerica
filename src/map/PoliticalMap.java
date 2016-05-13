@@ -285,32 +285,37 @@ public class PoliticalMap {
 
                         //This conditional handles the normal states.
                         else{
-                            //Creates arrays to hold the latitude and longitude
-                            double[] latitude = new double[numberTwo];
-                            double[] longitude = new double[numberTwo];
+                        //Creates arrays to hold the latitude and longitude
+                        double[] latitude = new double[numberTwo];
+                        double[] longitude = new double[numberTwo];
 
-                            for(int i=0; i<numberTwo; i++){
-                                //Puts the data into the arrays for the map, proportionate to the size
-                                latitude[i] = Math.abs(((scan.nextDouble()+50)/62)+.275);
-                                longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);
+                        for(int i=0; i<numberTwo; i++){
+                            //Puts the data into the arrays for the map, proportionate to the size
+                         double lat = Math.abs(((scan.nextDouble()+50)/62)+0.26);
+                         double distance;
 
-                            }//end for
+                         if(lat > 0.5){
+                             distance = lat - 0.5;
+                             lat = lat - distance - distance;
+                             latitude[i] = lat;
+                         }else if(lat < 0.5){
+                             distance = 0.5 - lat;
+                             lat = lat + distance + distance;
+                             latitude[i] = lat;
+                         }else{
+                             latitude[i] = lat;
+                         }
+                          
 
-                            //draws the outline of the state
-                            if(abbreviations[holder-1].equals("USA.txt")){
-                                
-                                StdDraw.polygon(latitude, longitude);//Draws the shape.
+                         latitude[i] = lat;
+                         longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);
 
-                            }//end if
+                        }
 
-                            else{
-                                StdDraw.setPenColor(StdDraw.RED);//selects the color
-                                StdDraw.filledPolygon(latitude, longitude);//draws the outlines of the counties
-                            }//end else
+                        StdDraw.polygon(latitude, longitude);//Draws the shape.
 
-
-                            numberTwo = 0;//Resets the number of states to be drawn to zero.
-                        }//end else        
+                        numberTwo = 0;//Resets the number of states to be drawn to zero.
+                    }//end else        
 
                     }//end if
 
