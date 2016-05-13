@@ -285,37 +285,39 @@ public class PoliticalMap {
 
                         //This conditional handles the normal states.
                         else{
-                        //Creates arrays to hold the latitude and longitude
-                        double[] latitude = new double[numberTwo];
-                        double[] longitude = new double[numberTwo];
+                            
+                            //Creates arrays to hold the latitude and longitude
+                            double[] latitude = new double[numberTwo];
+                            double[] longitude = new double[numberTwo];
 
-                        for(int i=0; i<numberTwo; i++){
-                            //Puts the data into the arrays for the map, proportionate to the size
-                         double lat = Math.abs(((scan.nextDouble()+50)/62)+0.26);
-                         double distance;
+                            for(int i=0; i<numberTwo; i++){
+                                //Puts the data into the arrays for the map, proportionate to the size
+                                double lat = Math.abs(((scan.nextDouble()+50)/62)+0.26);
+                                double distance;
 
-                         if(lat > 0.5){
-                             distance = lat - 0.5;
-                             lat = lat - distance - distance;
-                             latitude[i] = lat;
-                         }else if(lat < 0.5){
-                             distance = 0.5 - lat;
-                             lat = lat + distance + distance;
-                             latitude[i] = lat;
-                         }else{
-                             latitude[i] = lat;
-                         }
-                          
+                                //Reverses the positioning of the dots
+                                if(lat > 0.5){//Checks to see which side of the map the dot is on.
+                                    distance = lat - 0.5;//finds the dot's distance from the center of the map
+                                    lat = lat - distance - distance;//Takes the distance away twice, placing the spot on the opposite side of the map
+                                }//end if
 
-                         latitude[i] = lat-.0554;
-                         longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);
+                                //Reverses the positioning of the dots
+                                else if(lat < 0.5){//Checks to see which side of the map the dot is on.
+                                    distance = 0.5 - lat;//finds the dot's distance from the center of the map
+                                    lat = lat + distance + distance;//Takes the distance away twice, placing the spot on the opposite side of the map
+                                }//end else if
 
-                        }
 
-                        StdDraw.polygon(latitude, longitude);//Draws the shape.
 
-                        numberTwo = 0;//Resets the number of states to be drawn to zero.
-                    }//end else        
+                                latitude[i] = lat-.0534;//Repositions latitude to a good place on the map
+                                longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);//Retrieves and repositions longitude on the map
+
+                            }//end for
+
+                            StdDraw.polygon(latitude, longitude);//Draws the shape.
+
+                            numberTwo = 0;//Resets the number of states to be drawn to zero.
+                        }//end else        
 
                     }//end if
 
