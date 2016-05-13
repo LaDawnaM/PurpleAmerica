@@ -273,8 +273,8 @@ public class PoliticalMap {
 
                             for(int i=0; i<numberTwo; i++){
                                 //Puts the data into the arrays for the map, proportionate to the size
-                                latitude[i] = Math.abs(((scan.nextDouble())/80)+1.90);
-                                longitude[i] = Math.abs(((scan.nextDouble())/40)-.4);
+                                latitude[i] = Math.abs((((scan.nextDouble())/80)+1.90));
+                                longitude[i] = Math.abs((((scan.nextDouble())/40)-.4));
 
                             }//end for
 
@@ -307,7 +307,7 @@ public class PoliticalMap {
                          }
                           
 
-                         latitude[i] = lat;
+                         latitude[i] = lat-.0554;
                          longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);
 
                         }
