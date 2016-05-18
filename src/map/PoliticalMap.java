@@ -26,6 +26,9 @@ public class PoliticalMap {
     
     static int numberTwo;//Used to hold the number of states being used.
     static String intro;
+    static String title;
+    static int go;
+
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
@@ -318,10 +321,6 @@ public class PoliticalMap {
                             numberTwo = 0;//Resets the number of states to be drawn to zero.
                         }//end if
                         
-                        else if(data.getFileName().equals("WY.txt")){
-                            
-                        }
-                        
                         //This conditional handles the normal states.
                         else{
                             
@@ -442,9 +441,9 @@ public class PoliticalMap {
                 StdDraw.square(graphX, graphY, graphSize);//box
                 StdDraw.line(graphX-.05, graphX-.05, graphX+.08, graphX-.05);//lower line (x)
                 StdDraw.line(graphX-.05, graphX-.05, graphX-.05, graphX+.08);//upper line (y)
-                
+
                 graph.decipherIntro(intro);
-                
+
                 //Graph Legend
                 StdDraw.setPenColor(StdDraw.RED);
                 StdDraw.text(graphX-.09, graphY+.03, "Republican");
@@ -461,6 +460,54 @@ public class PoliticalMap {
                 
             //Creates a neverending loop, so the program is constantly checking for user input.
             while(runs){
+                
+                mX = StdDraw.mouseX();
+                mY = StdDraw.mouseY();
+                
+                
+                double distance;
+
+            
+                double lat = (data.latitude((Math.abs((mX+50)/62)+0.26)))-.0534;
+                double longe = Math.abs(((mY+50)/25)-2.98);
+                
+                File file = new File("src\\data\\" + "USA.txt");//Creates a file of the state about to be drawn.
+                Scanner scanIt = new Scanner(file);//Makes the scanner to read from the file.
+                
+                    for(int i=0; i<7; i++){
+                            if(i==5){
+                                title = scanIt.nextLine();
+                                System.out.println("titele:" + title);
+                            }
+                            else if(i==2){
+                                go = scanIt.nextInt();
+                                System.out.println("go" + go);
+                            }
+                            else{
+                                System.out.println("past" + scanIt.nextLine());
+
+                            }
+                        }//end for
+                    
+                    graph.setNumberTwo(scanIt.nextInt());
+                    
+                    for(int z=0; z<go; z++){
+                        //System.out.print(graph.getNumberTwo());
+                        for(int i=0; i<graph.getNumberTwo(); i++){
+                            //System.out.println("i" + i);
+                            graph.findLocation(scanIt.nextDouble(), scanIt.nextDouble(), lat, longe, title);
+                            graph.setHoldIt(i);
+                        }
+                        if(scanIt.hasNext()){
+                            scanIt.nextLine();
+                            scanIt.nextLine();
+                            title = scanIt.nextLine();
+                            scanIt.nextLine();
+
+                            graph.setNumberTwo(scanIt.nextInt());
+                            graph.setHoldIt(0);
+                        }
+                    }
                                 
                 
 ////////////////////////////////////////////////////////////////////////////////  

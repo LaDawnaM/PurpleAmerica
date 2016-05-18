@@ -25,6 +25,7 @@ package map;
                  "OR.txt", "PA.txt", "RI.txt", "SC.txt", "SD.txt", "TN.txt", "TX.txt", "UT.txt", "VA.txt", "VT.txt", "WA.txt", "WI.txt", "WV.txt", "WY.txt",*/ "USA.txt"};
     String [] years = {"1960", "1964", "1968", "1972", "1976", "1980", "1984", "1988", "1992", "1996", "2000", "2004", "2008", "2012"};
     String next;
+    double distance;
 
     
     ////////////////////////////////////////////////////////////////////////////
@@ -144,5 +145,44 @@ package map;
         
     
     }//end countryPoints
+    
+    public double latitude(double lat){
+        //Reverses the positioning of the dots
+        if(lat > 0.5){//Checks to see which side of the map the dot is on.
+            distance = lat - 0.5;//finds the dot's distance from the center of the map
+            lat = lat - distance - distance;//Takes the distance away twice, placing the spot on the opposite side of the map
+        }//end if
+
+        //Reverses the positioning of the dots
+        else if(lat < 0.5){//Checks to see which side of the map the dot is on.
+            distance = 0.5 - lat;//finds the dot's distance from the center of the map
+            lat = lat + distance + distance;//Takes the distance away twice, placing the spot on the opposite side of the map
+        }//end else if
+        
+        return lat;
+    }
+    
+    /*public int findNumberTwo(){
+        
+if(scan.hasNext()){//The settings for the normal states
+                                next = scan.next();//Holds the first value on the sheet
+
+                                //Checks to see whether or not the next value is a number.
+                                if((next.charAt(0)<65)){
+
+                                    numberTwo = Integer.parseInt(next);//Saves the number of points to be plotted.
+                                    bad = false;//Tells the program to move on to drawing the country.
+
+                                }//end if
+
+                                //Saves the country name
+                                else if((next.charAt(0)>=65) && notNamed){
+                                    countryName = next;//sets the country name to the pre-saved value
+                                    notNamed = false;//Tells the program the country has already been named.
+
+                                }
+
+                            }//end else if
+    }*/
     
 }
