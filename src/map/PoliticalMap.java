@@ -14,6 +14,7 @@
  */
 package map;
 import edu.princeton.cs.introcs.*;
+import java.awt.Font;
 import java.io.*;
 import java.util.*;
 
@@ -24,6 +25,7 @@ import java.util.*;
 public class PoliticalMap {
     
     static int numberTwo;//Used to hold the number of states being used.
+    static String intro;
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +56,7 @@ public class PoliticalMap {
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
         DataReader data = new DataReader();
-        
+        GraphingFunctionality graph = new GraphingFunctionality();
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +179,7 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////
                         
                         boolean countryDivisor = true;//lets the program know if it needs to continue the loop to get the country election results
-                        scanElec.nextLine();//gets rid of the introductory line
+                        intro = scanElec.nextLine();//gets rid of the introductory line
 
                         //Creates Strings to hold the election results for each party
                         int republican;
@@ -420,24 +422,46 @@ public class PoliticalMap {
             //Creates holders for the different doubles the program needs to run
             double mX;
             double mY;
-
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                
+                //Creates variables for the graph sizes.
+                double graphX = .13;
+                double graphY = .13;
+                double graphSize = .12;
+                
+                StdDraw.setPenRadius(0.0009);//changes the pen size
+                Font graphFont = new Font("Arial", Font.PLAIN, 12);
+                StdDraw.setFont(graphFont);
+                
+                //Draws the box & graph lines
+                StdDraw.square(graphX, graphY, graphSize);//box
+                StdDraw.line(graphX-.05, graphX-.05, graphX+.08, graphX-.05);//lower line (x)
+                StdDraw.line(graphX-.05, graphX-.05, graphX-.05, graphX+.08);//upper line (y)
+                
+                graph.decipherIntro(intro);
+                
+                //Graph Legend
+                StdDraw.setPenColor(StdDraw.RED);
+                StdDraw.text(graphX-.09, graphY+.03, "Republican");
+                StdDraw.setPenColor(StdDraw.BLUE);
+                StdDraw.text(graphX-.09, graphY, "Democratic");
+                StdDraw.setPenColor(StdDraw.GREEN);
+                StdDraw.text(graphX-.09, graphY-.03, "Independent");
+                
+                //Sets the pen back to normal colors
+                StdDraw.setPenColor(StdDraw.BLACK);
+                StdDraw.setPenRadius(0.0005);//changes the pen size
+                Font normalFont = new Font("Arial", Font.PLAIN, 16);
+                StdDraw.setFont(normalFont);
+                
             //Creates a neverending loop, so the program is constantly checking for user input.
             while(runs){
-                        
-                
                                 
-////////////////////////////////////////////////////////////////////////////////  
-////////////////////////////////CHANGE//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////  
-////////////////////////////////CHANGE//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
-                
-               /* double graphX = .13;
-                double graphY = .1;
-                double graphSize = .1;
-                
-                StdDraw.square(graphX, graphY, graphSize);*/
                 
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
