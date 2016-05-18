@@ -24,38 +24,66 @@ import java.util.*;
 public class PoliticalMap {
     
     static int numberTwo;//Used to hold the number of states being used.
-    static int holder = 0;//Lets the program know which state file should be read in next 
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+    //static int holder = 0;//Lets the program know which state file should be read in next 
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
     static String countryName;
     
     
     public static void main(String[] args) throws Exception{
 
-        ////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////    
         //Creates a string array holding all the abbreviation names. Used to call the different files.
-        String [] abbreviations = {/*"AK.txt",*/ "AL.txt", "AR.txt", "AZ.txt", "CA.txt", "CO.txt", "CT.txt", "DC.txt", "DE.txt", "FL.txt", "GA.txt", /*"HI.txt",*/ "IA.txt", "ID.txt", "IL.txt", "IN.txt",  "KS.txt", "KY.txt",
+       /* String [] abbreviations = {/*"AK.txt",*//* "AL.txt", "AR.txt", "AZ.txt", "CA.txt", "CO.txt", "CT.txt", "DC.txt", "DE.txt", "FL.txt", "GA.txt", /*"HI.txt",*//* "IA.txt", "ID.txt", "IL.txt", "IN.txt",  "KS.txt", "KY.txt",
          "LA.txt", "MA.txt", "MD.txt", "ME.txt", "MI.txt", "MN.txt", "MO.txt", "MS.txt", "MT.txt", "NC.txt", "ND.txt", "NE.txt", "NH.txt", "NJ.txt", "NM.txt", "NV.txt", "NY.txt", "OH.txt", "OK.txt",
-                 "OR.txt", "PA.txt", "RI.txt", "SC.txt", "SD.txt", "TN.txt", "TX.txt", "UT.txt", "VA.txt", "VT.txt", "WA.txt", "WI.txt", "WV.txt", "WY.txt", "USA.txt"};
-        String [] years = {"1960", "1964", "1968", "1972", "1976", "1980", "1984", "1988", "1992", "1996", "2000", "2004", "2008", "2012"};
-         
+                 "OR.txt", "PA.txt", "RI.txt", "SC.txt", "SD.txt", "TN.txt", "TX.txt", "UT.txt", "VA.txt", "VT.txt", "WA.txt", "WI.txt", "WV.txt", "WY.txt", "USA.txt"};*/
+     //   String [] years = {"1960", "1964", "1968", "1972", "1976", "1980", "1984", "1988", "1992", "1996", "2000", "2004", "2008", "2012"};
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////         
         
         StdDraw.setCanvasSize(1275, 650);//sets the canvas size
         
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+        DataReader data = new DataReader();
         
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
         
         boolean yes = true;
         
         while(yes){
             
             boolean runs = true;
-        
+
             //Causes the program to repeat until all the countries in the states have been built.
-            while(holder < abbreviations.length){
-
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+            while(data.getHolder() < data.getAbbreviations().length-1){
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
                 boolean keepGoing = true;//A variable later used to tell the program whether or not it has another country to construct.
-                String fileName = abbreviations[holder];//Selects the country to be drawn.
-                holder++;//Increments the number to ensure none of  the states are constantly repeated.
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                //String fileName = abbreviations[holder];//Selects the country to be drawn.
+                //holder++;//Increments the number to ensure none of  the states are constantly repeated.
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE/////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
 
-                File file = new File("src\\data\\" + fileName);//Creates a file of the state about to be drawn.
+                File file = new File("src\\data\\" + data.newCountyName());//Creates a file of the state about to be drawn.
                 Scanner scan = new Scanner(file);//Makes the scanner to read from the file.            
                     
                     //makes it so that you can see the pen.
@@ -81,8 +109,12 @@ public class PoliticalMap {
                         boolean notNamed = true;
 
                         while(bad){
-                            //Contingency for the odd naming in Hawaii
-                            if(fileName.equals("HI.txt")){
+                           /* //Contingency for the odd naming in Hawaii
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                            if(data.getFileName().equals("HI.txt")){
+
                                 //Discards the numbered name of Hawaii
                                 scan.next();
                                 scan.next();
@@ -98,7 +130,11 @@ public class PoliticalMap {
                                 }//end if
 
                             }//end if
-                            else if(scan.hasNext()){//The settings for the normal states
+                            else*/
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////                            
+                            if(scan.hasNext()){//The settings for the normal states
                                 next = scan.next();//Holds the first value on the sheet
 
                                 //Checks to see whether or not the next value is a number.
@@ -126,35 +162,20 @@ public class PoliticalMap {
 
                         ////////////////////////////////////////////////////////////
                         ////////////////////////////////////////////////////////////
-
+    
+////////////////////////////////////////////////////////////////////////////////    
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                        
                         int holdYear = 1960;//temporarily chooses the year to get the election data from
-
-                        String name = abbreviations[holder-1];//gets the full state name.
-                        String nameFinal = "";//initializes the String for the name of the state
-
-                        boolean notEndOfCounty = true;//used to determine whether 
-                        int c = 0;
-
-                        //Checks for the number of letters in the state name & saves them.
-                        while(notEndOfCounty){
-                            char hold = name.charAt(c);//compiles the name of the state the election is in
-                            c++;//increases char the program is reading in.
-
-                            //checks to see if the program has hit the decimal in the name
-                            if(hold == 46){
-                               notEndOfCounty = false;//if so,it ends the loop 
-                            }//end if
-
-                            else{
-                                nameFinal = nameFinal + hold;//otherwise, it saves the previously read in value as a letter in the abbreviation
-                            }//end else
-                        }//end for
-
-                        fileName = (nameFinal + holdYear + ".txt");//Compiles the different parts of the fileName to get the .txt file name
-
-                        File fileElec = new File("src\\data\\" + fileName);//Creates a file of the state about to be drawn.
-                        Scanner scanElec = new Scanner(fileElec);//Makes the scanner to read from the file.                    
-
+                        
+                        File fileElec = new File("src\\data\\" + data.electionData(holdYear));//Creates a file of the state about to be drawn.
+                        Scanner scanElec = new Scanner(fileElec);//Makes the scanner to read from the file.  
+                                                
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                        
                         boolean countryDivisor = true;//lets the program know if it needs to continue the loop to get the country election results
                         scanElec.nextLine();//gets rid of the introductory line
 
@@ -247,8 +268,14 @@ public class PoliticalMap {
                         //Sets up the data to draw the shape
                     if(keepGoing == true){
 
-                        //This conditional repositios Alaska
-                        if(fileName.equals("AK.txt")){
+                        //This conditional repositions Alaska
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                        if(data.getFileName().equals("AK.txt")){
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
                             //Creates arrays to hold the latitude and longitude
                             double[] latitude = new double[numberTwo];
                             double[] longitude = new double[numberTwo];
@@ -266,7 +293,13 @@ public class PoliticalMap {
                             numberTwo = 0;//Resets the number of states to be drawn to zero.
                         }//end if
                         //This conditional handles Hawaii
-                        else if(fileName.equals("HI.txt")){
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                        else if(data.getFileName().equals("HI.txt")){
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
                             //Creates arrays to hold the latitude and longitude
                             double[] latitude = new double[numberTwo];
                             double[] longitude = new double[numberTwo];
@@ -282,7 +315,11 @@ public class PoliticalMap {
 
                             numberTwo = 0;//Resets the number of states to be drawn to zero.
                         }//end if
-
+                        
+                        else if(data.getFileName().equals("WY.txt")){
+                            
+                        }
+                        
                         //This conditional handles the normal states.
                         else{
                             
@@ -317,6 +354,8 @@ public class PoliticalMap {
                             StdDraw.polygon(latitude, longitude);//Draws the shape.
 
                             numberTwo = 0;//Resets the number of states to be drawn to zero.
+                            
+                            //System.out.println(data.getFileName());
                         }//end else        
 
                     }//end if
@@ -326,7 +365,7 @@ public class PoliticalMap {
                 }//end while
             
             //DRAWS THE BUTTONS THE USERS CAN USE.
-
+                        
         //Creates holders for the different ints/String the program needs to run
         double x;
         double y;
@@ -360,8 +399,14 @@ public class PoliticalMap {
             //Draws the buttons for the election years
             else{
                 y = y-.07;//Moves the place the button will be drawn to a different height
-                year = years[i];//Chooses a different election year to be printed
-
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                year = data.getYears(i);//Chooses a different election year to be printed
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                
                 StdDraw.setPenColor(StdDraw.LIGHT_GRAY);//Changes the color of the pen for the box.
                 StdDraw.filledSquare(x, y, .03);//Creates a square at the appropriate place
 
@@ -378,7 +423,31 @@ public class PoliticalMap {
 
             //Creates a neverending loop, so the program is constantly checking for user input.
             while(runs){
-
+                        
+                
+                                
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                
+               /* double graphX = .13;
+                double graphY = .1;
+                double graphSize = .1;
+                
+                StdDraw.square(graphX, graphY, graphSize);*/
+                
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+   
+                
+                
                 //Checks to see if a button has been pressed.
                 if(StdDraw.mousePressed()){
 
@@ -395,9 +464,9 @@ public class PoliticalMap {
                         for(int i=0; i<14; i++){
                             y = y-.07;//Decreases the value of y, so that it's in the center of the first button.
 
-                            //Realizes that's the proper button, and prints that year
+                            //Realizes that's the proper button
                             if(mY<= y+.033 && mY>=y-.033){
-                                System.out.println(years[i]);
+                                //System.out.println(years[i]);//Prints the year (extraneous)
                             }//end if
 
                         }//end for
@@ -418,24 +487,36 @@ public class PoliticalMap {
                                 StdDraw.clear();//clears the canvas
                                 
                                 if(y == 0.039999999999999536){//tells the user to only draw the states.
-                                    runs = false;
-                                    holder--;
+                                    runs = false;//ends the loop, so the program will redraw the map
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                                    data.setHolder(data.getAbbreviations().length-1);//Moves the array holding the states back so it will redraw the USA
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
                                 }//end if
                                 
                                 else{
-                                    runs = false;
-                                    holder = 0;
+                                    runs = false;//ends the loop, so the program will redraw the map
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                                    data.setHolder(0);//Moves the array holding the states back to the beginning so it will redraw the entire map
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
                                 }//end else
                             }//end if
 
                             y = y+.07;
 
                         }//end for
-
+                                                
                     }//end else if
 
                 }//end if
-
+               
             }//end while
     
         }//end while
