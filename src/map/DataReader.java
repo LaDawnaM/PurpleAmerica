@@ -26,6 +26,8 @@ package map;
     String [] years = {"1960", "1964", "1968", "1972", "1976", "1980", "1984", "1988", "1992", "1996", "2000", "2004", "2008", "2012"};
     String next;
     double distance;
+    String foundTheData;
+    boolean founded = false;
 
     
     ////////////////////////////////////////////////////////////////////////////
@@ -68,6 +70,18 @@ package map;
         numberTwo = n;
     }
     
+    public void setFoundTheData(String f){
+        foundTheData = f;
+    }
+    
+    public void setFounded(boolean f){
+        founded = f;
+    }
+    
+    public boolean getFounded(){
+        return founded;
+    }
+    
     ////////////////////////////////////////////////////////////////////////////    
     ////////////////////////////////METHODS/////////////////////////////////////    
     ////////////////////////////////////////////////////////////////////////////
@@ -83,6 +97,34 @@ package map;
     public String electionData(int holdYear){
         
         String name = abbreviations[holder-1];
+        String nameFinal = "";//initializes the String for the name of the state
+
+        boolean notEndOfCounty = true;//used to determine whether 
+        int c = 0;
+
+        //Checks for the number of letters in the state name & saves them.
+        while(notEndOfCounty){
+            char hold = name.charAt(c);//compiles the name of the state the election is in
+            c++;//increases char the program is reading in.
+
+            //checks to see if the program has hit the decimal in the name
+            if(hold == 46){
+               notEndOfCounty = false;//if so,it ends the loop 
+            }//end if
+
+            else{
+                nameFinal = nameFinal + hold;//otherwise, it saves the previously read in value as a letter in the abbreviation
+            }//end else
+        }//end for
+
+        fileName = (nameFinal + holdYear + ".txt");//Compiles the different parts of the fileName to get the .txt file name
+        
+        return fileName;
+        
+    }//end electionData
+    
+    public String electionData(int holdYear, String name){
+        
         String nameFinal = "";//initializes the String for the name of the state
 
         boolean notEndOfCounty = true;//used to determine whether 
@@ -161,6 +203,30 @@ package map;
         
         return lat;
     }
+    
+    public String countrySearch(String whole, String search){
+        for(int i=0; i<whole.length(); i++){
+            if(whole.charAt(i) == 44){
+                if(foundTheData.equals(search)){
+                    i = whole.length()+10;
+                    System.out.println(foundTheData);
+                    founded = true;
+                }
+                else{
+                    foundTheData = "";
+                }
+            }
+            else{
+                foundTheData = foundTheData + whole;
+                //System.out.println("parted:    " + foundTheData);
+            }
+            
+        }                                   
+        
+        return foundTheData;
+    }
+    
+    
     
     /*public int findNumberTwo(){
         

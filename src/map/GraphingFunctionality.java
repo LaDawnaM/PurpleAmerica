@@ -188,7 +188,7 @@ public class GraphingFunctionality {
                 if(ySmallest < Math.abs(yVal) && yLargest > Math.abs(yVal)){
                     //System.out.println("found: " + title);
                     found = true;
-                    System.out.println("xsmall " + xSmallest + " xlarge " + xLargest + " ysmall " + ySmallest + " ylarge " + yLargest + "xVal" + xVal + "yVal" + yVal);
+                    //System.out.println("xsmall " + xSmallest + " xlarge " + xLargest + " ysmall " + ySmallest + " ylarge " + yLargest + "xVal" + xVal + "yVal" + yVal);
                     
                     xSmallest = 1;
                     xLargest = 0;

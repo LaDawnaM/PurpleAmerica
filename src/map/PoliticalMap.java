@@ -502,7 +502,7 @@ public class PoliticalMap {
                             if(graph.getFound()==true){
                                 z = go+10;
                                 graph.setFound(false);
-                                System.out.println(title);
+                                //System.out.println(title);
                             
                             
                             }
@@ -532,8 +532,23 @@ public class PoliticalMap {
                     StdDraw.setPenColor(StdDraw.BLACK);
                     
                     
+                    File fileTwo = new File("src\\data\\" + data.electionData(1960, "USA.txt"));//Creates a file of the state about to be drawn.
+                    Scanner scanElection = new Scanner(fileTwo);//Makes the scanner to read from the file.
                     
-                                
+                    boolean keepItUp = true;
+                    scanElection.nextLine();
+                    
+                    while(scanElection.hasNext() && keepItUp){
+                       
+                        data.setFoundTheData("");
+                        data.countrySearch(scanElection.nextLine(), title);
+                        
+                        if(data.getFounded() == false){
+                            keepItUp = false;
+                            data.setFounded(true);
+                        }
+                    }
+                    
                 
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
