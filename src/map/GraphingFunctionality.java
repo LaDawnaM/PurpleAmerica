@@ -33,6 +33,14 @@ public class GraphingFunctionality {
     static int numberTwo;
     static int holdIt;
     
+    static double xLargest;
+    static double yLargest;
+    static double xSmallest;
+    static double ySmallest;
+    
+    static boolean found = false;
+
+    
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////SETTERS/GETTERS/////////////////////////////    
     ////////////////////////////////////////////////////////////////////////////
@@ -65,6 +73,14 @@ public class GraphingFunctionality {
     
     public int getHoldIt(){
         return holdIt;
+    }
+    
+    public boolean getFound(){
+        return found;
+    }
+    
+    public void setFound(boolean f){
+        found = f;
     }
     
     ////////////////////////////////////////////////////////////////////////////    
@@ -144,19 +160,55 @@ public class GraphingFunctionality {
             latitude[holdIt] = lat-.0534;//Repositions latitude to a good place on the map
             longitude[holdIt] = Math.abs(((longs+50)/25)-2.98);//Retrieves and repositions longitude on the map
             
-            if(latitude[holdIt] == xVal){
+            if(latitude[holdIt] > xLargest){
+                xLargest = latitude[holdIt];
+                
+            }
+            else if(latitude[holdIt] < xSmallest){
+                xSmallest = latitude[holdIt];
+                
+            }
+            
+            if(longitude[holdIt] > yLargest){
+                yLargest = longitude[holdIt];
+                
+            }
+            else if(longitude[holdIt] < ySmallest){
+                ySmallest = longitude[holdIt];
+                
+            }
+            
+            /*if(latitude[holdIt] == xVal){
                 if(longitude[holdIt] == yVal){
                     System.out.println("found");
+                }
+            }*/
+
+            if(xSmallest < Math.abs(xVal) && xLargest > Math.abs(xVal)){
+                if(ySmallest < Math.abs(yVal) && yLargest > Math.abs(yVal)){
+                    //System.out.println("found: " + title);
+                    found = true;
+                    System.out.println("xsmall " + xSmallest + " xlarge " + xLargest + " ysmall " + ySmallest + " ylarge " + yLargest + "xVal" + xVal + "yVal" + yVal);
+                    
+                    xSmallest = 1;
+                    xLargest = 0;
+                    ySmallest = 1;
+                    yLargest = 0;
+                    
                 }
             }
             
             
-            if(title.equals("California")){
-                System.out.println("real lat: " + latitude[holdIt] + "verses new lat: " + xVal);
+            
+            
+            //if(title.equals("California")){
+                /*System.out.println("real lat: " + latitude[holdIt] + "verses new lat: " + xVal);
                 System.out.println("real long: " + longitude[holdIt] + "verses new long: " + yVal);
                 System.out.println("comp: " + (longitude[holdIt]/yVal));
-                System.out.println("comp: " + (latitude[holdIt]/xVal));
-            }
+                System.out.println("comp: " + (latitude[holdIt]/xVal));*/
+              //  System.out.println(" xSmall " + xSmallest + " ySmall " + ySmallest + " xLarge " + xLargest + " yLarge " + yLargest);
+                //System.out.println("real xVal:" + xVal + " real yVal:" + yVal);
+            //}
             
         //System.out.println(data.getFileName());
 

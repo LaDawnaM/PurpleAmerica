@@ -438,7 +438,9 @@ public class PoliticalMap {
                 StdDraw.setFont(graphFont);
                 
                 //Draws the box & graph lines
-                StdDraw.square(graphX, graphY, graphSize);//box
+                StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+                StdDraw.filledSquare(graphX, graphY, graphSize);//box
+                StdDraw.setPenColor(StdDraw.BLACK);
                 StdDraw.line(graphX-.05, graphX-.05, graphX+.08, graphX-.05);//lower line (x)
                 StdDraw.line(graphX-.05, graphX-.05, graphX-.05, graphX+.08);//upper line (y)
 
@@ -457,10 +459,11 @@ public class PoliticalMap {
                 StdDraw.setPenRadius(0.0005);//changes the pen size
                 Font normalFont = new Font("Arial", Font.PLAIN, 16);
                 StdDraw.setFont(normalFont);
+
                 
             //Creates a neverending loop, so the program is constantly checking for user input.
             while(runs){
-                
+                                
                 mX = StdDraw.mouseX();
                 mY = StdDraw.mouseY();
                 
@@ -475,19 +478,17 @@ public class PoliticalMap {
                 Scanner scanIt = new Scanner(file);//Makes the scanner to read from the file.
                 
                     for(int i=0; i<7; i++){
-                            if(i==5){
-                                title = scanIt.nextLine();
-                                System.out.println("titele:" + title);
-                            }
-                            else if(i==2){
-                                go = scanIt.nextInt();
-                                System.out.println("go" + go);
-                            }
-                            else{
-                                System.out.println("past" + scanIt.nextLine());
+                        if(i==5){
+                            title = scanIt.nextLine();
+                        }
+                        else if(i==2){
+                            go = scanIt.nextInt();
+                        }
+                        else{
+                            scanIt.nextLine();
 
-                            }
-                        }//end for
+                        }
+                    }//end for
                     
                     graph.setNumberTwo(scanIt.nextInt());
                     
@@ -497,6 +498,14 @@ public class PoliticalMap {
                             //System.out.println("i" + i);
                             graph.findLocation(scanIt.nextDouble(), scanIt.nextDouble(), lat, longe, title);
                             graph.setHoldIt(i);
+                            
+                            if(graph.getFound()==true){
+                                z = go+10;
+                                graph.setFound(false);
+                                System.out.println(title);
+                            
+                            
+                            }
                         }
                         if(scanIt.hasNext()){
                             scanIt.nextLine();
@@ -506,8 +515,24 @@ public class PoliticalMap {
 
                             graph.setNumberTwo(scanIt.nextInt());
                             graph.setHoldIt(0);
+                            
+                            
                         }
+                        
+                        
                     }
+                    StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+                    StdDraw.filledSquare(graphX-.09, graphY+.06, graphSize/5);//box
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.setPenRadius(0.0009);//changes the pen size
+                    StdDraw.setFont(graphFont);
+                    StdDraw.setPenColor(StdDraw.RED);
+                    StdDraw.text(graphX-.09, graphY+.06, ("FOUND: " + title));
+                    StdDraw.setPenRadius(0.0005);//changes the pen size
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    
+                    
+                    
                                 
                 
 ////////////////////////////////////////////////////////////////////////////////  
