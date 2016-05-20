@@ -28,6 +28,13 @@ package map;
     double distance;
     String foundTheData;
     boolean founded = false;
+    
+    String holdIt = "";
+    boolean repub = true;
+    boolean demo = true;
+    static int republican;
+    static int democrat;
+    static int independent;
 
     
     ////////////////////////////////////////////////////////////////////////////
@@ -74,6 +81,10 @@ package map;
         foundTheData = f;
     }
     
+    public String getFoundTheData(){
+        return foundTheData;
+    }
+    
     public void setFounded(boolean f){
         founded = f;
     }
@@ -81,6 +92,19 @@ package map;
     public boolean getFounded(){
         return founded;
     }
+    
+    public int getDemocrat(){
+        return democrat;
+    }
+    
+    public int getIndependent(){
+        return independent;
+    }
+    
+    public int getRepublican(){
+        return republican;
+    }
+    
     
     ////////////////////////////////////////////////////////////////////////////    
     ////////////////////////////////METHODS/////////////////////////////////////    
@@ -205,11 +229,60 @@ package map;
     }
     
     public String countrySearch(String whole, String search){
+        holdIt = "";
+        repub = true;
+        demo = true;
+    
         for(int i=0; i<whole.length(); i++){
             if(whole.charAt(i) == 44){
                 if(foundTheData.equals(search)){
-                    i = whole.length()+10;
+                    
                     founded = true;
+                    
+                    
+                   // System.out.println(foundTheData + " equals " + search);
+                    for(int e=i+1; e<whole.length()-1; e++){
+                                                
+                        if(whole.charAt(e) == 44){//checks to see if the String has reached a comma
+                                                                                                                        
+                            //holder = holder + whole.charAt(e);//starts reading in the numbers
+                            //the first comma becomes republican
+                            if(whole.charAt(e) == 44 && repub == true){//checks to see if it's encountered a comma
+                                republican = Integer.parseInt(holdIt);//sets the republican value to the current answer
+                                holdIt = "";//resets HolderTwo
+                                repub = false;//points the program towards democratic next time
+                            }//end if
+
+                            //the second comma becomes democratic
+                            else if(whole.charAt(e) == 44 && repub == false){
+                                democrat = Integer.parseInt(holdIt);//sets the democratic value to the current answer
+                                holdIt = "";//resets HolderTwo
+                                demo = false;//points the program towards independent next time
+                            }//end else if
+
+                            //the third comma is independent
+                            else if(whole.charAt(e) == 44 && demo == false){
+                                independent = Integer.parseInt(holdIt);//resets HolderTwo
+                                holdIt = "";//resets holderTwo
+
+                                //resets the party discerning booleans to their initial state
+                                repub = true;
+                                demo = true;
+                                e = whole.length()+1;
+                            }//end else if
+
+                            //no commas have been encountered thus far
+                            
+
+
+                        }
+                        else{
+                            holdIt = holdIt + whole.charAt(e);//tacks the current number on to the end, & repeats the process
+                        }//end else
+                        
+                    i = whole.length()+10;
+                    
+                }
                 }
                 else{
                     foundTheData = "";

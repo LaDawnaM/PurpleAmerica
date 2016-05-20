@@ -65,6 +65,7 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////
         
         boolean yes = true;
+        boolean reset = false;
         
         while(yes){
             
@@ -450,6 +451,7 @@ public class PoliticalMap {
                 //Draws the box & graph lines
                 StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
                 StdDraw.filledSquare(graphX, graphY, graphSize);//box
+                StdDraw.filledSquare(graphX, graphY, graphSize);//box
                 StdDraw.setPenColor(StdDraw.BLACK);
                 StdDraw.line(graphX-.05, graphX-.05, graphX+.08, graphX-.05);//lower line (x)
                 StdDraw.line(graphX-.05, graphX-.05, graphX-.05, graphX+.08);//upper line (y)
@@ -493,6 +495,14 @@ public class PoliticalMap {
                     for(int i=0; i<7; i++){
                         if(i==5){
                             title = scanIt.nextLine();
+                            if(title.equals(graph.getSavedTitles())){
+                                
+                            }
+                            else{
+                                graph.setSavedTitles(title);
+                                reset = true;
+                                System.out.println("cahnge");
+                            }
                         }
                         else if(i==2){
                             go = scanIt.nextInt();
@@ -516,18 +526,20 @@ public class PoliticalMap {
                                 graph.setSecond(true);
                             }
                             
+                           // System.out.println(title + ": " + graph.getLatHalf() + " " + graph.getLongHalf());
+                            
                             
                             graph.setSecond(false);
                             
                             graph.setHoldIt(i);
                             
-                            if(graph.getFound()==true){
+                           /* if(graph.getFound()==true){
                                 z = go+10;
                                 graph.setFound(false);
                                 //System.out.println(title);
                             
                             
-                            }
+                            }*/
                         }
                         
                         if(graph.getNotPresent() == false){
@@ -547,10 +559,22 @@ public class PoliticalMap {
 
                             graph.setNumberTwo(scanIt.nextInt());
                             graph.setHoldIt(0);
+                            
+                           
+                            
+                            //StdDraw.line(graph.getXSmallest(), graph.getYSmallest(), graph.getXLargest(), graph.getYLargest());
+/*StdDraw.setPenColor(StdDraw.CYAN);
+                            StdDraw.setPenRadius(.005);
+                             StdDraw.point(graph.getXSmallest(), graph.getYSmallest());
+                             StdDraw.point(graph.getXLargest(), graph.getYLargest());
+                            StdDraw.setPenRadius(.0005);
+                            StdDraw.setPenColor(StdDraw.BLACK);
+                        */
                             graph.setXSmallest(1);
-                    graph.setXLargest(0);
-                    graph.setYSmallest(1);
-                    graph.setYLargest(0);
+                            graph.setXLargest(0);
+                            graph.setYSmallest(1);
+                            graph.setYLargest(0);
+                    
                             
                         }
                         
@@ -558,17 +582,27 @@ public class PoliticalMap {
                     }
                     
                     
+               if(reset){        
+                   StdDraw.setFont(graphFont);
+                    graph.resetGraph(graphX, graphY, graphSize);
+                    StdDraw.setFont(normalFont);
                     
-                    StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-                    StdDraw.filledSquare(graphX-.09, graphY+.06, graphSize/5);//box
-                    StdDraw.setPenColor(StdDraw.BLACK);
+                   
+                   StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+                    StdDraw.filledSquare(graphX-.09, graphY+.09, graphSize/6);//box
+                   // StdDraw.setPenColor(StdDraw.BLACK);
+                    
+                    
                     StdDraw.setPenRadius(0.0009);//changes the pen size
                     StdDraw.setFont(graphFont);
-                    StdDraw.setPenColor(StdDraw.RED);
-                    StdDraw.text(graphX-.09, graphY+.06, ("FOUND: " + title));
-                    StdDraw.setPenRadius(0.0005);//changes the pen size
                     StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(graphX-.09, graphY+.06, (title));
+                    StdDraw.setPenRadius(0.0005);//changes the pen size
                     
+                    
+                    //StdDraw.setPenColor(StdDraw.BLACK);
+                    reset = false;
+                }
                     
                     File fileTwo = new File("src\\data\\" + data.electionData(1960, "USA.txt"));//Creates a file of the state about to be drawn.
                     Scanner scanElection = new Scanner(fileTwo);//Makes the scanner to read from the file.
@@ -581,11 +615,18 @@ public class PoliticalMap {
                         data.setFoundTheData("");
                         data.countrySearch(scanElection.nextLine(), title);
                         
+                      //  System.out.println(data.getFoundTheData());
+                        
                         if(data.getFounded() == false){
                             keepItUp = false;
                             data.setFounded(true);
+                            
+                            
+                            
                         }
                     }
+                    
+                    graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize);
                     
                     //Sets the pen back to normal settings
                     StdDraw.setPenColor(StdDraw.BLACK);
