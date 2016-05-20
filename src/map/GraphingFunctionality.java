@@ -6,6 +6,8 @@
 
 package map;
 
+import edu.princeton.cs.introcs.StdDraw;
+
 /**
  *
  * @author hcps-mcenhimlr
@@ -39,6 +41,12 @@ public class GraphingFunctionality {
     static double ySmallest;
     
     static boolean found = false;
+    static boolean second = false;
+    static boolean keepGoing = true;
+    static boolean notPresent = false;
+    
+    double latHalf;
+    double longHalf;
 
     
     ////////////////////////////////////////////////////////////////////////////
@@ -82,6 +90,37 @@ public class GraphingFunctionality {
     public void setFound(boolean f){
         found = f;
     }
+    
+    public void setXSmallest(int s){
+        xSmallest = s;
+    }
+    
+    public void setYSmallest(int s){
+        ySmallest = s;
+    }
+    
+    public void setXLargest(int s){
+        xLargest = s;
+    }
+    
+    public void setYLargest(int s){
+        yLargest = s;
+    }
+    
+    public void setSecond(boolean s){
+        second = s;
+    }
+    
+    public boolean getNotPresent(){
+        return notPresent;
+    }
+    
+    public void setNotPresent(boolean p){
+        notPresent = p;
+    }
+    
+    
+    
     
     ////////////////////////////////////////////////////////////////////////////    
     ////////////////////////////////METHODS/////////////////////////////////////    
@@ -140,62 +179,167 @@ public class GraphingFunctionality {
     public void findLocation(double lats, double longs, double xVal, double yVal, String title){
         
             //Puts the data into the arrays for the map, proportionate to the size
-            double lat = Math.abs(((lats+50)/62)+0.26);
+            lats = Math.abs(((lats+50)/62)+0.26);
             double distance;
 
             //Reverses the positioning of the dots
-            if(lat > 0.5){//Checks to see which side of the map the dot is on.
-                distance = lat - 0.5;//finds the dot's distance from the center of the map
-                lat = lat - distance - distance;//Takes the distance away twice, placing the spot on the opposite side of the map
+            if(lats > 0.5){//Checks to see which side of the map the dot is on.
+                distance = lats - 0.5;//finds the dot's distance from the center of the map
+                lats = lats - distance - distance;//Takes the distance away twice, placing the spot on the opposite side of the map
             }//end if
 
             //Reverses the positioning of the dots
-            else if(lat < 0.5){//Checks to see which side of the map the dot is on.
-                distance = 0.5 - lat;//finds the dot's distance from the center of the map
-                lat = lat + distance + distance;//Takes the distance away twice, placing the spot on the opposite side of the map
+            else if(lats < 0.5){//Checks to see which side of the map the dot is on.
+                distance = 0.5 - lats;//finds the dot's distance from the center of the map
+                lats = lats + distance + distance;//Takes the distance away twice, placing the spot on the opposite side of the map
             }//end else if
 
            
           //  System.out.println("holdIt:" + holdIt);
-            latitude[holdIt] = lat-.0534;//Repositions latitude to a good place on the map
+            latitude[holdIt] = lats-.0534;//Repositions latitude to a good place on the map
             longitude[holdIt] = Math.abs(((longs+50)/25)-2.98);//Retrieves and repositions longitude on the map
             
-            if(latitude[holdIt] > xLargest){
-                xLargest = latitude[holdIt];
+            if(second == true){
                 
-            }
-            else if(latitude[holdIt] < xSmallest){
-                xSmallest = latitude[holdIt];
+                 latHalf = (xLargest-xSmallest)/2;
+                 latHalf = latHalf + xSmallest;
+                 
+                 longHalf = (yLargest-ySmallest)/2;
+                 longHalf = longHalf + ySmallest;
+                 
+                 //System.out.println("lat: " + latHalf + "large first: " + xLargest + " " + xSmallest + " long:" + longHalf + "large first: " + yLargest + " " + ySmallest);
+                /* 
+                 StdDraw.setPenColor(StdDraw.CYAN);
+                 StdDraw.point(latitude[holdIt], longitude[holdIt]);
+                 StdDraw.point(latHalf, longHalf);
+                 StdDraw.setPenColor(StdDraw.BLACK);
+                */
+                 
+                 
+                if(latitude[holdIt] < latHalf){
+                    if(latitude[holdIt] > xVal){
+                        if(longitude[holdIt] < longHalf){
+                            if(longitude[holdIt] > yVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+                                keepGoing = false;
+                            }
+
+                        }//end if
+                        else{
+                            if(longitude[holdIt] < yVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+                                keepGoing = false;
+                            }
+                               
+                        }
+                        
+                        
+                    }//end if
+                    
+
+                }//end if
+                else if(latitude[holdIt] > latHalf){
+                    if(latitude[holdIt] < xVal){
+                        if(longitude[holdIt] > longHalf){
+                            if(longitude[holdIt] < yVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+                                keepGoing = false;
+                            }
+
+                        }//end if
+                        else{
+                            if(longitude[holdIt] > yVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+                                keepGoing = false;
+                            }
+                               
+                        }
+                        
+                        
+                        
+                    }//end if
+                    
+
+                }//end if
                 
-            }
+            }//end if
             
-            if(longitude[holdIt] > yLargest){
-                yLargest = longitude[holdIt];
+            else{
                 
-            }
-            else if(longitude[holdIt] < ySmallest){
-                ySmallest = longitude[holdIt];
                 
-            }
+                
+            
+                if(latitude[holdIt] > xLargest){
+                    xLargest = latitude[holdIt];
+
+                }
+                else if(latitude[holdIt] < xSmallest){
+                    xSmallest = latitude[holdIt];
+
+                }
+
+                if(longitude[holdIt] > yLargest){
+                    yLargest = longitude[holdIt];
+
+                }
+                else if(longitude[holdIt] < ySmallest){
+                    ySmallest = longitude[holdIt];
+
+                }
+                
+                if(xSmallest < Math.abs(xVal) && xLargest > Math.abs(xVal)){
+                    if(ySmallest < Math.abs(yVal) && yLargest > Math.abs(yVal)){
+
+                        keepGoing = true;
+
+                        /*if(holdIt == numberTwo){
+                            //System.out.println("found: " + title);
+                            found = true;
+                           // System.out.println("xsmall " + xSmallest + " xlarge " + xLargest + " ysmall " + ySmallest + " ylarge " + yLargest + "xVal" + xVal + "yVal" + yVal);
+                            StdDraw.setPenRadius(.005);
+                            StdDraw.setPenColor(StdDraw.CYAN);
+                            StdDraw.point(xSmallest, ySmallest);
+                            StdDraw.point(xLargest, yLargest);
+                            StdDraw.setPenRadius(.00005);
+                            StdDraw.setPenColor(StdDraw.BLACK);
+                           // System.out.println(title);
+                        }*/
+
+
+
+
+                    }
+                
+                }
+                
+                else{
+                    keepGoing = false;
+                }
+            
+            
+            
             
             /*if(latitude[holdIt] == xVal){
                 if(longitude[holdIt] == yVal){
                     System.out.println("found");
                 }
             }*/
-
-            if(xSmallest < Math.abs(xVal) && xLargest > Math.abs(xVal)){
-                if(ySmallest < Math.abs(yVal) && yLargest > Math.abs(yVal)){
-                    //System.out.println("found: " + title);
-                    found = true;
-                    //System.out.println("xsmall " + xSmallest + " xlarge " + xLargest + " ysmall " + ySmallest + " ylarge " + yLargest + "xVal" + xVal + "yVal" + yVal);
-                    
-                    xSmallest = 1;
-                    xLargest = 0;
-                    ySmallest = 1;
-                    yLargest = 0;
-                    
-                }
+            
+            //System.out.println("lat:" + latitude[holdIt] + " long:" + longitude[holdIt]);
+            
+            
             }
             
             

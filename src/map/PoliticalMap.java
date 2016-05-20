@@ -332,6 +332,7 @@ public class PoliticalMap {
                                 //Puts the data into the arrays for the map, proportionate to the size
                                 double lat = Math.abs(((scan.nextDouble()+50)/62)+0.26);
                                 double distance;
+                             //   System.out.println("Lat: " + lat);
 
                                 //Reverses the positioning of the dots
                                 if(lat > 0.5){//Checks to see which side of the map the dot is on.
@@ -349,10 +350,13 @@ public class PoliticalMap {
 
                                 latitude[i] = lat-.0534;//Repositions latitude to a good place on the map
                                 longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);//Retrieves and repositions longitude on the map
-
+                                
+                              //  System.out.println("new Lat:" + latitude[i] + " new Long:" + longitude[i]);
+                                
                             }//end for
 
                             StdDraw.polygon(latitude, longitude);//Draws the shape.
+                            
 
                             numberTwo = 0;//Resets the number of states to be drawn to zero.
                             
@@ -427,7 +431,13 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
-                
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+            
                 //Creates variables for the graph sizes.
                 double graphX = .13;
                 double graphY = .13;
@@ -454,7 +464,7 @@ public class PoliticalMap {
                 StdDraw.setPenColor(StdDraw.GREEN);
                 StdDraw.text(graphX-.09, graphY-.03, "Independent");
                 
-                //Sets the pen back to normal colors
+                //Sets the pen back to normal settings
                 StdDraw.setPenColor(StdDraw.BLACK);
                 StdDraw.setPenRadius(0.0005);//changes the pen size
                 Font normalFont = new Font("Arial", Font.PLAIN, 16);
@@ -471,8 +481,11 @@ public class PoliticalMap {
                 double distance;
 
             
-                double lat = (data.latitude((Math.abs((mX+50)/62)+0.26)))-.0534;
-                double longe = Math.abs(((mY+50)/25)-2.98);
+                double lat = mX;
+                double longe = mY;
+                
+                StdDraw.setPenRadius(.005);
+                StdDraw.point(Math.abs(lat), longe);
                 
                 File file = new File("src\\data\\" + "USA.txt");//Creates a file of the state about to be drawn.
                 Scanner scanIt = new Scanner(file);//Makes the scanner to read from the file.
@@ -496,7 +509,16 @@ public class PoliticalMap {
                         //System.out.print(graph.getNumberTwo());
                         for(int i=0; i<graph.getNumberTwo(); i++){
                             //System.out.println("i" + i);
-                            graph.findLocation(scanIt.nextDouble(), scanIt.nextDouble(), lat, longe, title);
+                            double x1 = scanIt.nextDouble();
+                            double y1 = scanIt.nextDouble();
+                            for(int q=0; q<2; q++){
+                                graph.findLocation(x1, y1, lat, longe, title);
+                                graph.setSecond(true);
+                            }
+                            
+                            
+                            graph.setSecond(false);
+                            
                             graph.setHoldIt(i);
                             
                             if(graph.getFound()==true){
@@ -507,6 +529,16 @@ public class PoliticalMap {
                             
                             }
                         }
+                        
+                        if(graph.getNotPresent() == false){
+                            z = go+10;
+                            
+                        }
+                        else{
+                            graph.setNotPresent(false);
+                        }
+                        
+                        
                         if(scanIt.hasNext()){
                             scanIt.nextLine();
                             scanIt.nextLine();
@@ -515,12 +547,18 @@ public class PoliticalMap {
 
                             graph.setNumberTwo(scanIt.nextInt());
                             graph.setHoldIt(0);
-                            
+                            graph.setXSmallest(1);
+                    graph.setXLargest(0);
+                    graph.setYSmallest(1);
+                    graph.setYLargest(0);
                             
                         }
                         
                         
                     }
+                    
+                    
+                    
                     StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
                     StdDraw.filledSquare(graphX-.09, graphY+.06, graphSize/5);//box
                     StdDraw.setPenColor(StdDraw.BLACK);
@@ -549,6 +587,13 @@ public class PoliticalMap {
                         }
                     }
                     
+                    //Sets the pen back to normal settings
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.setPenRadius(0.0005);//changes the pen size
+                    StdDraw.setFont(normalFont);
+                    
+                    
+                    
                 
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
@@ -556,7 +601,13 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
-   
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                    
                 
                 
                 //Checks to see if a button has been pressed.

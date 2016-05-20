@@ -209,15 +209,15 @@ package map;
             if(whole.charAt(i) == 44){
                 if(foundTheData.equals(search)){
                     i = whole.length()+10;
-                    System.out.println(foundTheData);
                     founded = true;
                 }
                 else{
                     foundTheData = "";
+                    
                 }
             }
             else{
-                foundTheData = foundTheData + whole;
+                foundTheData = foundTheData + whole.charAt(i);
                 //System.out.println("parted:    " + foundTheData);
             }
             
