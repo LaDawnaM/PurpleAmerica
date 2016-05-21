@@ -28,6 +28,10 @@ public class PoliticalMap {
     static String intro;
     static String title;
     static int go;
+    static double maxLong;
+    static double maxLat;
+    static double minLat;
+    static double minLong;
 
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
@@ -472,6 +476,7 @@ public class PoliticalMap {
                 Font normalFont = new Font("Arial", Font.PLAIN, 16);
                 StdDraw.setFont(normalFont);
 
+                 reset = true;
                 
             //Creates a neverending loop, so the program is constantly checking for user input.
             while(runs){
@@ -481,6 +486,8 @@ public class PoliticalMap {
                 
                 
                 double distance;
+
+                boolean first = true;
 
             
                 double lat = mX;
@@ -492,21 +499,39 @@ public class PoliticalMap {
                 File file = new File("src\\data\\" + "USA.txt");//Creates a file of the state about to be drawn.
                 Scanner scanIt = new Scanner(file);//Makes the scanner to read from the file.
                 
+               
+                
                     for(int i=0; i<7; i++){
                         if(i==5){
                             title = scanIt.nextLine();
-                            if(title.equals(graph.getSavedTitles())){
-                                
-                            }
-                            else{
-                                graph.setSavedTitles(title);
-                                reset = true;
-                                System.out.println("cahnge");
-                            }
+                            graph.setSavedTitles(title);
+                            
+                            
                         }
                         else if(i==2){
                             go = scanIt.nextInt();
                         }
+                        //else if(i==0 || i==1){
+                            
+                            /*if(first){
+                                minLat = scanIt.nextDouble();
+                                minLat = Math.abs(((minLat+50)/62)+0.26);
+                                minLat = data.latitude(minLat) -.0534;
+                                maxLat = Math.abs(((scanIt.nextDouble()+50)/25)-2.98);;
+                                first = false;
+                                System.out.println(minLat + " " + maxLat);
+                            }
+                            
+                            else{
+                                minLong = scanIt.nextDouble();
+                                minLong = Math.abs(((minLong+50)/62)+0.26);
+                                minLong = data.latitude(minLong) -.0534;
+                                maxLong = Math.abs(((scanIt.nextDouble()+50)/25)-2.98);
+                                first = true;
+                                System.out.println(minLong + " " + maxLong);
+                            }*/
+                            
+                        //}
                         else{
                             scanIt.nextLine();
 
@@ -514,75 +539,102 @@ public class PoliticalMap {
                     }//end for
                     
                     graph.setNumberTwo(scanIt.nextInt());
+                    boolean start;
                     
                     for(int z=0; z<go; z++){
+                        
+                        start = true;
+                        
+                    for(int l=0; l<2; l++){
+                    
+                        graph.setSecond(true);
+
+                        //System.out.println("l: " + l + "z: " + z);
+
                         //System.out.print(graph.getNumberTwo());
-                        for(int i=0; i<graph.getNumberTwo(); i++){
-                            //System.out.println("i" + i);
-                            double x1 = scanIt.nextDouble();
-                            double y1 = scanIt.nextDouble();
-                            for(int q=0; q<2; q++){
-                                graph.findLocation(x1, y1, lat, longe, title);
-                                graph.setSecond(true);
+                            for(int i=0; i<graph.getNumberTwo(); i++){
+                                //System.out.println("i" + i);
+                                if(start == true){
+                                    double x1 = scanIt.nextDouble();
+                                    double y1 = scanIt.nextDouble();
+                                
+                                
+                                //StdDraw.point(x1, y1);
+                                //for(int q=0; q<2; q++){
+
+                                    graph.findLocation(x1, y1, lat, longe, title/*, Math.abs(minLat), Math.abs(maxLat), Math.abs(minLong), Math.abs(maxLong)*/);
+                                    graph.setHoldIt(i);
+                                    //}
+                                }
+                                else{
+                                    graph.findLocation(lat, longe, title);
+                                    graph.setHoldIt(i);
+                                }
+                                
+                               // System.out.println(title + ": " + graph.getLatHalf() + " " + graph.getLongHalf());
+
+                            
+                                
                             }
                             
-                           // System.out.println(title + ": " + graph.getLatHalf() + " " + graph.getLongHalf());
+                            start = false;
                             
-                            
-                            graph.setSecond(false);
-                            
-                            graph.setHoldIt(i);
-                            
-                           /* if(graph.getFound()==true){
+                        }
+                        
+                            if(graph.getNotPresent() == false){
                                 z = go+10;
-                                graph.setFound(false);
-                                //System.out.println(title);
-                            
-                            
-                            }*/
-                        }
-                        
-                        if(graph.getNotPresent() == false){
-                            z = go+10;
-                            
-                        }
-                        else{
-                            graph.setNotPresent(false);
-                        }
-                        
-                        
-                        if(scanIt.hasNext()){
-                            scanIt.nextLine();
-                            scanIt.nextLine();
-                            title = scanIt.nextLine();
-                            scanIt.nextLine();
 
-                            graph.setNumberTwo(scanIt.nextInt());
-                            graph.setHoldIt(0);
-                            
-                           
-                            
-                            //StdDraw.line(graph.getXSmallest(), graph.getYSmallest(), graph.getXLargest(), graph.getYLargest());
-/*StdDraw.setPenColor(StdDraw.CYAN);
-                            StdDraw.setPenRadius(.005);
-                             StdDraw.point(graph.getXSmallest(), graph.getYSmallest());
-                             StdDraw.point(graph.getXLargest(), graph.getYLargest());
-                            StdDraw.setPenRadius(.0005);
-                            StdDraw.setPenColor(StdDraw.BLACK);
-                        */
-                            graph.setXSmallest(1);
-                            graph.setXLargest(0);
-                            graph.setYSmallest(1);
-                            graph.setYLargest(0);
+                            }
+                            else{
+                                graph.setNotPresent(false);
+                            }
+                                
                     
-                            
-                        }
-                        
+                    
+                        start = true;
+                    
+                            if(scanIt.hasNext()){
+                                scanIt.nextLine();
+                                scanIt.nextLine();
+                                title = scanIt.nextLine();
+                                if(title.equals(graph.getSavedTitles())){
+
+                                }
+                                else{
+                                    //System.out.println("saved: ." + graph.getSavedTitles() + ".");
+                                    graph.setSavedTitles(title);
+                                    reset = true;
+                                    //System.out.println("new: ." + title + ".");
+                                }
+                                scanIt.nextLine();
+
+                                graph.setNumberTwo(scanIt.nextInt());
+                                graph.setHoldIt(0);
+
+
+
+                                //StdDraw.line(graph.getXSmallest(), graph.getYSmallest(), graph.getXLargest(), graph.getYLargest());
+    /*StdDraw.setPenColor(StdDraw.CYAN);
+                                StdDraw.setPenRadius(.005);
+                                 StdDraw.point(graph.getXSmallest(), graph.getYSmallest());
+                                 StdDraw.point(graph.getXLargest(), graph.getYLargest());
+                                StdDraw.setPenRadius(.0005);
+                                StdDraw.setPenColor(StdDraw.BLACK);
+                            */
+                                graph.setXSmallest(1);
+                                graph.setXLargest(0);
+                                graph.setYSmallest(1);
+                                graph.setYLargest(0);
+
+                                //graph.setSecond(false);
+
+                            }
                         
                     }
                     
                     
-               if(reset){        
+                    
+               if(reset){     
                    StdDraw.setFont(graphFont);
                     graph.resetGraph(graphX, graphY, graphSize);
                     StdDraw.setFont(normalFont);
@@ -603,37 +655,46 @@ public class PoliticalMap {
                     //StdDraw.setPenColor(StdDraw.BLACK);
                     reset = false;
                 }
+               
+                    graph.setSecond(false);
+                    int yearOne;
                     
-                    File fileTwo = new File("src\\data\\" + data.electionData(1960, "USA.txt"));//Creates a file of the state about to be drawn.
-                    Scanner scanElection = new Scanner(fileTwo);//Makes the scanner to read from the file.
+                    graph.setXPos(1);
                     
-                    boolean keepItUp = true;
-                    scanElection.nextLine();
-                    
-                    while(scanElection.hasNext() && keepItUp){
-                       
-                        data.setFoundTheData("");
-                        data.countrySearch(scanElection.nextLine(), title);
+                    for(int q = 0; q<data.getYears().length; q++){
                         
-                      //  System.out.println(data.getFoundTheData());
+                        yearOne = Integer.parseInt(data.getYears(q));
                         
-                        if(data.getFounded() == false){
-                            keepItUp = false;
-                            data.setFounded(true);
-                            
-                            
-                            
+                        File fileTwo = new File("src\\data\\" + data.electionData(yearOne, "USA.txt"));//Creates a file of the state about to be drawn.
+                        Scanner scanElection = new Scanner(fileTwo);//Makes the scanner to read from the file.
+
+                        boolean keepItUp = true;
+                        scanElection.nextLine();
+
+                        while(scanElection.hasNext() && keepItUp){
+
+                            data.setFoundTheData("");
+                            data.countrySearch(scanElection.nextLine(), title);
+
+                          //  System.out.println(data.getFoundTheData());
+
+                            if(data.getFounded() == false){
+                                keepItUp = false;
+                                data.setFounded(true);
+
+
+
+                            }
                         }
+
+                        graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), q, graphX, graphY, graphSize);
+
+                        //Sets the pen back to normal settings
+                        StdDraw.setPenColor(StdDraw.BLACK);
+                        StdDraw.setPenRadius(0.0005);//changes the pen size
+                        StdDraw.setFont(normalFont);
+
                     }
-                    
-                    graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize);
-                    
-                    //Sets the pen back to normal settings
-                    StdDraw.setPenColor(StdDraw.BLACK);
-                    StdDraw.setPenRadius(0.0005);//changes the pen size
-                    StdDraw.setFont(normalFont);
-                    
-                    
                     
                 
 ////////////////////////////////////////////////////////////////////////////////  

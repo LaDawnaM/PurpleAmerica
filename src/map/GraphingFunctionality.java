@@ -58,6 +58,11 @@ public class GraphingFunctionality {
     double republicanFixed;
     double democratFixed;
     double independentFixed;
+    
+    static double xPos;
+    
+    static double xAverage;
+    static double yAverage;
 
     
     ////////////////////////////////////////////////////////////////////////////
@@ -163,6 +168,26 @@ public class GraphingFunctionality {
         return savedTitle;
     }
     
+    public void setXPos(double s){
+        xPos = Math.abs(s-.92);
+    }
+    
+    public double getXAverage(){
+        return xAverage;
+    }
+    
+    public void setXAverage(double x){
+        xAverage = x;
+    }
+    
+    public double getYAverage(){
+        return yAverage;
+    }
+    
+    public void setYAverage(double x){
+        yAverage = x;
+    }
+    
     
     
     
@@ -220,7 +245,7 @@ public class GraphingFunctionality {
                             
     }//end decipherIntro
     
-    public void findLocation(double lats, double longs, double xVal, double yVal, String title){
+    public void findLocation(double lats, double longs, double xVal, double yVal, String title/*, double minLat, double maxLat, double minLong, double maxLong*/){
         
             //Puts the data into the arrays for the map, proportionate to the size
             lats = Math.abs(((lats+50)/62)+0.26);
@@ -242,87 +267,18 @@ public class GraphingFunctionality {
           //  System.out.println("holdIt:" + holdIt);
             latitude[holdIt] = lats-.0534;//Repositions latitude to a good place on the map
             longitude[holdIt] = Math.abs(((longs+50)/25)-2.98);//Retrieves and repositions longitude on the map
+                        
             
-            if(second == true){
-                
-                 latHalf = (xLargest-xSmallest)/2;
-                 latHalf = latHalf + xSmallest;
-                 
-                 longHalf = (yLargest-ySmallest)/2;
-                 longHalf = longHalf + ySmallest;
-                 
-                 //System.out.println("lat: " + latHalf + "large first: " + xLargest + " " + xSmallest + " long:" + longHalf + "large first: " + yLargest + " " + ySmallest);
-                /* 
-                 StdDraw.setPenColor(StdDraw.CYAN);
-                 StdDraw.point(latitude[holdIt], longitude[holdIt]);
-                 StdDraw.point(latHalf, longHalf);
-                 StdDraw.setPenColor(StdDraw.BLACK);
-                */
-                 
-                 
-                if(latitude[holdIt] < latHalf){
-                    if(latitude[holdIt] > xVal){
-                        if(longitude[holdIt] < longHalf){
-                            if(longitude[holdIt] > yVal){
-                                
-                            }
-                            else{
-                                notPresent = true;
-                                keepGoing = false;
-                            }
-
-                        }//end if
-                        else{
-                            if(longitude[holdIt] < yVal){
-                                
-                            }
-                            else{
-                                notPresent = true;
-                                keepGoing = false;
-                            }
-                               
-                        }
-                        
-                        
-                    }//end if
-                    
-
-                }//end if
-                else if(latitude[holdIt] > latHalf){
-                    if(latitude[holdIt] < xVal){
-                        if(longitude[holdIt] > longHalf){
-                            if(longitude[holdIt] < yVal){
-                                
-                            }
-                            else{
-                                notPresent = true;
-                                keepGoing = false;
-                            }
-
-                        }//end if
-                        else{
-                            if(longitude[holdIt] > yVal){
-                                
-                            }
-                            else{
-                                notPresent = true;
-                                keepGoing = false;
-                            }
-                               
-                        }
-                        
-                        
-                        
-                    }//end if
-                    
-
-                }//end if
-                
-            }//end if
             
-            else{
+            /*else{
+                xAverage = latitude[holdIt] + xAverage;
+                xAverage = xAverage/2;
+
+                yAverage = longitude[holdIt] + yAverage;
+                yAverage = yAverage/2;
                 
                 
+            }  */
                 
             
                 if(latitude[holdIt] > xLargest){
@@ -364,7 +320,7 @@ public class GraphingFunctionality {
 
 
 
-                    }
+                   // }
                 
                 }
                 
@@ -398,23 +354,105 @@ public class GraphingFunctionality {
                 //System.out.println("real xVal:" + xVal + " real yVal:" + yVal);
             //}
             
-        //System.out.println(data.getFileName());
+        //System.out.println(data.getFileName());*/
 
     }
     
-    public double ratio(double republican, double democrat, double independent, double x, double y, double graphSize){
-        total = republican+democrat+independent;
-        
-        StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-        StdDraw.filledSquare(x+.019, y+.02, .065);
-        StdDraw.setPenColor(StdDraw.BLACK);
+        public void findLocation(double xVal, double yVal, String title){
+           // if(second == true){
+                
+                 latHalf = (xLargest - xSmallest)/2;
+                 latHalf = latHalf + xSmallest;
+                 
+                 longHalf = (yLargest-ySmallest)/2;
+                 longHalf = longHalf + ySmallest;
+                 
+                 //System.out.println("lat: " + latHalf + "large first: " + xLargest + " " + xSmallest + " long:" + longHalf + "large first: " + yLargest + " " + ySmallest);
+                
+               /*  StdDraw.setPenColor(StdDraw.CYAN);
+                 StdDraw.setPenRadius(.05);
+                 //StdDraw.point(latitude[holdIt], longitude[holdIt]);
+              //   StdDraw.point(xAverage, yAverage);
+                 System.out.println("title" + title + "x: " + xAverage + "y: " + yAverage);
+                 StdDraw.setPenColor(StdDraw.BLACK);
+                 StdDraw.setPenRadius(.0005);*/
+                
+                 
+                 //The xAverage is the combined, so should be in the center of the states. Don't know if it works. Latest change. 
+                if(latitude[holdIt] > latHalf){
+                    if(latitude[holdIt] > xVal){
+                        if(longitude[holdIt] < longHalf){
+                            if(longitude[holdIt] > yVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+                                keepGoing = false;
+                            }
 
+                        }//end if
+                        else{
+                            if(longitude[holdIt] < yVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+                                keepGoing = false;
+                            }
+                               
+                        }
+                        
+                        
+                    }//end if
+                    
+
+                }//end if
+                else if(latitude[holdIt] < latHalf){
+                    if(latitude[holdIt] < xVal){
+                        if(longitude[holdIt] > longHalf){
+                            if(longitude[holdIt] < yVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+                                keepGoing = false;
+                            }
+
+                        }//end if
+                        else{
+                            if(longitude[holdIt] > yVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+                                keepGoing = false;
+                            }
+                               
+                        }
+                        
+                        
+                        
+                    }//end if
+                    
+
+                }//end if
+                
+          //  }//end if
+    }
+    
+    public double ratio(double republican, double democrat, double independent, int position, double x, double y, double graphSize){
+        total = republican+democrat+independent;
+/*        
+            StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+            StdDraw.filledSquare(x+.019, y+.02, .065);
+            StdDraw.setPenColor(StdDraw.BLACK);
+*/
 //  System.out.println(republican);
         
         //sets them to less than one
-        republicanFixed = republican/5000000;
-        democratFixed = democrat/5000000;
-        independentFixed = independent/5000000;
+        republicanFixed = republican/45000000;
+        democratFixed = democrat/45000000;
+        independentFixed = independent/45000000;
         
       //  System.out.println("one: " + republicanFixed);
         
@@ -424,13 +462,15 @@ public class GraphingFunctionality {
         
       //  System.out.println("two: " + republicanFixed);
         
+        xPos = xPos+.009;
+        
         StdDraw.setPenRadius(.005);
         StdDraw.setPenColor(StdDraw.RED);
-        StdDraw.point((x-.04), (y-.05)+republicanFixed);
+        StdDraw.point((xPos), (y-.043)+republicanFixed);
         StdDraw.setPenColor(StdDraw.BLUE);
-        StdDraw.point((x-.04), (y-.05)+democratFixed);
+        StdDraw.point((xPos), (y-.043)+democratFixed);
         StdDraw.setPenColor(StdDraw.GREEN);
-        StdDraw.point((x-.04), (y-.05)+independentFixed);
+        StdDraw.point((xPos), (y-.043)+independentFixed);
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(.0005);
      //   System.out.println("val : " + republicanFixed+(x-.05) + " " + (y-.05));

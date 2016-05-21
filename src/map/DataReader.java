@@ -65,6 +65,10 @@ package map;
         return years[i];
     }
     
+    public String[] getYears(){
+        return years;
+    }
+    
     public void setNext(String n){
         next = n;
     }
