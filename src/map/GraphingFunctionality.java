@@ -64,6 +64,7 @@ public class GraphingFunctionality {
     static double xAverage;
     static double yAverage;
 
+    static boolean chance;
     
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////SETTERS/GETTERS/////////////////////////////    
@@ -188,6 +189,14 @@ public class GraphingFunctionality {
         yAverage = x;
     }
     
+    public void setChance(boolean c){
+        chance = c;
+    }
+    
+    public boolean getChance(){
+        return chance;
+    }
+    
     
     
     
@@ -301,9 +310,10 @@ public class GraphingFunctionality {
                 
                 if(xSmallest < Math.abs(xVal) && xLargest > Math.abs(xVal)){
                     if(ySmallest < Math.abs(yVal) && yLargest > Math.abs(yVal)){
-
+                        //System.out.println("Maybe? " + title);
                         keepGoing = true;
-
+                      //  notPresent = false;
+                        
                         /*if(holdIt == numberTwo){
                             //System.out.println("found: " + title);
                             found = true;
@@ -326,6 +336,7 @@ public class GraphingFunctionality {
                 
                 else{
                     keepGoing = false;
+                    //notPresent = true;
                 }
             
             
@@ -341,6 +352,9 @@ public class GraphingFunctionality {
             
             
             }
+                else{
+                    keepGoing = false;
+                }
             
             
             
@@ -358,14 +372,37 @@ public class GraphingFunctionality {
 
     }
     
+    
         public void findLocation(double xVal, double yVal, String title){
-           // if(second == true){
+          
+            if(xSmallest<xVal && xLargest > xVal){
+                if(ySmallest < yVal && yLargest > yVal){
+                    System.out.println("HALELUYER " + title);
+                    System.out.println("title: " + title + " xSmallest: " + xSmallest + " xVal: " + xVal + " xLargest: "  + xLargest + " ySmallest " + ySmallest +  " yVal: " + yVal + " yLargest: " + yLargest);
+
+                }
+                else{
+                    System.out.println("LOST sec. title: " + title + " real lat: " + xSmallest + " " + xLargest + " x: " + xVal + " yx " + ySmallest + " " + yLargest +  " y: " + yVal);
+                    notPresent = true;
+                }
                 
+                
+            }
+            else{
+                System.out.println("LOST first. title: " + title + " real lat: " + xSmallest + " " + xLargest + " x: " + xVal + " yx " + ySmallest + " " + yLargest +  " y: " + yVal);
+                notPresent = true;
+            }
+            
+            /* // if(second == true){
+                //System.out.println(xLargest);
                  latHalf = (xLargest - xSmallest)/2;
                  latHalf = latHalf + xSmallest;
                  
                  longHalf = (yLargest-ySmallest)/2;
                  longHalf = longHalf + ySmallest;
+                 */
+            //     StdDraw.point(xVal, yVal);
+          //       StdDraw.point(latHalf, longHalf);
                  
                  //System.out.println("lat: " + latHalf + "large first: " + xLargest + " " + xSmallest + " long:" + longHalf + "large first: " + yLargest + " " + ySmallest);
                 
@@ -377,27 +414,33 @@ public class GraphingFunctionality {
                  StdDraw.setPenColor(StdDraw.BLACK);
                  StdDraw.setPenRadius(.0005);*/
                 
-                 
+                // System.out.println(title);
                  //The xAverage is the combined, so should be in the center of the states. Don't know if it works. Latest change. 
-                if(latitude[holdIt] > latHalf){
-                    if(latitude[holdIt] > xVal){
+                 
+              //  System.out.println("lat: " + latitude[holdIt] + " long: " + longitude[holdIt] + " hold: " + holdIt);
+                 
+               /* if(latitude[holdIt] > latHalf){
+                    if(latitude[holdIt] > yVal){
                         if(longitude[holdIt] < longHalf){
-                            if(longitude[holdIt] > yVal){
+                            if(longitude[holdIt] < xVal){
                                 
                             }
                             else{
                                 notPresent = true;
                                 keepGoing = false;
+                                System.out.println("one title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " real long: " + longitude[holdIt] + " y: " + yVal);
                             }
 
                         }//end if
                         else{
-                            if(longitude[holdIt] < yVal){
+                            if(longitude[holdIt] > xVal){
                                 
                             }
                             else{
                                 notPresent = true;
                                 keepGoing = false;
+                                System.out.println("two title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " real long: " + longitude[holdIt] + " y: " + yVal);
+
                             }
                                
                         }
@@ -408,24 +451,26 @@ public class GraphingFunctionality {
 
                 }//end if
                 else if(latitude[holdIt] < latHalf){
-                    if(latitude[holdIt] < xVal){
+                    if(latitude[holdIt] < yVal){
                         if(longitude[holdIt] > longHalf){
-                            if(longitude[holdIt] < yVal){
+                            if(longitude[holdIt] > xVal){
                                 
                             }
                             else{
                                 notPresent = true;
                                 keepGoing = false;
+                                System.out.println("three title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " real long: " + longitude[holdIt] + " y: " + yVal);
                             }
 
                         }//end if
                         else{
-                            if(longitude[holdIt] > yVal){
+                            if(longitude[holdIt] < xVal){
                                 
                             }
                             else{
                                 notPresent = true;
                                 keepGoing = false;
+                                System.out.println("four title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " halfLat: " + latHalf + " real long: " + longitude[holdIt] + " y: " + yVal + " halfLong: " + longHalf);
                             }
                                
                         }
@@ -436,8 +481,9 @@ public class GraphingFunctionality {
                     
 
                 }//end if
-                
+                */
           //  }//end if
+                
     }
     
     public double ratio(double republican, double democrat, double independent, int position, double x, double y, double graphSize){

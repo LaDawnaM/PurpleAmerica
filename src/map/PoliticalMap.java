@@ -32,7 +32,10 @@ public class PoliticalMap {
     static double maxLat;
     static double minLat;
     static double minLong;
-
+    static double x1;
+    static double y1;
+   // static boolean firstTimeAround = true;
+    
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
@@ -476,7 +479,7 @@ public class PoliticalMap {
                 Font normalFont = new Font("Arial", Font.PLAIN, 16);
                 StdDraw.setFont(normalFont);
 
-                 reset = true;
+//                 reset = true;
                 
             //Creates a neverending loop, so the program is constantly checking for user input.
             while(runs){
@@ -494,7 +497,7 @@ public class PoliticalMap {
                 double longe = mY;
                 
                 StdDraw.setPenRadius(.005);
-                StdDraw.point(Math.abs(lat), longe);
+            //    StdDraw.point(Math.abs(lat), longe);
                 
                 File file = new File("src\\data\\" + "USA.txt");//Creates a file of the state about to be drawn.
                 Scanner scanIt = new Scanner(file);//Makes the scanner to read from the file.
@@ -555,20 +558,34 @@ public class PoliticalMap {
                             for(int i=0; i<graph.getNumberTwo(); i++){
                                 //System.out.println("i" + i);
                                 if(start == true){
-                                    double x1 = scanIt.nextDouble();
-                                    double y1 = scanIt.nextDouble();
+                                    x1 = scanIt.nextDouble();
+                                    y1 = scanIt.nextDouble();
                                 
                                 
                                 //StdDraw.point(x1, y1);
                                 //for(int q=0; q<2; q++){
-
+                                    //System.out.println(title);
                                     graph.findLocation(x1, y1, lat, longe, title/*, Math.abs(minLat), Math.abs(maxLat), Math.abs(minLong), Math.abs(maxLong)*/);
                                     graph.setHoldIt(i);
                                     //}
+                                    //firstTimeAround = true;
                                 }
                                 else{
-                                    graph.findLocation(lat, longe, title);
-                                    graph.setHoldIt(i);
+                                        graph.findLocation(lat, longe, title);
+                                
+                                
+                                    graph.setHoldIt(graph.getHoldIt()+1);
+                                    
+                                    if(graph.getNotPresent() == true){
+                                        l = 5;
+                                        
+                                        i = graph.getNumberTwo() + 20;
+                                        //z = go + 10;
+                                        //reset = true;
+                                        //graph.setNotPresent(false);
+                                    }
+                                    
+                                    
                                 }
                                 
                                // System.out.println(title + ": " + graph.getLatHalf() + " " + graph.getLongHalf());
@@ -579,14 +596,24 @@ public class PoliticalMap {
                             
                             start = false;
                             
+                            graph.setHoldIt(0);
+
+                            
                         }
+                    
+                   // firstTimeAround = true;
                         
                             if(graph.getNotPresent() == false){
                                 z = go+10;
+                          //      System.out.println(title + "FOUND");
+                                //graph.setNotPresent(false);
+                                
 
                             }
                             else{
+                              //  System.out.println(title + " LOST");
                                 graph.setNotPresent(false);
+
                             }
                                 
                     
@@ -597,6 +624,7 @@ public class PoliticalMap {
                                 scanIt.nextLine();
                                 scanIt.nextLine();
                                 title = scanIt.nextLine();
+                                //System.out.println(title);
                                 if(title.equals(graph.getSavedTitles())){
 
                                 }
@@ -606,8 +634,9 @@ public class PoliticalMap {
                                     reset = true;
                                     //System.out.println("new: ." + title + ".");
                                 }
+                                
+                                start = true;
                                 scanIt.nextLine();
-
                                 graph.setNumberTwo(scanIt.nextInt());
                                 graph.setHoldIt(0);
 
@@ -650,6 +679,7 @@ public class PoliticalMap {
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(graphX-.09, graphY+.06, (title));
                     StdDraw.setPenRadius(0.0005);//changes the pen size
+                    
                     
                     
                     //StdDraw.setPenColor(StdDraw.BLACK);
@@ -696,7 +726,8 @@ public class PoliticalMap {
 
                     }
                     
-                
+                    
+                    
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
