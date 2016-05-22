@@ -45,6 +45,15 @@ public class GraphingFunctionality {
     static double xSmallest;
     static double ySmallest;
     
+    static double xTrueLargest;
+    static double yTrueLargest;
+    static double xTrueSmallest;
+    static double yTrueSmallest;
+    static double holdYUpper;
+    static double holdYLower;
+    static double holdXUppoer;
+    static double holdXLower;
+    
     static boolean found = false;
     static boolean second = false;
     static boolean keepGoing = true;
@@ -75,6 +84,12 @@ public class GraphingFunctionality {
     static String[] overlap;
     static int master;
     static boolean dover;
+    
+    boolean stillWithin;
+    static boolean unmarked = true;
+    
+    static boolean finalRound;
+    
     
 
     
@@ -153,6 +168,40 @@ public class GraphingFunctionality {
     public double getYLargest(){
         return yLargest;
     }
+    
+    
+    public void setXTrueSmallest(int s){
+        xTrueSmallest = s;
+    }
+    
+    public void setYTrueSmallest(int s){
+        yTrueSmallest = s;
+    }
+    
+    public void setXTrueLargest(int s){
+        xTrueLargest = s;
+    }
+    
+    public void setYTrueLargest(int s){
+        yTrueLargest = s;
+    }
+    
+    public double getXTrueSmallest(){
+        return xTrueSmallest;
+    }
+    
+    public double getYTrueSmallest(){
+        return yTrueSmallest;
+    }
+    
+    public double getXTrueLargest(){
+        return xTrueLargest;
+    }
+    
+    public double getYTrueLargest(){
+        return yTrueLargest;
+    }
+    
     
     public double getLatHalf(){
         return latHalf;
@@ -253,6 +302,17 @@ public class GraphingFunctionality {
     
     public String[] getOverlap(){
         return overlap;
+    }
+    
+    public boolean getStillWithin(){
+        return stillWithin;
+    }
+    public void setStillWithin(boolean d){
+        stillWithin = d;
+    }
+    
+    public void setFinalRound(boolean d){
+        finalRound = d;
     }
     
     ////////////////////////////////////////////////////////////////////////////    
@@ -382,16 +442,295 @@ public class GraphingFunctionality {
                 else{
                     keepGoing = false;
                 }
+                
+                
 
     }
     
     
         public void findLocation(double xVal, double yVal, String title){
-          
+            
+            latHalf = (xLargest - xSmallest)/2;
+            latHalf = latHalf + xSmallest;
+            
+            longHalf = (yLargest - ySmallest)/2;
+            longHalf = longHalf + ySmallest;
+            
+            
+            /////////////////////////////////////////////
+                    ///////////////////////////////////////////////////
+                /////////////////////////////////////////////
+                    ///////////////////////////////////////////////////
+               
+            
+        /*         double smallerOne;
+                double largerOne;
+                
+                if(latitude[holdIt] > latHalf){
+                    largerOne = Math.abs(xTrueLargest - xVal);
+                    smallerOne = Math.abs(xVal - xTrueSmallest);
+                    
+                    if(latitude[holdIt] > xVal){
+                        if(largerOne > xTrueLargest){
+                            xTrueLargest = largerOne;
+                            holdYUpper = longitude[holdIt];
+                        }
+                    }
+                    else if(latitude[holdIt] < xVal){
+                        if(smallerOne < xTrueSmallest){
+                            xTrueSmallest = smallerOne;
+                            holdYLower = longitude[holdIt];
+                            
+                        }
+                    }
+                
+                }*/
+                
+                
+            
+            /////////////////////////////////////////////
+                    ///////////////////////////////////////////////////
+                /////////////////////////////////////////////
+                    //////////////////////////////////////////////////
+                
+                //double smallerOne;
+                //double largerOne;
+                
+//largerOne = Math.abs(xTrueLargest - xVal);
+                    //smallerOne = Math.abs(xTrueSmallest  - xVal);
+                
+             //   if(longitude[holdIt] > longHalf){
+                    if(latitude[holdIt] > xVal){
+                        if(latitude[holdIt] < xTrueLargest){
+                            xTrueLargest = latitude[holdIt];
+                           if(longitude[holdIt] > longHalf){
+                               holdYUpper = longitude[holdIt];
+                            }//end if
+                        else{
+                              holdYLower = longitude[holdIt];
+                           }//end else
+                        }//end if
+                    }//end if
+                    else if(latitude[holdIt] < xVal){
+                        if(latitude[holdIt] > xTrueSmallest){
+                            xTrueSmallest = latitude[holdIt];
+                            if(longitude[holdIt] > longHalf){
+                                holdYUpper = longitude[holdIt];
+                            }//end if
+                            else{
+                                holdYLower = longitude[holdIt];
+                            }//end else
+                        }//end if
+                    }//end else if
+               // }//end if
+                
+                /*if(longitude[holdIt] > longHalf){
+                    
+                    largerOne = Math.abs(xTrueLargest - yVal);
+                    smallerOne = Math.abs(yVal - xTrueSmallest);
+                    
+                    if(longitude[holdIt] > yVal){
+                        if(largerOne > yTrueLargest){
+                            yTrueLargest = largerOne;
+                        }
+                    }
+                    else if(longitude[holdIt] < yVal){
+                        if(smallerOne < yTrueSmallest){
+                            yTrueSmallest = smallerOne;
+                            
+                        }
+                    }
+                
+                }*/
+                    /////////////////////////////////////////////
+                    ///////////////////////////////////////////////////
+                /////////////////////////////////////////////
+                    ///////////////////////////////////////////////////
+                        
+        if(finalRound){
+           finalRound = false;
             if(xSmallest<xVal && xLargest > xVal){
                 if(ySmallest < yVal && yLargest > yVal){
-                    trueTitle = title;
+                    //trueTitle = title;
                     
+                    ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
+                   
+                        
+                        if((xVal < xTrueLargest) && (xVal >xTrueSmallest)){
+                            if((yVal > holdYLower && yVal < holdYUpper)){//PROBLEM LIES HERE: for some, lower is larger than higher. others, higher is larger than lower. Longitude comparisons to longHalf?
+                                trueTitle = title;
+                            }
+                            else{
+                                notPresent = true;
+                                System.out.println("not " + title);
+                                System.out.println("title: " + title + " large: " + holdYUpper + " yVal: " + yVal + " small: " + holdYLower);
+                                StdDraw.setPenColor(StdDraw.CYAN);
+                                StdDraw.point(xTrueLargest, holdYUpper);
+                                StdDraw.setPenColor(StdDraw.GREEN);
+                                StdDraw.point(xTrueLargest, holdYLower);
+                            }
+                        }
+                        else{
+                            notPresent = true;
+                            System.out.println("not one " + title);
+                            System.out.println("title: " + title + " large: " + xTrueLargest + " xVal: " + xVal + " small: " + xTrueSmallest);
+                            StdDraw.setPenColor(StdDraw.RED);
+                            StdDraw.point(xTrueLargest, holdYUpper);
+                            StdDraw.setPenColor(StdDraw.BLUE);
+                            StdDraw.point(xTrueSmallest, holdYUpper);
+                        }    
+                    
+                    
+                    
+                    ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
+                    
+                    
+                    /*
+                    if(xVal > latHalf && yVal > longHalf){
+                        if(latitude[holdIt] > latHalf){
+                            if(latitude[holdIt] > xVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+                                System.out.println("no " + title);
+                            }
+                        }
+                    }
+                    else if(xVal < latHalf && yVal > longHalf){
+                        if(latitude[holdIt] < latHalf){
+                            if(latitude[holdIt] < xVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+System.out.println("no " + title);                            }
+                        }
+                    }
+                    else if(xVal > latHalf && yVal < longHalf){
+                        if(latitude[holdIt] > latHalf){
+                            if(latitude[holdIt] > xVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+System.out.println("no " + title);                            }
+                        }
+                    }
+                    else if(xVal < latHalf && yVal < longHalf){
+                        if(latitude[holdIt] < latHalf){
+                            if(latitude[holdIt] < xVal){
+                                
+                            }
+                            else{
+                                notPresent = true;
+System.out.println("no " + title);                            }
+                        }
+                    }
+                    */
+                    ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
+                   /* 
+                    if(latitude[holdIt] > latHalf){
+                       if(latitude[holdIt] > yVal){
+                           if(longitude[holdIt] < longHalf){
+                               if(longitude[holdIt] < xVal){
+
+                               }
+                               else{
+                                   notPresent = true;
+                                   keepGoing = false;
+                                   
+                                //   System.out.println("one title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " real long: " + longitude[holdIt] + " y: " + yVal);
+                               }
+
+                           }//end if
+                           else{
+                               if(longitude[holdIt] > xVal){
+
+                               }
+                               else{
+                                   notPresent = true;
+                                   keepGoing = false;
+                             //      System.out.println("two title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " real long: " + longitude[holdIt] + " y: " + yVal);
+if(unmarked = true){
+                                      stillWithin = true; 
+                                      unmarked = false;
+                                   }
+                                   else{
+                                        if(stillWithin = true){
+                                            stillWithin = false;
+                                        }
+                                        else{
+                                            stillWithin = true;
+                                        }
+                                   }
+                               }
+
+                           }
+
+
+                       }//end if
+
+
+                   }//end if
+                   else if(latitude[holdIt] < latHalf){
+                       if(latitude[holdIt] < yVal){
+                           if(longitude[holdIt] > longHalf){
+                               if(longitude[holdIt] > xVal){
+
+                               }
+                               else{
+                                   notPresent = true;
+                                   keepGoing = false;
+                  //                 System.out.println("three title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " real long: " + longitude[holdIt] + " y: " + yVal);
+                               }
+
+                           }//end if
+                           else{
+                               if(longitude[holdIt] < xVal){
+
+                               }
+                               else{
+                                   notPresent = true;
+                                   keepGoing = false;
+                                //   System.out.println("four title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " halfLat: " + latHalf + " real long: " + longitude[holdIt] + " y: " + yVal + " halfLong: " + longHalf);
+                               
+                                   if(unmarked = true){
+                                      stillWithin = true; 
+                                      unmarked = false;
+                                   }
+                                   else{
+                                        if(stillWithin = true){
+                                            stillWithin = false;
+                                        }
+                                        else{
+                                            stillWithin = true;
+                                        }
+                                   }
+                               }
+
+                           }
+
+
+
+                       }//end if
+
+
+                   }//end if
+                
+                    
+                    
+                    ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////////////////
+                    
+                 */   
                 }
                 else{
                     notPresent = true;
@@ -404,6 +743,7 @@ public class GraphingFunctionality {
             }
                 
     }
+        }
         
     
     public double ratio(double republican, double democrat, double independent, int position, double x, double y, double graphSize){

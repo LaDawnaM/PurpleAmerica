@@ -627,6 +627,8 @@ public class PoliticalMap {
                         for(int z=0; z<go; z++){
 
                             start = true;
+                            graph.setXTrueLargest(1);
+                            graph.setXTrueSmallest(0);
 
                         for(int l=0; l<2; l++){
 
@@ -647,7 +649,14 @@ public class PoliticalMap {
                                     }
 
                                     else{
-                                            graph.findLocation(lat, longe, title);
+                                            
+                                        if(i == graph.getNumberTwo()-1){
+                                                graph.setFinalRound(true);
+                                            }
+                                        
+                                        graph.findLocation(lat, longe, title);
+                                            
+                                            
 
 
                                         graph.setHoldIt(graph.getHoldIt()+1);
@@ -691,8 +700,20 @@ public class PoliticalMap {
                                 }
                                 else{
                                   //  System.out.println(title + " LOST");
-                                    graph.setNotPresent(false);
+                                    /*System
+                                    if(graph.getStillWithin() == true){
+                                        z = go+10;
 
+                                        if(graph.getSavedTitles().equals(graph.getTrueTitle())){
+
+                                        }
+                                        else{
+                                            graph.setSavedTitles(graph.getTrueTitle());
+                                            reset = true;
+                                        }
+                                    }*/
+                                    graph.setNotPresent(false);
+                                    
                                 }
 
 
