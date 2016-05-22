@@ -28,15 +28,12 @@ public class PoliticalMap {
     static String intro;
     static String title;
     static int go;
-    static double maxLong;
-    static double maxLat;
-    static double minLat;
-    static double minLong;
     static double x1;
     static double y1;
     static boolean states = true;
     static boolean counties = false;
     static String abbr;
+    static boolean first;
    // static boolean firstTimeAround = true;
     
 ////////////////////////////////////////////////////////////////////////////////  
@@ -453,22 +450,24 @@ public class PoliticalMap {
                 //Creates variables for the graph sizes.
                 double graphX = .13;
                 double graphY = .13;
-                double graphSize = .12;
+                double graphSize = .125;
                 
-                StdDraw.setPenRadius(0.0009);//changes the pen size
+                
+                //StdDraw.setPenRadius(0.0009);//changes the pen size
                 Font graphFont = new Font("Arial", Font.PLAIN, 12);
-                StdDraw.setFont(graphFont);
+                reset = true;
+                /*StdDraw.setFont(graphFont);
                 
                 //Draws the box & graph lines
                 StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
                 StdDraw.filledSquare(graphX, graphY, graphSize);//box
                 StdDraw.filledSquare(graphX, graphY, graphSize);//box
                 StdDraw.setPenColor(StdDraw.BLACK);
-                StdDraw.line(graphX-.05, graphX-.05, graphX+.08, graphX-.05);//lower line (x)
-                StdDraw.line(graphX-.05, graphX-.05, graphX-.05, graphX+.08);//upper line (y)
-
+                StdDraw.line(graphX-.07, graphX-.07, graphX+.08, graphX-.07);//lower line (x)
+                StdDraw.line(graphX-.07, graphX-.07, graphX-.07, graphX+.08);//upper line (y)
+*/
                 graph.decipherIntro(intro);
-
+/*
                 //Graph Legend
                 StdDraw.setPenColor(StdDraw.RED);
                 StdDraw.text(graphX-.09, graphY+.03, "Republican");
@@ -480,10 +479,12 @@ public class PoliticalMap {
                 //Sets the pen back to normal settings
                 StdDraw.setPenColor(StdDraw.BLACK);
                 StdDraw.setPenRadius(0.0005);//changes the pen size
-                Font normalFont = new Font("Arial", Font.PLAIN, 16);
-                StdDraw.setFont(normalFont);
+  */              Font normalFont = new Font("Arial", Font.PLAIN, 16);
+    //            StdDraw.setFont(normalFont);
 
 //                 reset = true;
+                
+                first = true;
             ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
@@ -585,7 +586,9 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
-               if(runs){ 
+               
+                
+                if(runs){ 
                 mX = StdDraw.mouseX();
                 mY = StdDraw.mouseY();
 
@@ -605,10 +608,15 @@ public class PoliticalMap {
 
                         for(int i=0; i<7; i++){
                             if(i==5){
+                                
                                 title = scanIt.nextLine();
-                                graph.setTrueTitle(title);
-                                graph.setSavedTitles(graph.getTrueTitle());
-
+                                
+                                if(first){
+                                   
+                                    graph.setTrueTitle(title);
+                                    graph.setSavedTitles(graph.getTrueTitle());
+                                    first = false;
+                                }
 
                             }
                             else if(i==2){
@@ -636,7 +644,6 @@ public class PoliticalMap {
 
 
                                 for(int i=0; i<graph.getNumberTwo(); i++){
-                                    //System.out.println("i" + i);
                                     if(start == true){
                                         x1 = scanIt.nextDouble();
                                         y1 = scanIt.nextDouble();
@@ -655,9 +662,6 @@ public class PoliticalMap {
                                             }
                                         
                                         graph.findLocation(lat, longe, title);
-                                            
-                                            
-
 
                                         graph.setHoldIt(graph.getHoldIt()+1);
 
@@ -683,7 +687,6 @@ public class PoliticalMap {
 
                             }
 
-                       // firstTimeAround = true;
 
                                 if(graph.getNotPresent() == false){
                                     z = go+10;
@@ -699,19 +702,7 @@ public class PoliticalMap {
 
                                 }
                                 else{
-                                  //  System.out.println(title + " LOST");
-                                    /*System
-                                    if(graph.getStillWithin() == true){
-                                        z = go+10;
-
-                                        if(graph.getSavedTitles().equals(graph.getTrueTitle())){
-
-                                        }
-                                        else{
-                                            graph.setSavedTitles(graph.getTrueTitle());
-                                            reset = true;
-                                        }
-                                    }*/
+                                  
                                     graph.setNotPresent(false);
                                     
                                 }
@@ -724,15 +715,12 @@ public class PoliticalMap {
                                     scanIt.nextLine();
                                     scanIt.nextLine();
                                     title = scanIt.nextLine();
-                                    //System.out.println(title);
                                     if(graph.getTrueTitle().equals(graph.getSavedTitles())){
 
                                     }
                                     else{
-                                        //System.out.println("saved: ." + graph.getSavedTitles() + ".");
                                         graph.setSavedTitles(graph.getTrueTitle());
                                         reset = true;
-                                        //System.out.println("new: ." + title + ".");
                                     }
 
                                     start = true;
@@ -753,7 +741,7 @@ public class PoliticalMap {
 
 
 
-                   if(reset){     
+                   if(reset){ 
                        StdDraw.setFont(graphFont);
                         graph.resetGraph(graphX, graphY, graphSize);
                         StdDraw.setFont(normalFont);
@@ -761,8 +749,6 @@ public class PoliticalMap {
 
                        StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
                         StdDraw.filledSquare(graphX-.09, graphY+.09, graphSize/6);//box
-                       // StdDraw.setPenColor(StdDraw.BLACK);
-
 
                         StdDraw.setPenRadius(0.0009);//changes the pen size
                         StdDraw.setFont(graphFont);
@@ -771,19 +757,17 @@ public class PoliticalMap {
                         StdDraw.setPenRadius(0.0005);//changes the pen size
 
 
-
-                        //StdDraw.setPenColor(StdDraw.BLACK);
-                        reset = false;
                     }
                    
                         graph.setSecond(false);
                         int yearOne;
 
                         graph.setXPos(1);
-
+                    
+                    if(reset){
                         for(int q = 0; q<data.getYears().length; q++){
-
-                            yearOne = Integer.parseInt(data.getYears(q));
+                            String elecs = data.getYears(q);
+                            yearOne = Integer.parseInt(elecs);
 
                             File fileTwo = new File("src\\data\\" + data.electionData(yearOne, "USA.txt"));//Creates a file of the state about to be drawn.
                             Scanner scanElection = new Scanner(fileTwo);//Makes the scanner to read from the file.
@@ -806,16 +790,23 @@ public class PoliticalMap {
 
                                 }
                             }
-
-                            graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), q, graphX, graphY, graphSize);
-
-                            //Sets the pen back to normal settings
-                            StdDraw.setPenColor(StdDraw.BLACK);
-                            StdDraw.setPenRadius(0.0005);//changes the pen size
-                            StdDraw.setFont(normalFont);
-
+                            
+                                StdDraw.setFont(graphFont);
+                                graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), q, graphX, graphY, graphSize, elecs);
+                                
+                            
+                            
+                                //Sets the pen back to normal settings
+                                StdDraw.setPenColor(StdDraw.BLACK);
+                                StdDraw.setPenRadius(0.0005);//changes the pen size
+                                StdDraw.setFont(normalFont);
+                            }
+                            
+                            
+                            
                         }
-                }    
+                    reset = false;
+                    }    
                }
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
