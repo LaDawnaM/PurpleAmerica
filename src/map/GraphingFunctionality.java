@@ -27,13 +27,14 @@ public class GraphingFunctionality {
     
     String holdYear;
     String holdTitles;
-    String savedTitle = "";
+    static String savedTitle = "";
     
     String independent = "";
     String republican = "";
     String democrat = "";
     
-    
+    static boolean[] latLarger; 
+    static boolean[] longLarger;
     static double[] longitude;
     static double[] latitude;
     static int numberTwo;
@@ -66,6 +67,17 @@ public class GraphingFunctionality {
 
     static boolean chance;
     
+    static String trueTitle;
+    
+    static boolean xNotASham = false;
+    static boolean yNotASham = false;
+    
+    static String[] overlap;
+    static int master;
+    static boolean dover;
+    
+
+    
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////SETTERS/GETTERS/////////////////////////////    
     ////////////////////////////////////////////////////////////////////////////
@@ -85,6 +97,8 @@ public class GraphingFunctionality {
     public void setNumberTwo(int n){
         latitude = new double[n];
         longitude = new double[n];
+        latLarger = new boolean[n];
+        longLarger = new boolean[n];
         numberTwo = n;
     }
     
@@ -197,8 +211,49 @@ public class GraphingFunctionality {
         return chance;
     }
     
+    public String getTrueTitle(){
+        return trueTitle;
+    }
     
+    public void setTrueTitle(String t){
+        trueTitle = t;
+    }
     
+    public boolean getYNotASham(){
+        return yNotASham;
+    }
+    
+    public boolean getXNotASham(){
+        return xNotASham;
+    }
+    
+    public void setYNotASham(boolean s){
+        yNotASham = s;
+    }
+    
+    public void setXNotASham(boolean s){
+        xNotASham = s;
+    }
+    
+    public void setMaster(int m){
+        master = m;
+    }
+    
+    public int getMaster(){
+        return master;
+    }
+    
+    public boolean getDover(){
+        return dover;
+    }
+    
+    public void setDover(boolean f){
+        dover = f;
+    }
+    
+    public String[] getOverlap(){
+        return overlap;
+    }
     
     ////////////////////////////////////////////////////////////////////////////    
     ////////////////////////////////METHODS/////////////////////////////////////    
@@ -254,7 +309,7 @@ public class GraphingFunctionality {
                             
     }//end decipherIntro
     
-    public void findLocation(double lats, double longs, double xVal, double yVal, String title/*, double minLat, double maxLat, double minLong, double maxLong*/){
+    public void prepFindLocation(double lats, double longs, double xVal, double yVal, String title/*, double minLat, double maxLat, double minLong, double maxLong*/){
         
             //Puts the data into the arrays for the map, proportionate to the size
             lats = Math.abs(((lats+50)/62)+0.26);
@@ -273,21 +328,9 @@ public class GraphingFunctionality {
             }//end else if
 
            
-          //  System.out.println("holdIt:" + holdIt);
             latitude[holdIt] = lats-.0534;//Repositions latitude to a good place on the map
             longitude[holdIt] = Math.abs(((longs+50)/25)-2.98);//Retrieves and repositions longitude on the map
-                        
-            
-            
-            /*else{
-                xAverage = latitude[holdIt] + xAverage;
-                xAverage = xAverage/2;
 
-                yAverage = longitude[holdIt] + yAverage;
-                yAverage = yAverage/2;
-                
-                
-            }  */
                 
             
                 if(latitude[holdIt] > xLargest){
@@ -308,29 +351,24 @@ public class GraphingFunctionality {
 
                 }
                 
+                if(latitude[holdIt] >= xVal){
+                        latLarger[holdIt] = true;
+                    }
+                    else{
+                        latLarger[holdIt] = false;
+                    }
+                    
+                    if(longitude[holdIt] >= yVal){
+                        longLarger[holdIt] = true;
+                    }
+                    else{
+                        longLarger[holdIt] = false;
+                    }
+                
                 if(xSmallest < Math.abs(xVal) && xLargest > Math.abs(xVal)){
                     if(ySmallest < Math.abs(yVal) && yLargest > Math.abs(yVal)){
-                        //System.out.println("Maybe? " + title);
                         keepGoing = true;
-                      //  notPresent = false;
-                        
-                        /*if(holdIt == numberTwo){
-                            //System.out.println("found: " + title);
-                            found = true;
-                           // System.out.println("xsmall " + xSmallest + " xlarge " + xLargest + " ysmall " + ySmallest + " ylarge " + yLargest + "xVal" + xVal + "yVal" + yVal);
-                            StdDraw.setPenRadius(.005);
-                            StdDraw.setPenColor(StdDraw.CYAN);
-                            StdDraw.point(xSmallest, ySmallest);
-                            StdDraw.point(xLargest, yLargest);
-                            StdDraw.setPenRadius(.00005);
-                            StdDraw.setPenColor(StdDraw.BLACK);
-                           // System.out.println(title);
-                        }*/
-
-
-
-
-                   // }
+   
                 
                 }
                 
@@ -339,36 +377,11 @@ public class GraphingFunctionality {
                     //notPresent = true;
                 }
             
-            
-            
-            
-            /*if(latitude[holdIt] == xVal){
-                if(longitude[holdIt] == yVal){
-                    System.out.println("found");
-                }
-            }*/
-            
-            //System.out.println("lat:" + latitude[holdIt] + " long:" + longitude[holdIt]);
-            
-            
+
             }
                 else{
                     keepGoing = false;
                 }
-            
-            
-            
-            
-            //if(title.equals("California")){
-                /*System.out.println("real lat: " + latitude[holdIt] + "verses new lat: " + xVal);
-                System.out.println("real long: " + longitude[holdIt] + "verses new long: " + yVal);
-                System.out.println("comp: " + (longitude[holdIt]/yVal));
-                System.out.println("comp: " + (latitude[holdIt]/xVal));*/
-              //  System.out.println(" xSmall " + xSmallest + " ySmall " + ySmallest + " xLarge " + xLargest + " yLarge " + yLargest);
-                //System.out.println("real xVal:" + xVal + " real yVal:" + yVal);
-            //}
-            
-        //System.out.println(data.getFileName());*/
 
     }
     
@@ -377,136 +390,30 @@ public class GraphingFunctionality {
           
             if(xSmallest<xVal && xLargest > xVal){
                 if(ySmallest < yVal && yLargest > yVal){
-                    System.out.println("HALELUYER " + title);
-                    System.out.println("title: " + title + " xSmallest: " + xSmallest + " xVal: " + xVal + " xLargest: "  + xLargest + " ySmallest " + ySmallest +  " yVal: " + yVal + " yLargest: " + yLargest);
-
+                    trueTitle = title;
+                    
                 }
                 else{
-                    System.out.println("LOST sec. title: " + title + " real lat: " + xSmallest + " " + xLargest + " x: " + xVal + " yx " + ySmallest + " " + yLargest +  " y: " + yVal);
                     notPresent = true;
                 }
                 
                 
             }
             else{
-                System.out.println("LOST first. title: " + title + " real lat: " + xSmallest + " " + xLargest + " x: " + xVal + " yx " + ySmallest + " " + yLargest +  " y: " + yVal);
                 notPresent = true;
             }
-            
-            /* // if(second == true){
-                //System.out.println(xLargest);
-                 latHalf = (xLargest - xSmallest)/2;
-                 latHalf = latHalf + xSmallest;
-                 
-                 longHalf = (yLargest-ySmallest)/2;
-                 longHalf = longHalf + ySmallest;
-                 */
-            //     StdDraw.point(xVal, yVal);
-          //       StdDraw.point(latHalf, longHalf);
-                 
-                 //System.out.println("lat: " + latHalf + "large first: " + xLargest + " " + xSmallest + " long:" + longHalf + "large first: " + yLargest + " " + ySmallest);
-                
-               /*  StdDraw.setPenColor(StdDraw.CYAN);
-                 StdDraw.setPenRadius(.05);
-                 //StdDraw.point(latitude[holdIt], longitude[holdIt]);
-              //   StdDraw.point(xAverage, yAverage);
-                 System.out.println("title" + title + "x: " + xAverage + "y: " + yAverage);
-                 StdDraw.setPenColor(StdDraw.BLACK);
-                 StdDraw.setPenRadius(.0005);*/
-                
-                // System.out.println(title);
-                 //The xAverage is the combined, so should be in the center of the states. Don't know if it works. Latest change. 
-                 
-              //  System.out.println("lat: " + latitude[holdIt] + " long: " + longitude[holdIt] + " hold: " + holdIt);
-                 
-               /* if(latitude[holdIt] > latHalf){
-                    if(latitude[holdIt] > yVal){
-                        if(longitude[holdIt] < longHalf){
-                            if(longitude[holdIt] < xVal){
-                                
-                            }
-                            else{
-                                notPresent = true;
-                                keepGoing = false;
-                                System.out.println("one title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " real long: " + longitude[holdIt] + " y: " + yVal);
-                            }
-
-                        }//end if
-                        else{
-                            if(longitude[holdIt] > xVal){
-                                
-                            }
-                            else{
-                                notPresent = true;
-                                keepGoing = false;
-                                System.out.println("two title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " real long: " + longitude[holdIt] + " y: " + yVal);
-
-                            }
-                               
-                        }
-                        
-                        
-                    }//end if
-                    
-
-                }//end if
-                else if(latitude[holdIt] < latHalf){
-                    if(latitude[holdIt] < yVal){
-                        if(longitude[holdIt] > longHalf){
-                            if(longitude[holdIt] > xVal){
-                                
-                            }
-                            else{
-                                notPresent = true;
-                                keepGoing = false;
-                                System.out.println("three title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " real long: " + longitude[holdIt] + " y: " + yVal);
-                            }
-
-                        }//end if
-                        else{
-                            if(longitude[holdIt] < xVal){
-                                
-                            }
-                            else{
-                                notPresent = true;
-                                keepGoing = false;
-                                System.out.println("four title: " + title + " real lat: " + latitude[holdIt] + " x: " + xVal + " halfLat: " + latHalf + " real long: " + longitude[holdIt] + " y: " + yVal + " halfLong: " + longHalf);
-                            }
-                               
-                        }
-                        
-                        
-                        
-                    }//end if
-                    
-
-                }//end if
-                */
-          //  }//end if
                 
     }
+        
     
     public double ratio(double republican, double democrat, double independent, int position, double x, double y, double graphSize){
         total = republican+democrat+independent;
-/*        
-            StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-            StdDraw.filledSquare(x+.019, y+.02, .065);
-            StdDraw.setPenColor(StdDraw.BLACK);
-*/
-//  System.out.println(republican);
+
         
         //sets them to less than one
         republicanFixed = republican/45000000;
         democratFixed = democrat/45000000;
         independentFixed = independent/45000000;
-        
-      //  System.out.println("one: " + republicanFixed);
-        
-       /* republicanFixed = republicanFixed/50;
-        democratFixed = democratFixed/50;
-        independentFixed = independentFixed/50;*/
-        
-      //  System.out.println("two: " + republicanFixed);
         
         xPos = xPos+.009;
         
@@ -519,19 +426,13 @@ public class GraphingFunctionality {
         StdDraw.point((xPos), (y-.043)+independentFixed);
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(.0005);
-     //   System.out.println("val : " + republicanFixed+(x-.05) + " " + (y-.05));
-      //  StdDraw.point(ratio, ratio);
-        
+
         if(republican>independent){
             
         }
         else{
             
         }
-        
-        
-        
-        
         
         return ratio; 
        

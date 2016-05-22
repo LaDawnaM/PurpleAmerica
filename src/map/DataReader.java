@@ -20,9 +20,14 @@ package map;
     static int holder = 0;
     static int numberTwo = 0;
     static String countryName;
-    String [] abbreviations = {/*"AK.txt",*//* "AL.txt", "AR.txt", "AZ.txt", "CA.txt", "CO.txt", "CT.txt", "DC.txt", "DE.txt", "FL.txt", "GA.txt", /*"HI.txt",*//* "IA.txt", "ID.txt", "IL.txt", "IN.txt",  "KS.txt", "KY.txt",
+    String [] abbreviations = {"AL.txt", "AR.txt", "AZ.txt", "CA.txt", "CO.txt", "CT.txt", "DC.txt", "DE.txt", "FL.txt", "GA.txt", "IA.txt", "ID.txt", "IL.txt", "IN.txt",  "KS.txt", "KY.txt",
          "LA.txt", "MA.txt", "MD.txt", "ME.txt", "MI.txt", "MN.txt", "MO.txt", "MS.txt", "MT.txt", "NC.txt", "ND.txt", "NE.txt", "NH.txt", "NJ.txt", "NM.txt", "NV.txt", "NY.txt", "OH.txt", "OK.txt",
-                 "OR.txt", "PA.txt", "RI.txt", "SC.txt", "SD.txt", "TN.txt", "TX.txt", "UT.txt", "VA.txt", "VT.txt", "WA.txt", "WI.txt", "WV.txt", "WY.txt",*/ "USA.txt"};
+                 "OR.txt", "PA.txt", "RI.txt", "SC.txt", "SD.txt", "TN.txt", "TX.txt", "UT.txt", "VA.txt", "VT.txt", "WA.txt", "WI.txt", "WV.txt", "WY.txt", "USA.txt"};
+    String [] longAbbreviations = {"Alabama", "Arkansas", "Arizona", "California", "Colorado", "Connecticut", "District of Colombia", "Delaware", "Florida", "Georgia", "Iowa", "Idaho", "Illinois",
+            "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", "North Dakota",
+            "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma",
+            "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"};
+
     String [] years = {"1960", "1964", "1968", "1972", "1976", "1980", "1984", "1988", "1992", "1996", "2000", "2004", "2008", "2012"};
     String next;
     double distance;
@@ -51,6 +56,10 @@ package map;
     
     public String[] getAbbreviations(){
         return abbreviations;
+    }
+    
+    public String getAbbreviations(int i){
+        return abbreviations[i];
     }
     
     public void setHolder(int h){
@@ -107,6 +116,14 @@ package map;
     
     public int getRepublican(){
         return republican;
+    }
+    
+    public String[] getLongAbbreviations(){
+        return longAbbreviations;
+    }
+    
+    public String getLongAbbreviations(int i){
+        return longAbbreviations[i];
     }
     
     
