@@ -19,7 +19,7 @@ public class ColorFinder{
         "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", 
         "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD",
         "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY", "USA"};
-    public static int[] colorFind(int year, Scanner scan){ 
+    public /*static int[]*/ void colorFind(int year, Scanner scan){ 
         int numOn = 0;
         int total = 0;
         int rtotal = 0;
@@ -31,7 +31,7 @@ public class ColorFinder{
                 numOn ++;
                 int h = scan.nextInt();
                 total = total + h;
-                if(numOn % 3 = 0){
+                if(numOn % 3 == 0){
                     rtotal = rtotal + h;
                 }
                 else{
