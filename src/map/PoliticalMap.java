@@ -23,28 +23,14 @@ import java.util.*;
  * @author 
  */
 public class PoliticalMap {
-    
-    static int numberTwo;//Used to hold the number of states being used.
-    static String intro;
-    static String title;
-    static int go;
-    static double x1;
-    static double y1;
-    static boolean states = true;
-    static boolean counties = false;
-    static String abbr;
-    static boolean first;
-   // static boolean firstTimeAround = true;
-    
+        
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
     //static int holder = 0;//Lets the program know which state file should be read in next 
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
-    static String countryName;
-    
+////////////////////////////////////////////////////////////////////////////////    
     
     public static void main(String[] args) throws Exception{
 
@@ -72,7 +58,7 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////
         
         boolean yes = true;
-        boolean reset = false;
+        boolean reset;
         data.setHolder(data.getAbbreviations().length-1);
         
         while(yes){
@@ -112,8 +98,6 @@ public class PoliticalMap {
 
                     int number = scan.nextInt();//Gets the number of countries that make up the state
 
-
-
                     //Plots the points of the country.
                     for(int z=0; z<number; z++){    
                         //Discards the name of the country, and the abbreviation of the state 
@@ -123,10 +107,11 @@ public class PoliticalMap {
                         boolean notNamed = true;
 
                         while(bad){
-                           /* //Contingency for the odd naming in Hawaii
+                           
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
+                            /* //Contingency for the odd naming in Hawaii
                             if(data.getFileName().equals("HI.txt")){
 
                                 //Discards the numbered name of Hawaii
@@ -147,21 +132,22 @@ public class PoliticalMap {
                             else*/
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////                            
+////////////////////////////////////////////////////////////////////////////////                     
+                            
                             if(scan.hasNext()){//The settings for the normal states
                                 next = scan.next();//Holds the first value on the sheet
 
                                 //Checks to see whether or not the next value is a number.
                                 if((next.charAt(0)<65)){
 
-                                    numberTwo = Integer.parseInt(next);//Saves the number of points to be plotted.
+                                    data.setNumberTwo(Integer.parseInt(next));//Saves the number of points to be plotted.
                                     bad = false;//Tells the program to move on to drawing the country.
 
                                 }//end if
 
                                 //Saves the country name
                                 else if((next.charAt(0)>=65) && notNamed){
-                                    countryName = next;//sets the country name to the pre-saved value
+                                    data.setCountryName(next);//sets the country name to the pre-saved value
                                     notNamed = false;//Tells the program the country has already been named.
 
                                 }
@@ -186,99 +172,31 @@ public class PoliticalMap {
                         File fileElec = new File("src\\data\\" + data.electionData(holdYear));//Creates a file of the state about to be drawn.
                         Scanner scanElec = new Scanner(fileElec);//Makes the scanner to read from the file.  
                                                 
+                        
+                        //boolean countryDivisor = true;//lets the program know if it needs to continue the loop to get the country election results
+                        graph.decipherIntro(scanElec.nextLine());//Determines which presidents are running for which parties.
+                        data.setCountryDivisor(true);
+
+                        //gets the election results
+                        while(data.getCountryDivisor()){
+                                                        
+                            if(scanElec.hasNext()){//checks to see if the country has election data
+                                //gets the initial
+                                String hold = scanElec.next();//holds the full line from the .txt file
+                                data.countryDivisor(hold);
+                                
+                            }//end if
+
+                            else{
+                                data.setCountryDivisor(false);//tells the while loop to end
+                            }//end else
+
+                        }//end while
+
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
                         
-                        boolean countryDivisor = true;//lets the program know if it needs to continue the loop to get the country election results
-                        intro = scanElec.nextLine();//gets rid of the introductory line
-
-                        //Creates Strings to hold the election results for each party
-                        int republican;
-                        int democratic;
-                        int independent;
-
-                        //gets the election results
-                        while(countryDivisor){
-                            if(scanElec.hasNext()){//checks to see if the country has election data
-                                //gets the initial
-                                String hold = scanElec.next();//holds the full line from the .txt file
-
-                                //creates strings to hold the broken down portion of hold.
-                                String holderTwo = "";
-                                String holder = "";
-
-                                //finds the country name
-                                for(int i=0; i<hold.length(); i++){
-                                    if(hold.charAt(i) == 44){//checks to see if the String has reached a comma
-                                        //if so, it runs through the string up until the comma, and sets that as the country name
-                                        for(int e=0; e<i; e++){
-                                            holder = holder + hold.charAt(e);
-                                        }
-                                        //sets booleans to discern republican from democratic from independent.
-                                        boolean repub = true;
-                                        boolean demo = true;
-
-                                        //seperates the election results by party
-                                        for(int e=i+1; e<hold.length(); e++){
-                                            holder = holder + hold.charAt(e);//starts reading in the numbers
-
-                                            //the first comma becomes republican
-                                            if(hold.charAt(e) == 44 && repub == true){//checks to see if it's encountered a comma
-                                                republican = Integer.parseInt(holderTwo);//sets the republican value to the current answer
-                                                holderTwo = "";//resets HolderTwo
-                                                repub = false;//points the program towards democratic next time
-                                            }//end if
-
-                                            //the second comma becomes democratic
-                                            else if(hold.charAt(e) == 44 && repub == false){
-                                                democratic = Integer.parseInt(holderTwo);//sets the democratic value to the current answer
-                                                holderTwo = "";//resets HolderTwo
-                                                demo = false;//points the program towards independent next time
-                                            }//end else if
-
-                                            //the third comma is independent
-                                            else if(hold.charAt(e) == 44 && demo == false){
-                                                independent = Integer.parseInt(holderTwo);//resets HolderTwo
-                                                holderTwo = "";//resets holderTwo
-
-                                                //resets the party discerning booleans to their initial state
-                                                repub = true;
-                                                demo = true;
-                                                e = hold.length()+1;
-                                            }//end else if
-
-                                            //no commas have been encountered thus far
-                                            else{
-                                                holderTwo = holderTwo + hold.charAt(e);//tacks the current number on to the end, & repeats the process
-                                            }//end else
-
-                                        }//end for
-
-                                        i = hold.length()+1;//ends the for loop
-
-                                    }//end for
-
-                                }//end for
-
-                                hold = holder;//sets the original hold to the temporary holder value
-                                holder = "";//resets holder
-
-                                //checks to see if the program had located the correct country.
-                                if(hold.equals(countryName)){
-                                    countryDivisor = false;//tells the while loop to end
-                                }//end if
-
-                            }//end if
-
-                            else{
-                                countryDivisor = false;//tells the while loop to end
-                            }//end else
-
-                        }//end while
-                        ////////////////////////////////////////////////////////////
-                        ////////////////////////////////////////////////////////////
-
                         //Sets up the data to draw the shape
                     if(keepGoing == true){
 
@@ -286,10 +204,7 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
-                        if(data.getFileName().equals("AK.txt")){
-////////////////////////////////////////////////////////////////////////////////  
-////////////////////////////////eCHANGE//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
+                        /*if(data.getFileName().equals("AK.txt")){
                             //Creates arrays to hold the latitude and longitude
                             double[] latitude = new double[numberTwo];
                             double[] longitude = new double[numberTwo];
@@ -307,13 +222,9 @@ public class PoliticalMap {
                             numberTwo = 0;//Resets the number of states to be drawn to zero.
                         }//end if
                         //This conditional handles Hawaii
-////////////////////////////////////////////////////////////////////////////////  
-////////////////////////////////CHANGE//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
+
                         else if(data.getFileName().equals("HI.txt")){
-////////////////////////////////////////////////////////////////////////////////  
-////////////////////////////////eCHANGE//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
+
                             //Creates arrays to hold the latitude and longitude
                             double[] latitude = new double[numberTwo];
                             double[] longitude = new double[numberTwo];
@@ -331,18 +242,28 @@ public class PoliticalMap {
                         }//end if
                         
                         //This conditional handles the normal states.
-                        else{
+                        else{*/
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
                             
                             //Creates arrays to hold the latitude and longitude
-                            double[] latitude = new double[numberTwo];
-                            double[] longitude = new double[numberTwo];
+                            double[] latitude = new double[data.getNumberTwo()];
+                            double[] longitude = new double[data.getNumberTwo()];
 
-                            for(int i=0; i<numberTwo; i++){
+                            for(int i=0; i<data.getNumberTwo(); i++){
                                 //Puts the data into the arrays for the map, proportionate to the size
                                 double lat = Math.abs(((scan.nextDouble()+50)/62)+0.26);
-                                double distance;
-                             //   System.out.println("Lat: " + lat);
 
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////CHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
+                                
+                            //double distance;
+                             //   System.out.println("Lat: " + lat);
+                                
+                                lat = data.latitude(lat);
+                                /*
                                 //Reverses the positioning of the dots
                                 if(lat > 0.5){//Checks to see which side of the map the dot is on.
                                     distance = lat - 0.5;//finds the dot's distance from the center of the map
@@ -355,9 +276,12 @@ public class PoliticalMap {
                                     lat = lat + distance + distance;//Takes the distance away twice, placing the spot on the opposite side of the map
                                 }//end else if
 
+*/
 
-
-                                latitude[i] = lat-.0534;//Repositions latitude to a good place on the map
+                                latitude[i] = lat;//Repositions latitude to a good place on the map
+////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////eCHANGE//////////////////////////////////////////    
+////////////////////////////////////////////////////////////////////////////////
                                 longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);//Retrieves and repositions longitude on the map
                                 
                               //  System.out.println("new Lat:" + latitude[i] + " new Long:" + longitude[i]);
@@ -367,10 +291,10 @@ public class PoliticalMap {
                             StdDraw.polygon(latitude, longitude);//Draws the shape.
                             
 
-                            numberTwo = 0;//Resets the number of states to be drawn to zero.
+                            data.setNumberTwo(0);//Resets the number of states to be drawn to zero.
                             
                             //System.out.println(data.getFileName());
-                        }//end else        
+                       // }//end else        
 
                     }//end if
 
@@ -452,40 +376,14 @@ public class PoliticalMap {
                 double graphY = .13;
                 double graphSize = .125;
                 
-                
-                //StdDraw.setPenRadius(0.0009);//changes the pen size
+                //Creates the different font sizes for the graph, and normal text
                 Font graphFont = new Font("Arial", Font.PLAIN, 12);
-                reset = true;
-                /*StdDraw.setFont(graphFont);
+                Font normalFont = new Font("Arial", Font.PLAIN, 16);
                 
-                //Draws the box & graph lines
-                StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-                StdDraw.filledSquare(graphX, graphY, graphSize);//box
-                StdDraw.filledSquare(graphX, graphY, graphSize);//box
-                StdDraw.setPenColor(StdDraw.BLACK);
-                StdDraw.line(graphX-.07, graphX-.07, graphX+.08, graphX-.07);//lower line (x)
-                StdDraw.line(graphX-.07, graphX-.07, graphX-.07, graphX+.08);//upper line (y)
-*/
-                graph.decipherIntro(intro);
-/*
-                //Graph Legend
-                StdDraw.setPenColor(StdDraw.RED);
-                StdDraw.text(graphX-.09, graphY+.03, "Republican");
-                StdDraw.setPenColor(StdDraw.BLUE);
-                StdDraw.text(graphX-.09, graphY, "Democratic");
-                StdDraw.setPenColor(StdDraw.GREEN);
-                StdDraw.text(graphX-.09, graphY-.03, "Independent");
-                
-                //Sets the pen back to normal settings
-                StdDraw.setPenColor(StdDraw.BLACK);
-                StdDraw.setPenRadius(0.0005);//changes the pen size
-  */              Font normalFont = new Font("Arial", Font.PLAIN, 16);
-    //            StdDraw.setFont(normalFont);
 
-//                 reset = true;
-                
-                first = true;
-            ////////////////////////////////////////////////////////////////////////////////  
+                reset = true;//Tells the program to draw the box.
+
+////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////  
@@ -544,8 +442,7 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
-                                    states = true;
-                                    counties = false;
+                                    graph.setCountries(false);
                                     data.setHolder(data.getAbbreviations().length-1);//Moves the array holding the states back so it will redraw the USA
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
@@ -557,8 +454,7 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
-                                    states = false;
-                                    counties = true;
+                                    graph.setCountries(true);
                                     data.setHolder(0);//Moves the array holding the states back to the beginning so it will redraw the entire map
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
@@ -574,7 +470,7 @@ public class PoliticalMap {
 
                 }//end if
                 
-                ////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////  
@@ -587,227 +483,204 @@ public class PoliticalMap {
 ////////////////////////////////CHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
                
-                
-                if(runs){ 
-                mX = StdDraw.mouseX();
-                mY = StdDraw.mouseY();
+                if(runs){//Makes sure the program isn't being told to redraw the map.
+                    
+                    //Gets the current lat/long values of the mouse
+                    mX = StdDraw.mouseX();
+                    mY = StdDraw.mouseY();
 
+                    if(mX <=.935 || mX<.75 && mY>.35){//Ensures the mouse is closer to the map than the buttons
 
-                if(mX <=.935 || mX<.75 && mY>.35){
+                        File file = new File("src\\data\\" + "USA.txt");//Creates a file of the state about to be drawn.
+                        Scanner scanIt = new Scanner(file);//Makes the scanner to read from the file.
 
-            
-                double lat = mX;
-                double longe = mY;
-                
-                StdDraw.setPenRadius(.005);
-                
-                    File file = new File("src\\data\\" + "USA.txt");//Creates a file of the state about to be drawn.
-                    Scanner scanIt = new Scanner(file);//Makes the scanner to read from the file.
-
-
-
+                        //Takes care of the first 7 lines of code in the .txt (before the lat/long)
                         for(int i=0; i<7; i++){
+                            
+                            //Gets the name of the state
                             if(i==5){
-                                
-                                title = scanIt.nextLine();
-                                
-                                if(first){
-                                   
-                                    graph.setTrueTitle(title);
-                                    graph.setSavedTitles(graph.getTrueTitle());
-                                    first = false;
-                                }
-
-                            }
+                                graph.setTitle(scanIt.nextLine());
+                            }//end if
+                            
+                            //gets the number of states to be drawn
                             else if(i==2){
-                                go = scanIt.nextInt();
-                            }
- 
+                                graph.setGo(scanIt.nextInt());
+                            }//end else if
+
+                            //gets rid of extraneous lines
                             else{
                                 scanIt.nextLine();
-
-                            }
+                            }//end else
+                            
                         }//end for
 
-                        graph.setNumberTwo(scanIt.nextInt());
-                        boolean start;
+                        graph.setNumberTwo(scanIt.nextInt());//sets the number of lat/long coordinates to be cycled through for a certain state
+                        boolean start;//tells the program whether or not this is the first time its cycling through the state
 
-                        for(int z=0; z<go; z++){
+                        //Tells the graph to cycle through each state
+                        for(int z=0; z<graph.getGo(); z++){
 
-                            start = true;
+                            start = true;//tells the program this is the first time its cycling through the states
+                            
+                            //Makes the largest & smallest numbers as large/small as they can be.
                             graph.setXTrueLargest(1);
                             graph.setXTrueSmallest(0);
 
-                        for(int l=0; l<2; l++){
-
-                            graph.setSecond(true);
-
-
-                                for(int i=0; i<graph.getNumberTwo(); i++){
-                                    if(start == true){
-                                        x1 = scanIt.nextDouble();
-                                        y1 = scanIt.nextDouble();
-
-
-
-                                        graph.prepFindLocation(x1, y1, lat, longe, title/*, Math.abs(minLat), Math.abs(maxLat), Math.abs(minLong), Math.abs(maxLong)*/);
-                                        graph.setHoldIt(i);
- 
-                                    }
-
-                                    else{
-                                            
-                                        if(i == graph.getNumberTwo()-1){
-                                                graph.setFinalRound(true);
-                                            }
-                                        
-                                        graph.findLocation(lat, longe, title);
-
-                                        graph.setHoldIt(graph.getHoldIt()+1);
-
-                                        if(graph.getNotPresent() == true){
-                                            l = 5;
-
-                                            i = graph.getNumberTwo() + 20;
-
-                                        }
-
-
-                                    }
-
-
-
-
-                                }
-
-                                start = false;
-
-                                graph.setHoldIt(0);
-
-
-                            }
-
-
-                                if(graph.getNotPresent() == false){
-                                    z = go+10;
-
-                                    if(graph.getSavedTitles().equals(graph.getTrueTitle())){
-
-                                    }
-                                    else{
-                                        graph.setSavedTitles(graph.getTrueTitle());
-                                        reset = true;
-                                    }
-
-
-                                }
-                                else{
-                                  
-                                    graph.setNotPresent(false);
-                                    
-                                }
-
-
-
-                            start = true;
-
-                                if(scanIt.hasNext()){
-                                    scanIt.nextLine();
-                                    scanIt.nextLine();
-                                    title = scanIt.nextLine();
-                                    if(graph.getTrueTitle().equals(graph.getSavedTitles())){
-
-                                    }
-                                    else{
-                                        graph.setSavedTitles(graph.getTrueTitle());
-                                        reset = true;
-                                    }
-
-                                    start = true;
-                                    scanIt.nextLine();
-                                    graph.setNumberTwo(scanIt.nextInt());
-                                    graph.setHoldIt(0);
-
-                                    graph.setXSmallest(1);
-                                    graph.setXLargest(0);
-                                    graph.setYSmallest(1);
-                                    graph.setYLargest(0);
-
-                                    //graph.setSecond(false);
-
-                                }
-
-                        }
-
-
-
-                   if(reset){ 
-                       StdDraw.setFont(graphFont);
-                        graph.resetGraph(graphX, graphY, graphSize);
-                        StdDraw.setFont(normalFont);
-
-
-                       StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-                        StdDraw.filledSquare(graphX-.09, graphY+.09, graphSize/6);//box
-
-                        StdDraw.setPenRadius(0.0009);//changes the pen size
-                        StdDraw.setFont(graphFont);
-                        StdDraw.setPenColor(StdDraw.BLACK);
-                        StdDraw.text(graphX-.09, graphY+.06, (graph.getTrueTitle()));
-                        StdDraw.setPenRadius(0.0005);//changes the pen size
-
-
-                    }
-                   
-                        graph.setSecond(false);
-                        int yearOne;
-
-                        graph.setXPos(1);
-                    
-                    if(reset){
-                        for(int q = 0; q<data.getYears().length; q++){
-                            String elecs = data.getYears(q);
-                            yearOne = Integer.parseInt(elecs);
-
-                            File fileTwo = new File("src\\data\\" + data.electionData(yearOne, "USA.txt"));//Creates a file of the state about to be drawn.
-                            Scanner scanElection = new Scanner(fileTwo);//Makes the scanner to read from the file.
-
-                            boolean keepItUp = true;
-                            scanElection.nextLine();
-
-                            while(scanElection.hasNext() && keepItUp){
-
-                                data.setFoundTheData("");
-                                data.countrySearch(scanElection.nextLine(), title);
-
-                              //  System.out.println(data.getFoundTheData());
-
-                                if(data.getFounded() == false){
-                                    keepItUp = false;
-                                    data.setFounded(true);
-
-
-
-                                }
-                            }
-                            
-                                StdDraw.setFont(graphFont);
-                                graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), q, graphX, graphY, graphSize, elecs);
+                            //Makes each state cycle through itself twice
+                            for(int l=0; l<2; l++){
                                 
+                                //cycles through each lat/long point for each state
+                                for(int i=0; i<graph.getNumberTwo(); i++){
+                                    
+                                    //the states are cycling for the first time.
+                                    if(start == true){
+                                        
+                                        //saves the x & y coordinates of the graph
+                                        double x1 = scanIt.nextDouble();
+                                        double y1 = scanIt.nextDouble();
+
+                                        graph.prepFindLocation(x1, y1, mX, mY, graph.getTitle());//puts all of the lat/longs into an array & gets the largest/smallest numbers
+                                        graph.setHoldIt(i);//increments the index of the arrays.
+
+                                    }//end if
+
+                                    else{
+
+                                        //tells the program it's on it's last run-through of the program.
+                                        if(i == graph.getNumberTwo()-1){
+                                            graph.setFinalRound(true);
+                                        }//end if
+
+                                        graph.findLocation(mX, mY, graph.getTitle());//gets the precise location of the mouse
+                                        graph.setHoldIt(graph.getHoldIt()+1);//increments the index of the lat/long arrays
+
+                                        //checks to see if the point exists within the graph.
+                                        if(graph.getNotPresent() == true){//If so, ends the loops for the state
+                                            l = 5;
+                                            i = graph.getNumberTwo() + 20;
+                                        }//end if
+
+                                    }//end else
+
+                                }//end for
+
+                                start = false;//tells the graph its starting it's second run-through
+                                graph.setHoldIt(0);//resets the lat/long array's index
+
+                            }//end for
+
+                            //checks to see if the point is present in the graph
+                            if(graph.getNotPresent() == false){//if so:
+                                z = graph.getGo()+10;//ends the loop for the states
+                                
+                                //checks to see if the point is in the same state as before
+                                if(graph.getSavedTitles().equals(graph.getTrueTitle())){//if so, nothing happens
+
+                                }//end if
+                                
+                                else{//otherwise:
+                                    graph.setSavedTitles(graph.getTrueTitle());//replaces the old state name to be compared against next time
+                                    reset = true;//tells the graph to redraw itself
+                                }//end else
+
+                            }//end if
                             
+                            else{
+                                graph.setNotPresent(false);//resets the notPresent variable
+                            }//end else
+
+                        
+                            //checks to see if there are still states left
+                            if(scanIt.hasNext()){
+                                
+                                //skips the next two lines
+                                scanIt.nextLine();
+                                scanIt.nextLine();
+                                
+                                graph.setTitle(scanIt.nextLine());//sets the new title for the new state
+                                
+                                
+                                //checks to see if the point is in the same state as before
+                                if(graph.getSavedTitles().equals(graph.getTrueTitle())){//if so, nothing happens
+
+                                }//end if
+                                
+                                else{//otherwise:
+                                    graph.setSavedTitles(graph.getTrueTitle());//replaces the old state name to be compared against next time
+                                    reset = true;//tells the graph to redraw itself
+                                }//end else
+
+                                
+                                scanIt.nextLine();//discards the sect line
+                                graph.setNumberTwo(scanIt.nextInt());//resets the number of incoming coordinates
+                                graph.setHoldIt(0);//resets the index of the graph
+
+                                //resets the smallest/largest points to their base forms
+                                graph.setXSmallest(1);
+                                graph.setXLargest(0);
+                                graph.setYSmallest(1);
+                                graph.setYLargest(0);
+
+                            }//end if scan.hasNext
+
+                        }//end for # of states
+
+
+                        //Checks to see if the program needs to redraw the graph
+                        if(reset){ 
+                            StdDraw.setFont(graphFont);//Changes to font to the graph's font
+                            graph.resetGraph(graphX, graphY, graphSize);//redraws the entire graph
+                            StdDraw.setFont(normalFont);//Changes the font back to normal
+
+                        }//end if reset
+
+                        int yearOne;//creates an int placeholder for the year
+                        graph.setXPos(1);//resets the position for the points to be plotted on the graph
+
+                        
+                        if(reset){//checks to see if the graph was redrawn
                             
-                                //Sets the pen back to normal settings
+                            //runs through the election data for each year, looking for the proper String with election data
+                            for(int q = 0; q<data.getYears().length; q++){
+                                String elecs = data.getYears(q);//creates a string for the current year
+                                yearOne = Integer.parseInt(elecs);//turns the string into an int
+
+                                File fileTwo = new File("src\\data\\" + data.electionData(yearOne, "USA.txt"));//Creates a file of the state about to be drawn.
+                                Scanner scanElection = new Scanner(fileTwo);//Makes the scanner to read from the file.
+
+                                boolean keepItUp = true;//creats a boolean to check if the program has found the data from the right country
+                                scanElection.nextLine();//discards the first line
+
+                                //ensures the data has another line & the correct data hasn't been found
+                                while(scanElection.hasNext() && keepItUp){
+
+                                    data.setFoundTheData("");//resets foundTheData
+                                    data.countrySearch(scanElection.nextLine(), graph.getTitle());//searches through the data for the correct String
+
+                                    //checks to see if the proper data string was found
+                                    if(data.getFounded() == false){//if so
+                                        keepItUp = false;//ends the loop
+                                        data.setFounded(true);//resets the founded boolean to it's original form
+                                    }//end if
+                                }//end while
+
+                                StdDraw.setFont(graphFont);//sets the text style to fit the graph
+                                graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), q, graphX, graphY, graphSize, elecs);//turns the data into points to be plotted on the graph
+
+                                //Sets the pen & text back to normal settings
                                 StdDraw.setPenColor(StdDraw.BLACK);
-                                StdDraw.setPenRadius(0.0005);//changes the pen size
+                                StdDraw.setPenRadius(0.0005);
                                 StdDraw.setFont(normalFont);
-                            }
-                            
-                            
-                            
-                        }
-                    reset = false;
-                    }    
-               }
+                            }//end for
+
+
+                        }//end if
+                    
+                        reset = false;//tells the program everything is the way it should be
+                    
+                        }//end if  
+                    
+                    }//end if runs
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eCHANGE//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
@@ -827,4 +700,4 @@ public class PoliticalMap {
             
     }//end main
                               
-}
+}//end class
