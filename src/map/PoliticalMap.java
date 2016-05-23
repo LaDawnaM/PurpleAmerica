@@ -150,7 +150,7 @@ public class PoliticalMap {
                                     data.setCountryName(next);//sets the country name to the pre-saved value
                                     notNamed = false;//Tells the program the country has already been named.
 
-                                }
+                                }//end else if
 
                             }//end else if
                             else{
@@ -173,7 +173,6 @@ public class PoliticalMap {
                         Scanner scanElec = new Scanner(fileElec);//Makes the scanner to read from the file.  
                                                 
                         
-                        //boolean countryDivisor = true;//lets the program know if it needs to continue the loop to get the country election results
                         graph.decipherIntro(scanElec.nextLine());//Determines which presidents are running for which parties.
                         data.setCountryDivisor(true);
 
@@ -665,7 +664,7 @@ public class PoliticalMap {
                                 }//end while
 
                                 StdDraw.setFont(graphFont);//sets the text style to fit the graph
-                                graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), q, graphX, graphY, graphSize, elecs);//turns the data into points to be plotted on the graph
+                                graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, elecs);//turns the data into points to be plotted on the graph
 
                                 //Sets the pen & text back to normal settings
                                 StdDraw.setPenColor(StdDraw.BLACK);

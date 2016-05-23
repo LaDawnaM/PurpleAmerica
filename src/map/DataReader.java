@@ -167,7 +167,10 @@ package map;
     ////////////////////////////////////////////////////////////////////////////
     
     
-    
+    /**
+     * Retrieves the name of the next file to be accessed from the array
+     * @return Filename - The name of the file
+     */
     public String newCountyName(){
     
         holder++;//Increments the number to ensure none of  the states are constantly repeated.
@@ -178,6 +181,11 @@ package map;
     
     
     
+    /**
+     * Goes through the arrays until it finds the abbreviation equivalent to the election state the program is in. Creates the fileName based off of that abbreviation.
+     * @param holdYear the year the program is searching for
+     * @return FileName - the name of the file for the election year
+     */
     public String electionData(int holdYear){
         
         String name = abbreviations[holder-1];
@@ -208,7 +216,12 @@ package map;
     }//end electionData
     
     
-    
+    /**
+     * Goes through the arrays until it finds the abbreviation equivalent to the election state the program is in. Creates the fileName based off of that abbreviation.
+     * @param holdYear The year the program is searching for
+     * @param name The country the program is looking for
+     * @return FileName - the name of the file for the election year
+     */
     public String electionData(int holdYear, String name){
         
         String nameFinal = "";//initializes the String for the name of the state
@@ -273,7 +286,11 @@ package map;
     }//end countryPoints
     
     
-    
+    /**
+     * Reverses the map
+     * @param lat The current latitude of the map (before reversal)
+     * @return lat - The fixed latitude of the map (after reversal)
+     */
     public double latitude(double lat){
         //Reverses the positioning of the dots
         if(lat > 0.5){//Checks to see which side of the map the dot is on.
@@ -292,6 +309,14 @@ package map;
         
     }//end latitude
     
+    
+    
+    /**
+     * Deciphers the election data for a certain state. First figures out whether the first word is the proper state, and then goes to save the republican, democratic, and independent election values.
+     * @param whole The string with the entire line of election data
+     * @param search The name of the state the program is looking for
+     * @return foundTheData - The name of the country.
+     */
     public String countrySearch(String whole, String search){
         holdIt = "";//makes a temporary variable to save the String to a certain point.
         
@@ -369,11 +394,14 @@ package map;
     
     
     
+    /**
+     * Figures out how many states need to be drawn, and the name of the state.
+     * @param next The number of countries to be plotted OR the name of the country
+     */
     public void drawStates(String next){
 
         //Checks to see whether or not the next value is a number.
         if((next.charAt(0)<65)){
-
             numberTwo = Integer.parseInt(next);//Saves the number of points to be plotted.
             bad = false;//Tells the program to move on to drawing the country.
 
@@ -390,6 +418,10 @@ package map;
     
     
     
+    /**
+     * Figures out the name of the country the program is currently drawing & saves the election data accordingly. 
+     * @param hold The string the program is currently searching through
+     */
     public void countryDivisor(String hold){
 
         //creates strings to hold the broken down portion of hold.

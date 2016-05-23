@@ -190,7 +190,10 @@ public class GraphingFunctionality {
     ////////////////////////////////////////////////////////////////////////////
     
     
-    //Breaks up the first line of the election data
+    /**
+     * Deciphers the first line of the election data file. Determines which presidents were running for which party.
+     * @param intro The line holding the election data
+     */
     public void decipherIntro(String intro){
         
         someLeft = true;//if there is still data left in the string
@@ -251,7 +254,14 @@ public class GraphingFunctionality {
     }//end decipherIntro
     
     
-    
+    /**
+     * Repositions the latitude from the map to be in the proper place. Finds the largest and smallest x and y values (bounding box).
+     * @param lats The new latitude to go in the array
+     * @param longs The new longitude to go in the array
+     * @param xVal The x Value of the mouse
+     * @param yVal The y Value of the mouse
+     * @param title The name of the state the program is currently checking
+     */
     public void prepFindLocation(double lats, double longs, double xVal, double yVal, String title/*, double minLat, double maxLat, double minLong, double maxLong*/){
         
         //Puts the data into the arrays for the map, proportionate to the size
@@ -296,6 +306,12 @@ public class GraphingFunctionality {
     }//end prepFindLocation
     
     
+    /**
+     * Gets the exact center of the state. Finds the x and y values closest to the mouse. At the very end, it checks to ensure the mouse is within the bounding box, & within the closest x and y values.
+     * @param xVal the mouse's x Value
+     * @param yVal The mouse's y Value
+     * @param title The name of the state the program is currently checking.
+     */
     public void findLocation(double xVal, double yVal, String title){
 
         //gets the central-most latitude of the state
@@ -401,7 +417,18 @@ public class GraphingFunctionality {
         
     
     
-    public double ratio(double republican, double democrat, double independent, int position, double x, double y, double graphSize, String elecYear){
+    /**
+     * It retrieves the election data, and makes it small enough to fit within the borders of the map. It draws all of the points on the graph, as well as the years beneath them, and a map legend.
+     * @param republican The republican election data
+     * @param democrat The democratic election data
+     * @param independent The independent election data
+     * @param x The latitude position of the graph.
+     * @param y The longitude position of the graph
+     * @param graphSize The size of the graph
+     * @param elecYear The current election year
+     * @return 
+     */
+    public double ratio(double republican, double democrat, double independent, double x, double y, double graphSize, String elecYear){
         total = republican+democrat+independent;//gets the total number of votes
         
         //sets the election data to a number less than one to fit on the graph
@@ -437,6 +464,12 @@ public class GraphingFunctionality {
     
     
     
+    /**
+     * Draws a new box over the old graph, and redraws everything (lines, legend, etc.) The election data is re-implemented later on in the program.
+     * @param graphX The central x value of the graph
+     * @param graphY The central y value of the graph
+     * @param graphSize The size of the graph
+     */
     public void resetGraph(double graphX, double graphY, double graphSize){
         
         StdDraw.setPenRadius(0.0009);//changes the pen size
