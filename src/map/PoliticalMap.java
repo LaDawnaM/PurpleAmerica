@@ -480,12 +480,12 @@ public class PoliticalMap {
 
                         }//end if reset
 
+                        if(reset){//checks to see if the graph was redrawn
+
                         int yearOne;//creates an int placeholder for the year
                         graph.setXPos(1);//resets the position for the points to be plotted on the graph
-                       // graph.setYPos(graphY-.063);//resets the position for the points to be plotted on the graph
-                        
-                        if(reset){//checks to see if the graph was redrawn
-                            
+                        graph.setYPos(graphY-.053);//resets the position for the points to be plotted on the graph
+
                             //runs through the election data for each year, looking for the proper String with election data
                             for(int q = 0; q<data.getYears().length; q++){
                                 String elecs = data.getYears(q);//creates a string for the current year
@@ -528,14 +528,11 @@ public class PoliticalMap {
 
                                 ////////////////////////////////////////////////
                                 ////////////////////////////////////////////////
-                                graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, elecs);//turns the data into points to be plotted on the graph
-                                /*for(int i=0; i<14; i++){
-                                    graph.ratioTest(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, 1960);//turns the data into points to be plotted on the graph
-                                    graph.setHoldYearNumber(i);
-                                    if(i==14){
-                                        graph.setNotFixed(true);
-                                    }//end if
-                                }//end for*/
+                                if(q==13){
+                                    graph.setNotFixed(true);
+                                }//end if
+                                graph.ratioTest(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, 1960);//turns the data into points to be plotted on the graph
+                                graph.setNotFixed(false);
                                 ////////////////////////////////////////////////
                                 ////////////////////////////////////////////////
                                 

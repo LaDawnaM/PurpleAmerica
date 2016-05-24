@@ -65,6 +65,7 @@ public class GraphingFunctionality {
     double independentFixed;
     
     static double xPos;
+    static double yPos;
     static String trueTitle = "";
     static boolean finalRound;    
     static boolean countries;
@@ -81,6 +82,8 @@ public class GraphingFunctionality {
     int holdYearNumber = 0;
 
     static boolean maybePresent;
+    static double largest;
+    double holdAns;
     
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////SETTERS/GETTERS/////////////////////////////    
@@ -175,6 +178,10 @@ public class GraphingFunctionality {
     public void setXPos(double s){
         xPos = Math.abs(s-.92);
     }
+    
+    public void setYPos(double y){
+        yPos = y;
+    }
 
     public String getTrueTitle(){
         return trueTitle;
@@ -194,10 +201,6 @@ public class GraphingFunctionality {
     
     public boolean getCountries(){
         return countries;
-    }
-    
-    public void setHoldYearNumber(int h){
-        holdYearNumber = h;
     }
     
     public void setNotFixed(boolean n){
@@ -494,37 +497,38 @@ public class GraphingFunctionality {
         republicanElection[holdYearNumber] = republican;
         democratElection[holdYearNumber] = democrat;
         independentElection[holdYearNumber] = independent;
-
-        relativeNumber = 4000000;
+        holdYearNumber++;
+        
+        if(republican > largest){
+            largest = republican;
+        }//end if
+        if(democrat > largest){
+            largest = democrat;
+        }//end if
+        if(independent > largest){
+            largest = independent;
+        }//end if 
         
         //sets the election data to a number less than one to fit on the graph
         if(notFixed){
-            for(int i=0; i<republicanElection.length; i++){
-                republicanFixed = republicanElection[holdYearNumber]/relativeNumber;
-                democratFixed = democratElection[holdYearNumber]/relativeNumber;
-                independentFixed = independentElection[holdYearNumber]/relativeNumber;
-                holdYearNumber++;
+            
+            relativeNumber = 1000000;
+            goAhead = true;
+            
+            while(goAhead){
+                holdAns = largest/relativeNumber;
                 
-                if(republicanFixed < .115 && democratFixed < .115 && independentFixed < .115){
+                if(holdAns < .115){
                     notFixed = false;
-                    System.out.println(republicanFixed + " " + democratFixed + " " + independentFixed);
+                    goAhead = false;
                 }//end if
+                
                 else{
-                    notFixed = true;
-                    i=0;
-                    holdYearNumber = 0;
                     relativeNumber = relativeNumber+100000;
-                    
                 }//end else
                 
-            }
-           /* if(republicanFixed < .115 && democratFixed < .115 && independentFixed < .115){
-                notFixed = false;
-            }//end if
-            else{
-                relativeNumber = relativeNumber+100000;
-            }//end else
-*/
+            }//end while
+            
             for(int i=0; i<republicanElection.length; i++){   
 
                 xPos = xPos+.009;//sets the initial position of the points
@@ -534,23 +538,39 @@ public class GraphingFunctionality {
                 //Draws the republican point
                 StdDraw.setPenColor(StdDraw.RED);
                 StdDraw.point((xPos), (y-.043)+(republicanElection[i]/relativeNumber));
-
+                /*System.out.print("rep: ");
+                System.out.println((y-.043)+(republicanElection[i]/relativeNumber));
+                */
                 //Draws the democratic point
                 StdDraw.setPenColor(StdDraw.BLUE);
                 StdDraw.point((xPos), (y-.043)+(democratElection[i]/relativeNumber));
-
+                /*System.out.print("dem: ");
+                System.out.println((y-.043)+(democratElection[i]/relativeNumber));
+*/
                 //draws the independent point
                 StdDraw.setPenColor(0, 160, 0);
                 StdDraw.point((xPos), (y-.043)+(independentElection[i]/relativeNumber));
-
+                /*System.out.print("ind: ");
+                System.out.println((y-.043)+(independentElection[i]/relativeNumber));
+             */   
                 //sets the pen back to normal settings
                 StdDraw.setPenColor(StdDraw.BLACK);
                 StdDraw.setPenRadius(.0005);
 
                 StdDraw.text(xPos, (y-.043)-.04, String.valueOf(elecYear), 90);//writes the election years at the bottom
                 elecYear = elecYear + 4;    
+                
+                if((republicanElection.length - i) <= 6){
+                    StdDraw.text(.075, yPos, (String.valueOf(Math.abs(6-(republicanElection.length-i)))));//writes the election years at the bottom
+                    yPos = yPos + .025;
+                }//end if
+                
             }//end for
-                        
+            
+            //resets the largest number & the index
+            holdYearNumber = 0;
+            largest = 0;
+            
         }//end notFixed 
         
         notFixed = true;
