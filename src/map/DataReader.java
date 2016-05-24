@@ -6,9 +6,11 @@
 
 package map;
 
-/**
- *
- * @author hcps-mcenhimlr
+/** 
+ * LaDawna McEnhimer, Forest Kim, Jacob Lesley
+ * <p>DataReader
+ * <p>Variables:  <ul>fileName - saves the name of the next .txt file. Used when creating a text file.</ul> <ul>holder - the index of the state abbreviation names. Used when determining fileName.</ul> <ul>numberTwo - saves the number of points to be plotted. Used when scrolling through the .txt files.</ul> <ul>abbreviations - A list of the .txt file names of the states. Used to determine which .txt the program should read in next.</ul> <ul>longAbbreviations - A list of the full names of the states. To be used to determine which state the program is in to be used to draw the states.</ul> <ul>years - Holds the election years. Used to sort through the election data.</ul> <ul>next - holds the country's name. Used to separate country name from the number of lat/long points.</ul> <ul>distance - holds the latitude point's distance from the center. Used when flipping the map.</ul> <ul>foundTheData - holds the wanted part of the full line of election data. Used when finding the correct country & saving the election data.</ul> <ul>founded - tells the program if its found the proper string. Used when sorting through the election data Strings.</ul> <ul>holdIt - an index for the lat/long arrays. Used whenever the lat/long arrays are used.</ul> <ul>repub - tells the program whether the republican data has been found. Used to determine which election data number the program is on.</ul> <ul>demo - tells the program whether the democratic data has been found. Used to determine which election data number the program is on.</ul> <ul>republican - holds the republican election data. Used to determine the colors of the graph.</ul> <ul>democrat - holds the democratic election data. Used to determine the colors of the graph.</ul> <ul>independent holds the independent election data. Used to determine the colors of the graph.</ul> <ul>bad - tells the program whether the name of the country exists. Used to end a while loop.</ul> <ul>notNamed - tells the program whether it has the name of the country. Used to end the while loop.</ul> <ul>countryDivisor - tells the program whether or not it's found the country name. Used to end a while loop.
+ * <p>Methods:  <ul>electionData() - deciphers the election data</ul> <ul>electionData() - finds a certain state in the election data</ul> <ul>countryPoints() - finds a certain county in the election data</ul> <ul>latitude() - reverses the map</ul> <ul>countrySearch() - finds a specific country in the election data & sorts through that information. </ul> <ul>drawStates() - gets the name & number of lat/long points of a state</ul> <ul>cuntryDivisor() - finds a specific county & deciphers the election data.</ul>
  */
  class DataReader {
 
@@ -79,6 +81,10 @@ package map;
     public String getFileName(){
         return fileName;
     }//end getFileName
+    
+    public void setFileName(String f){
+        fileName = f;
+    }//end setFileName
     
     public String getYears(int i){
         return years[i];

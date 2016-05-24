@@ -11,9 +11,11 @@ package map;
 import edu.princeton.cs.introcs.StdDraw;
 
 
-/**
- *
- * @author hcps-mcenhimlr
+/** 
+ * LaDawna McEnhimer
+ * <p>GraphingFunctionality
+ * <p>Variables: <ul></ul>
+ * <p>Methods: <ul></ul>
  */
 public class GraphingFunctionality {
 
@@ -69,7 +71,16 @@ public class GraphingFunctionality {
     
     static String title;
     static int go;
+    
+    boolean notFixed = false;
+    int relativeNumber;
+    
+    static double[] republicanElection = new double[14];
+    static double[] democratElection = new double[14];
+    static double[] independentElection = new double[14];
+    int holdYearNumber = 0;
 
+    static boolean maybePresent;
     
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////SETTERS/GETTERS/////////////////////////////    
@@ -183,6 +194,22 @@ public class GraphingFunctionality {
     
     public boolean getCountries(){
         return countries;
+    }
+    
+    public void setHoldYearNumber(int h){
+        holdYearNumber = h;
+    }
+    
+    public void setNotFixed(boolean n){
+        notFixed = n;
+    }
+    
+    public void setMaybePresent(boolean m){
+        maybePresent = m;
+    }
+    
+    public boolean getMaybePresent(){
+        return maybePresent;
     }
     
     ////////////////////////////////////////////////////////////////////////////    
@@ -357,24 +384,7 @@ public class GraphingFunctionality {
 
         }//end else if
 
-
-
-       /* if(longitude[holdIt] > yVal){//if the current longitude is larger than the y value
-
-            if(longitude[holdIt] < yTrueLargest){//if the longitude is smaller than the current closest value
-                yTrueLargest = longitude[holdIt];//set the current longitude to the closest value
-            }//end if
-
-        }//end if
-
-        else if(longitude[holdIt] < yVal){//if the current longitude is smaller than the y value
-
-            if(longitude[holdIt] > yTrueSmallest){//if the longitude is larger than the current closest value
-                yTrueSmallest = longitude[holdIt];//set the current longitude to the closest value
-            }//end if
-
-        }//end else if*/
-
+        
         //checks to see if the program is looping through for the final time
         if(finalRound){
            finalRound = false;//resets the final-time boolean
@@ -385,7 +395,7 @@ public class GraphingFunctionality {
 
                     if((xVal < xTrueLargest) && (xVal >xTrueSmallest)){//checks to see if the xValue is between the largest & smallest points
                         if((yVal > holdYLower && yVal < holdYUpper)){//checks to see if the yValue is between the highest & lowest points closest to it
-                            trueTitle = title;//replaces the new title 
+                                trueTitle = title;
                         }//end if
 
                         else{
@@ -431,13 +441,12 @@ public class GraphingFunctionality {
     public double ratio(double republican, double democrat, double independent, double x, double y, double graphSize, String elecYear){
         total = republican+democrat+independent;//gets the total number of votes
         
-        //sets the election data to a number less than one to fit on the graph
-        republicanFixed = republican/45000000;
-        democratFixed = democrat/45000000;
-        independentFixed = independent/45000000;
+        republicanFixed = republican/40000000;
+        democratFixed = democrat/40000000;
+        independentFixed = independent/40000000;
         
         xPos = xPos+.009;//sets the initial position of the points
-        
+                 
         StdDraw.setPenRadius(.005);//increases the pen size
         
         //Draws the republican point
@@ -449,7 +458,7 @@ public class GraphingFunctionality {
         StdDraw.point((xPos), (y-.043)+democratFixed);
         
         //draws the independent point
-        StdDraw.setPenColor(StdDraw.GREEN);
+        StdDraw.setPenColor(0, 160, 0);
         StdDraw.point((xPos), (y-.043)+independentFixed);
         
         //sets the pen back to normal settings
@@ -457,7 +466,91 @@ public class GraphingFunctionality {
         StdDraw.setPenRadius(.0005);
         
         StdDraw.text(xPos, (y-.043)-.04, elecYear, 90);//writes the election years at the bottom
-               
+
+        return ratio;//??? Breaks without it...
+  
+    }//end ratio
+    
+    
+    
+    /**
+     * It retrieves the election data, and makes it small enough to fit within the borders of the map. It draws all of the points on the graph, as well as the years beneath them, and a map legend.
+     * @param republican The republican election data
+     * @param democrat The democratic election data
+     * @param independent The independent election data
+     * @param x The latitude position of the graph.
+     * @param y The longitude position of the graph
+     * @param graphSize The size of the graph
+     * @param elecYear The current election year
+     * @return 
+     */
+    public double ratioTest(double republican, double democrat, double independent, double x, double y, double graphSize, int elecYear){
+        total = republican+democrat+independent;//gets the total number of votes
+        
+        republicanElection[holdYearNumber] = republican;
+        democratElection[holdYearNumber] = democrat;
+        independentElection[holdYearNumber] = independent;
+
+        relativeNumber = 4000000;
+        
+        //sets the election data to a number less than one to fit on the graph
+        if(notFixed){
+            for(int i=0; i<republicanElection.length; i++){
+                republicanFixed = republicanElection[holdYearNumber]/relativeNumber;
+                democratFixed = democratElection[holdYearNumber]/relativeNumber;
+                independentFixed = independentElection[holdYearNumber]/relativeNumber;
+                holdYearNumber++;
+                
+                if(republicanFixed < .115 && democratFixed < .115 && independentFixed < .115){
+                    notFixed = false;
+                    System.out.println(republicanFixed + " " + democratFixed + " " + independentFixed);
+                }//end if
+                else{
+                    notFixed = true;
+                    i=0;
+                    holdYearNumber = 0;
+                    relativeNumber = relativeNumber+100000;
+                    
+                }//end else
+                
+            }
+           /* if(republicanFixed < .115 && democratFixed < .115 && independentFixed < .115){
+                notFixed = false;
+            }//end if
+            else{
+                relativeNumber = relativeNumber+100000;
+            }//end else
+*/
+            for(int i=0; i<republicanElection.length; i++){   
+
+                xPos = xPos+.009;//sets the initial position of the points
+                
+                StdDraw.setPenRadius(.005);//increases the pen size
+
+                //Draws the republican point
+                StdDraw.setPenColor(StdDraw.RED);
+                StdDraw.point((xPos), (y-.043)+(republicanElection[i]/relativeNumber));
+
+                //Draws the democratic point
+                StdDraw.setPenColor(StdDraw.BLUE);
+                StdDraw.point((xPos), (y-.043)+(democratElection[i]/relativeNumber));
+
+                //draws the independent point
+                StdDraw.setPenColor(0, 160, 0);
+                StdDraw.point((xPos), (y-.043)+(independentElection[i]/relativeNumber));
+
+                //sets the pen back to normal settings
+                StdDraw.setPenColor(StdDraw.BLACK);
+                StdDraw.setPenRadius(.0005);
+
+                StdDraw.text(xPos, (y-.043)-.04, String.valueOf(elecYear), 90);//writes the election years at the bottom
+                elecYear = elecYear + 4;    
+            }//end for
+                        
+        }//end notFixed 
+        
+        notFixed = true;
+        
         return ratio;//??? Breaks without it...
   
     }//end ratio
@@ -498,7 +591,7 @@ public class GraphingFunctionality {
         StdDraw.text(graphX-.09, graphY, "Democratic");
         
         //writes independent
-        StdDraw.setPenColor(StdDraw.GREEN);
+        StdDraw.setPenColor(0, 160, 0);
         StdDraw.text(graphX-.09, graphY-.03, "Independent");
 
         //Sets the pen back to normal

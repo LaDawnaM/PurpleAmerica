@@ -370,11 +370,11 @@ public class PoliticalMap {
 
                                         graph.findLocation(mX, mY, graph.getTitle());//gets the precise location of the mouse
                                         graph.setHoldIt(graph.getHoldIt()+1);//increments the index of the lat/long arrays
-
                                         //checks to see if the point exists within the graph.
                                         if(graph.getNotPresent() == true){//If so, ends the loops for the state
                                             l = 5;
                                             i = graph.getNumberTwo() + 20;
+                                            
                                         }//end if
 
                                     }//end else
@@ -388,18 +388,30 @@ public class PoliticalMap {
 
                             //checks to see if the point is present in the graph
                             if(graph.getNotPresent() == false){//if so:
-                                z = graph.getGo()+10;//ends the loop for the states
                                 
-                                //checks to see if the point is in the same state as before
-                                if(graph.getSavedTitles().equals(graph.getTrueTitle())){//if so, nothing happens
-
+                                if(graph.getTrueTitle().equals("California") || graph.getTrueTitle().equals("Virginia")){
+                                    graph.setMaybePresent(true);
+                                    graph.setTrueTitle(graph.getTitle());
                                 }//end if
                                 
-                                else{//otherwise:
-                                    graph.setSavedTitles(graph.getTrueTitle());//replaces the old state name to be compared against next time
-                                    reset = true;//tells the graph to redraw itself
-                                }//end else
+                                else{
+                                    
+                                    z = graph.getGo()+10;//ends the loop for the states
+                                    
+                                    //checks to see if the point is in the same state as before
+                                    if(graph.getSavedTitles().equals(graph.getTrueTitle())){//if so, nothing happens
 
+                                    }//end if
+
+                                    else{//otherwise:
+                                        graph.setSavedTitles(graph.getTrueTitle());//replaces the old state name to be compared against next time
+                                        
+                                        reset = true;//tells the graph to redraw itself
+                                    }//end else
+                                    
+                                    graph.setMaybePresent(false);
+                                }//end else
+                                
                             }//end if
                             
                             else{
@@ -416,17 +428,20 @@ public class PoliticalMap {
                                 
                                 graph.setTitle(scanIt.nextLine());//sets the new title for the new state
                                 
-                                
-                                //checks to see if the point is in the same state as before
-                                if(graph.getSavedTitles().equals(graph.getTrueTitle())){//if so, nothing happens
-
+                                if(graph.getMaybePresent() == true){
+                                    
                                 }//end if
-                                
-                                else{//otherwise:
-                                    graph.setSavedTitles(graph.getTrueTitle());//replaces the old state name to be compared against next time
-                                    reset = true;//tells the graph to redraw itself
-                                }//end else
+                                else{
+                                    //checks to see if the point is in the same state as before
+                                    if(graph.getSavedTitles().equals(graph.getTrueTitle())){//if so, nothing happens
 
+                                    }//end if
+
+                                    else{//otherwise:
+                                        graph.setSavedTitles(graph.getTrueTitle());//replaces the old state name to be compared against next time
+                                        reset = true;//tells the graph to redraw itself
+                                    }//end else
+                                }//end else
                                 
                                 scanIt.nextLine();//discards the sect line
                                 graph.setNumberTwo(scanIt.nextInt());//resets the number of incoming coordinates
@@ -442,7 +457,20 @@ public class PoliticalMap {
 
                         }//end for # of states
 
+                        if(graph.getMaybePresent() == true){
+                            graph.setMaybePresent(false);
+                        
+                            //checks to see if the point is in the same state as before
+                            if(graph.getSavedTitles().equals(graph.getTrueTitle())){//if so, nothing happens
 
+                            }//end if
+
+                            else{//otherwise:
+                                graph.setSavedTitles(graph.getTrueTitle());//replaces the old state name to be compared against next time
+                                reset = true;//tells the graph to redraw itself
+                            }//end else
+                                    
+                        }
                         //Checks to see if the program needs to redraw the graph
                         if(reset){ 
                             StdDraw.setFont(graphFont);//Changes to font to the graph's font
@@ -453,7 +481,7 @@ public class PoliticalMap {
 
                         int yearOne;//creates an int placeholder for the year
                         graph.setXPos(1);//resets the position for the points to be plotted on the graph
-
+                       // graph.setYPos(graphY-.063);//resets the position for the points to be plotted on the graph
                         
                         if(reset){//checks to see if the graph was redrawn
                             
@@ -462,7 +490,21 @@ public class PoliticalMap {
                                 String elecs = data.getYears(q);//creates a string for the current year
                                 yearOne = Integer.parseInt(elecs);//turns the string into an int
 
-                                File fileTwo = new File("src\\data\\" + data.electionData(yearOne, "USA.txt"));//Creates a file of the state about to be drawn.
+                                if(graph.getCountries() == true){
+                                    for(int i=0; i<data.getLongAbbreviations().length; i++){
+                                        if(data.getLongAbbreviations(i).equals(graph.getTrueTitle())){
+                                            data.setFileName(data.getAbbreviations(i));//sets the fileName to 
+                                        }//end if
+                                        
+                                    }//end for
+                                    
+                                }//end if
+                                
+                                else{
+                                    data.setFileName("USA.txt");//Sets the fileName to the default state
+                                }//end else
+                                
+                                File fileTwo = new File("src\\data\\" + data.electionData(yearOne, data.getFileName()));//Creates a file of the state about to be drawn.
                                 Scanner scanElection = new Scanner(fileTwo);//Makes the scanner to read from the file.
 
                                 boolean keepItUp = true;//creats a boolean to check if the program has found the data from the right country
@@ -482,8 +524,20 @@ public class PoliticalMap {
                                 }//end while
 
                                 StdDraw.setFont(graphFont);//sets the text style to fit the graph
-                                graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, elecs);//turns the data into points to be plotted on the graph
 
+                                ////////////////////////////////////////////////
+                                ////////////////////////////////////////////////
+                                graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, elecs);//turns the data into points to be plotted on the graph
+                                /*for(int i=0; i<14; i++){
+                                    graph.ratioTest(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, 1960);//turns the data into points to be plotted on the graph
+                                    graph.setHoldYearNumber(i);
+                                    if(i==14){
+                                        graph.setNotFixed(true);
+                                    }//end if
+                                }//end for*/
+                                ////////////////////////////////////////////////
+                                ////////////////////////////////////////////////
+                                
                                 //Sets the pen & text back to normal settings
                                 StdDraw.setPenColor(StdDraw.BLACK);
                                 StdDraw.setPenRadius(0.0005);
