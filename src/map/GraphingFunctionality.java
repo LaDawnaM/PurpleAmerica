@@ -65,7 +65,7 @@ public class GraphingFunctionality {
     double independentFixed;
     
     static double xPos;
-    static String trueTitle = "Alabama";
+    static String trueTitle = "";
     static boolean finalRound;    
     static boolean countries;
     
@@ -210,6 +210,10 @@ public class GraphingFunctionality {
     
     public boolean getMaybePresent(){
         return maybePresent;
+    }
+    
+    public void setHoldYUpper(double h){
+        holdYUpper = h;
     }
     
     ////////////////////////////////////////////////////////////////////////////    

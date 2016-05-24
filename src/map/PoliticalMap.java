@@ -345,6 +345,7 @@ public class PoliticalMap {
 
                             //Makes each state cycle through itself twice
                             for(int l=0; l<2; l++){
+                                graph.setHoldYUpper(0);
                                 
                                 //cycles through each lat/long point for each state
                                 for(int i=0; i<graph.getNumberTwo(); i++){
