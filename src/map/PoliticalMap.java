@@ -14,7 +14,7 @@
  */
 package map;
 import edu.princeton.cs.introcs.*;
-import java.awt.Font;
+import java.awt.*;
 import java.io.*;
 import java.util.*;
 
@@ -30,10 +30,19 @@ public class PoliticalMap {
 
         DataReader data = new DataReader();
         GraphingFunctionality graph = new GraphingFunctionality();
+        Colors colors = new Colors();
         
+        //Creates the different font sizes for the graph, and normal text
+        Font graphFont = new Font("Arial", Font.PLAIN, 12);
+        Font normalFont = new Font("Arial", Font.PLAIN, 16);
+        Font indexFont = new Font("Arial", Font.PLAIN, 9);
+
         boolean yes = true;
         boolean reset;
         data.setHolder(data.getAbbreviations().length-1);
+        
+        data.setNewYear(1960);
+        colors.setTruth(true);
         
         while(yes){
             
@@ -48,7 +57,12 @@ public class PoliticalMap {
                 Scanner scan = new Scanner(file);//Makes the scanner to read from the file.            
                     
                     //makes it so that you can see the pen.
-                    StdDraw.setPenRadius(0.0005);//changes the pen size
+                    if(data.getHolder() == data.getAbbreviations().length-1){
+                        StdDraw.setPenRadius(0.0009);//Makes the US darker than the counties
+                    }//end if
+                    else{
+                        StdDraw.setPenRadius(0.0005);//makes the counties lighter than the US
+                    }//end else
                     StdDraw.setPenColor(StdDraw.BLACK);//changes the pen color
 
                     //Gets rid of the points representing the highest and lowest points of the graph
@@ -95,23 +109,44 @@ public class PoliticalMap {
 
                         }//end while
                         
-                        int holdYear = 1960;//temporarily chooses the year to get the election data from
+                        int holdYear = data.getNewYear();//temporarily chooses the year to get the election data from
                         
                         File fileElec = new File("src\\data\\" + data.electionData(holdYear));//Creates a file of the state about to be drawn.
                         Scanner scanElec = new Scanner(fileElec);//Makes the scanner to read from the file.  
                                                 
-                        
                         graph.decipherIntro(scanElec.nextLine());//Determines which presidents are running for which parties.
                         data.setCountryDivisor(true);
-
                         //gets the election results
+                        
                         while(data.getCountryDivisor()){
                                                         
                             if(scanElec.hasNext()){//checks to see if the country has election data
-                                //gets the initial
+                                //gets the initial data
+                                //System.out.println("continue");  
                                 String hold = scanElec.next();//holds the full line from the .txt file
-                                data.countryDivisor(hold);
-                                
+                                if(hold.equals("New")){
+                                    hold = hold + " " + scanElec.next();
+                                }
+                                if(hold.equals("West")){
+                                    hold = hold + " " + scanElec.next();
+                                }
+                                if(hold.equals("North")){
+                                    hold = hold + " " + scanElec.next();
+                                }
+                                if(hold.equals("South")){
+                                    hold = hold + " " + scanElec.next();
+                                }
+                                if(hold.equals("Rhode")){
+                                    hold = hold + " " + scanElec.next();
+                                }
+                                if(hold.equals("District")){
+                                    hold = hold + " " + scanElec.next() + " " + scanElec.next();
+                                }
+                                double[] holder = data.countryDivisor(hold);
+                                StdDraw.setFont(normalFont);
+                                colors.colorChooser(holder, hold);
+                                //System.out.println("dem: " + data.getDemocrat() + " repub: " + data.getRepublican() + " ind: " + data.getIndependent());
+                               
                             }//end if
 
                             else{
@@ -119,6 +154,8 @@ public class PoliticalMap {
                             }//end else
 
                         }//end while
+                        
+                        //System.out.println("skip");  
                         
                         //Sets up the data to draw the shape
                         if(keepGoing == true){
@@ -137,8 +174,39 @@ public class PoliticalMap {
                                 longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);//Retrieves and repositions longitude on the map
                                                                 
                             }//end for
-
-                            StdDraw.polygon(latitude, longitude);//Draws the shape.
+                            
+                            //System.out.println(colors.getColor(1) + " " + colors.getColor(2) + " " + colors.getColor(3));
+                            //System.out.println((Math.round(colors.getColor(1))) + " " + (Math.round(colors.getColor(2))) + " " + (Math.round(colors.getColor(3))));
+                            int republican = (int)(Math.round(colors.getColor(1)));
+                            int democrat = (int)(Math.round(colors.getColor(2)));
+                            int independent = (int)(Math.round(colors.getColor(3)));
+                            
+                            //System.out.println(republican + "," + independent + "," + democrat);
+                            
+                            Color color = new Color(republican, independent, democrat);
+                            StdDraw.setPenColor(color);
+                            
+                            colors.setColor(3, 0);
+                            colors.setColor(2, 0);
+                            colors.setColor(1, 0);
+                            
+                            if(graph.getCountries()){
+                                if(data.getHolder() == data.getAbbreviations().length-1){
+                                    
+                                    StdDraw.setPenColor(StdDraw.BLACK);
+                                    StdDraw.setPenRadius(0.0009);
+                                    StdDraw.polygon(latitude, longitude);//Draws the shape
+                                    
+                                }
+                                else{
+                                    StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
+                                }
+                                
+                            }
+                            else{
+                                StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
+                            }
+                            
                             data.setNumberTwo(0);//Resets the number of states to be drawn to zero.
                             
                         }//end if
@@ -188,9 +256,21 @@ public class PoliticalMap {
 
                 StdDraw.setPenColor(StdDraw.LIGHT_GRAY);//Changes the color of the pen for the box.
                 StdDraw.filledSquare(x, y, .03);//Creates a square at the appropriate place
-
-                StdDraw.setPenColor(StdDraw.BLACK);//Changes the color of the pen for the text
+                
+                if(colors.getBox(1)+.033 > y && colors.getBox(1)-.033<y){
+                    StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+                }
+                else if(colors.getTruth()){
+                    StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+                    colors.setTruth(false);
+                }
+                else{
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                }
+                
                 StdDraw.text(x, y, year);//Draws the text
+                
+                StdDraw.setPenColor(StdDraw.BLACK);
 
             }//end else
 
@@ -208,13 +288,10 @@ public class PoliticalMap {
 ////////////////////////////////////////////////////////////////////////////////
             
                 //Creates variables for the graph sizes.
-                double graphX = .13;
+                double graphX = .15;
                 double graphY = .13;
                 double graphSize = .125;
-                
-                //Creates the different font sizes for the graph, and normal text
-                Font graphFont = new Font("Arial", Font.PLAIN, 12);
-                Font normalFont = new Font("Arial", Font.PLAIN, 16);
+
                 
 
                 reset = true;//Tells the program to draw the box.
@@ -247,7 +324,22 @@ public class PoliticalMap {
 
                             //Realizes that's the proper button
                             if(mY<= y+.033 && mY>=y-.033){
-                                //System.out.println(years[i]);//Prints the year (extraneous)
+                                data.setNewYear(Integer.parseInt(data.getYears(i)));
+                                StdDraw.clear();
+                                colors.setBox(0, mX);
+                                colors.setBox(1, mY);
+                                colors.setBox(2, .04);
+                                
+                                runs = false;//ends the loop, so the program will redraw the map
+
+                                if(graph.getCountries()){
+                                    data.setHolder(0);
+                                }//end if
+                                else{
+                                    data.setHolder(data.getAbbreviations().length-1);//Moves the array holding the states back so it will redraw the USA
+                                }//end else
+
+                                
                             }//end if
 
                         }//end for
@@ -384,7 +476,7 @@ public class PoliticalMap {
 
                                 start = false;//tells the graph its starting it's second run-through
                                 graph.setHoldIt(0);//resets the lat/long array's index
-
+                                                                
                             }//end for
 
                             //checks to see if the point is present in the graph
@@ -394,7 +486,7 @@ public class PoliticalMap {
                                     graph.setMaybePresent(true);
                                     graph.setTrueTitle(graph.getTitle());
                                 }//end if
-                                
+                                                                                                
                                 else{
                                     
                                     z = graph.getGo()+10;//ends the loop for the states
@@ -444,7 +536,7 @@ public class PoliticalMap {
                                     }//end else
                                 }//end else
                                 
-                                scanIt.nextLine();//discards the sect line
+                                scanIt.nextLine();//gets rid of an empty line
                                 graph.setNumberTwo(scanIt.nextInt());//resets the number of incoming coordinates
                                 graph.setHoldIt(0);//resets the index of the graph
 
@@ -476,40 +568,29 @@ public class PoliticalMap {
                         if(reset){ 
                             StdDraw.setFont(graphFont);//Changes to font to the graph's font
                             graph.resetGraph(graphX, graphY, graphSize);//redraws the entire graph
-                            StdDraw.setFont(normalFont);//Changes the font back to normal
+                            
 
                         }//end if reset
 
                         if(reset){//checks to see if the graph was redrawn
 
                         int yearOne;//creates an int placeholder for the year
-                        graph.setXPos(1);//resets the position for the points to be plotted on the graph
-                        graph.setYPos(graphY-.053);//resets the position for the points to be plotted on the graph
-
+                        graph.setXPos(1.03);//resets the position for the points to be plotted on the graph
+                        graph.setYPos(graphY-.05);//resets the position for the points to be plotted on the graph
+                        
+                            StdDraw.setFont(graphFont);
                             //runs through the election data for each year, looking for the proper String with election data
                             for(int q = 0; q<data.getYears().length; q++){
                                 String elecs = data.getYears(q);//creates a string for the current year
                                 yearOne = Integer.parseInt(elecs);//turns the string into an int
 
-                                if(graph.getCountries() == true){
-                                    for(int i=0; i<data.getLongAbbreviations().length; i++){
-                                        if(data.getLongAbbreviations(i).equals(graph.getTrueTitle())){
-                                            data.setFileName(data.getAbbreviations(i));//sets the fileName to 
-                                        }//end if
-                                        
-                                    }//end for
-                                    
-                                }//end if
-                                
-                                else{
-                                    data.setFileName("USA.txt");//Sets the fileName to the default state
-                                }//end else
+                                data.setFileName("USA.txt");//Sets the fileName to the default state
                                 
                                 File fileTwo = new File("src\\data\\" + data.electionData(yearOne, data.getFileName()));//Creates a file of the state about to be drawn.
                                 Scanner scanElection = new Scanner(fileTwo);//Makes the scanner to read from the file.
 
-                                boolean keepItUp = true;//creats a boolean to check if the program has found the data from the right country
-                                scanElection.nextLine();//discards the first line
+                                boolean keepItUp = true;//creats a boolean to check if the program has found the data from the right country                                
+                                graph.decipherIntro(scanElection.nextLine());//Determines which presidents are running for which parties.
 
                                 //ensures the data has another line & the correct data hasn't been found
                                 while(scanElection.hasNext() && keepItUp){
@@ -531,17 +612,19 @@ public class PoliticalMap {
                                 if(q==13){
                                     graph.setNotFixed(true);
                                 }//end if
-                                graph.ratioTest(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, 1960);//turns the data into points to be plotted on the graph
+                                //System.out.println(data.getIndependent());
+                                graph.ratioTest(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, 1960, indexFont, graphFont);//turns the data into points to be plotted on the graph
                                 graph.setNotFixed(false);
+                                StdDraw.setFont(graphFont);
                                 ////////////////////////////////////////////////
                                 ////////////////////////////////////////////////
                                 
                                 //Sets the pen & text back to normal settings
                                 StdDraw.setPenColor(StdDraw.BLACK);
                                 StdDraw.setPenRadius(0.0005);
-                                StdDraw.setFont(normalFont);
+                                //StdDraw.setFont(normalFont);
                             }//end for
-
+                            StdDraw.setFont(normalFont);//Changes the font back to normal
 
                         }//end if
                     

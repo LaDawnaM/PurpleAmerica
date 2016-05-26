@@ -48,11 +48,22 @@ package map;
     boolean notNamed;
     
     boolean countryDivisor;
+    static double[] data = new double[4];
+    int newYear;
+    static String holdThat;
 
     
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////SETTERS/GETTERS/////////////////////////////    
     ////////////////////////////////////////////////////////////////////////////
+    
+    public int getNewYear(){
+        return newYear;
+    }//end getNewYear
+    
+    public void setNewYear(int y){
+        newYear = y;
+    }//end setNewYear
     
     public int getHolder(){
         return holder-1;
@@ -165,6 +176,10 @@ package map;
     public boolean getCountryDivisor(){
         return countryDivisor;
     }//end getCountryDivisor
+    
+    public double getData(int i){
+        return data[i];
+    }
     
     
     
@@ -339,47 +354,70 @@ package map;
                     
                     founded = true;//tells the program it's found the proper string
                     
-                    //Scrolls through the remainder of the String
-                    for(int e=i+1; e<whole.length()-1; e++){
-                                                
-                        if(whole.charAt(e) == 44){//checks to see if the String has reached a comma
-                                                                                                                        
-                            //the first comma becomes republican
-                            if(whole.charAt(e) == 44 && repub == true){//checks to see if it's encountered a comma
-                                republican = Integer.parseInt(holdIt);//sets the republican value to the current answer
-                                holdIt = "";//resets HolderTwo
-                                repub = false;//points the program towards democratic next time
-                            }//end if
+                    //creates strings to hold the broken down portion of hold.
+                    String holderTwo = "";
+                    holdThat = "";
+                    String holder = "";
+                    int lash = 0;
 
-                            //the second comma becomes democratic
-                            else if(whole.charAt(e) == 44 && repub == false){
-                                democrat = Integer.parseInt(holdIt);//sets the democratic value to the current answer
-                                holdIt = "";//resets HolderTwo
-                                demo = false;//points the program towards independent next time
-                            }//end else if
+                    //finds the country name
+                    for(int q=0; q<whole.length(); q++){
+                        if(whole.charAt(q) == 44){//checks to see if the String has reached a comma
+                            //if so, it runs through the string up until the comma, and sets that as the country name
+                            for(int e=0; e<i; e++){
+                                holdThat = holdThat + whole.charAt(e);
+                            }
 
-                            //the third comma is independent
-                            else if(whole.charAt(e) == 44 && demo == false){
-                                independent = Integer.parseInt(holdIt);//resets HolderTwo
-                                holdIt = "";//resets holderTwo
+                            q=whole.length()+10;
 
-                                //resets the party discerning booleans to their initial state
-                                repub = true;
-                                demo = true;
-                                e = whole.length()+1;
-                            }//end else if
+                        }        //sets booleans to discern republican from democratic from independent.
+                      lash++;      
+                    }        
 
-                            //no commas have been encountered thus far
+                    //seperates the election results by party
+                    for(int e=lash; e<whole.length(); e++){
+                        holder = holder + whole.charAt(e);//starts reading in the numbers
 
+                        //the first comma becomes republican
+                        if(whole.charAt(e) == 44 && repub){//checks to see if it's encountered a comma
+                            republican = Integer.parseInt(holderTwo);//sets the republican value to the current answer
+                            holderTwo = "";//resets HolderTwo
+                            data[1] = republican;
+                            //System.out.println("repub: " + data[1]);
+                            repub = false;//points the program towards democratic next time
+                            demo = true;
                         }//end if
+
+                        //the second comma becomes democratic
+                        else if(whole.charAt(e) == 44 && demo == true){
+                            democrat = Integer.parseInt(holderTwo);//sets the democratic value to the current answer
+                            //System.out.println("dem: " + democrat);
+                            data[2] = democrat;
+                            //System.out.println("demos: " + data[2]);
+                            holderTwo = "";//resets HolderTwo
+                            demo = false;//points the program towards independent next time
+                        }//end else if
+
+                        //the third comma is independent
+                        else if(whole.charAt(e) == 44 && demo == false){
+                            independent = Integer.parseInt(holderTwo);//resets HolderTwo
+                            data[3] = independent;
+                            System.out.println(data[3]);
+                            holderTwo = "";//resets holderTwo
+
+                            //resets the party discerning booleans to their initial state
+                            repub = true;
+                            demo = true;
+                            e = whole.length()+1;
+                        }//end else if
+
+                        //no commas have been encountered thus far
                         else{
-                            holdIt = holdIt + whole.charAt(e);//tacks the current number on to the end, & repeats the process
+                            holderTwo = holderTwo + whole.charAt(e);//tacks the current number on to the end, & repeats the process
                         }//end else
-                        
-                        i = whole.length()+10;//ends the large loop
-                    
-                    }//end for
-                    
+
+                    }//end for                    
+                                    
                 }//end if
                 
                 else{//clears the line of data
@@ -428,37 +466,54 @@ package map;
      * Figures out the name of the country the program is currently drawing & saves the election data accordingly. 
      * @param hold The string the program is currently searching through
      */
-    public void countryDivisor(String hold){
-
+    public double[] countryDivisor(String hold){
+        
+        data[1] = 0;
+        data[2] = 0;
+        data[3] = 0;
+        
         //creates strings to hold the broken down portion of hold.
         String holderTwo = "";
+        holdThat = "";
         String holder = "";
+        int lash = 0;
 
         //finds the country name
         for(int i=0; i<hold.length(); i++){
             if(hold.charAt(i) == 44){//checks to see if the String has reached a comma
                 //if so, it runs through the string up until the comma, and sets that as the country name
                 for(int e=0; e<i; e++){
-                    holder = holder + hold.charAt(e);
+                    holdThat = holdThat + hold.charAt(e);
                 }
-                //sets booleans to discern republican from democratic from independent.
-                boolean repub = true;
-                boolean demo = true;
+                
+                i=hold.length()+10;
+                
+            }        //sets booleans to discern republican from democratic from independent.
+          lash++;      
+        }        
+        boolean repub = true;
+        boolean demo = true;
 
                 //seperates the election results by party
-                for(int e=i+1; e<hold.length(); e++){
+                for(int e=lash; e<hold.length(); e++){
                     holder = holder + hold.charAt(e);//starts reading in the numbers
-
+                    
                     //the first comma becomes republican
-                    if(hold.charAt(e) == 44 && repub == true){//checks to see if it's encountered a comma
+                    if(hold.charAt(e) == 44 && repub){//checks to see if it's encountered a comma
                         republican = Integer.parseInt(holderTwo);//sets the republican value to the current answer
                         holderTwo = "";//resets HolderTwo
+                        data[1] = republican;
+                        //System.out.println("repub: " + data[1]);
                         repub = false;//points the program towards democratic next time
+                        demo = true;
                     }//end if
 
                     //the second comma becomes democratic
-                    else if(hold.charAt(e) == 44 && repub == false){
+                    else if(hold.charAt(e) == 44 && demo == true){
                         democrat = Integer.parseInt(holderTwo);//sets the democratic value to the current answer
+                        //System.out.println("dem: " + democrat);
+                        data[2] = democrat;
+                        //System.out.println("demos: " + data[2]);
                         holderTwo = "";//resets HolderTwo
                         demo = false;//points the program towards independent next time
                     }//end else if
@@ -466,6 +521,8 @@ package map;
                     //the third comma is independent
                     else if(hold.charAt(e) == 44 && demo == false){
                         independent = Integer.parseInt(holderTwo);//resets HolderTwo
+                        data[3] = independent;
+                        System.out.println(data[3]);
                         holderTwo = "";//resets holderTwo
 
                         //resets the party discerning booleans to their initial state
@@ -481,19 +538,28 @@ package map;
 
                 }//end for
 
-                i = hold.length()+1;//ends the for loop
+               // i = hold.length()+1;//ends the for loop
 
-            }//end for
+         //   }//end for
 
-        }//end for
+        //}//end for
+            //System.out.println(hold);
+                for(int i=0; i<data.length; i++){
+                //System.out.println(i  + " " + data[i]);
+                }
+                
+        hold = holdThat;//sets the original hold to the temporary holder value
+        //System.out.println("hold: " + hold + " holder: "+ holdThat);
 
-        hold = holder;//sets the original hold to the temporary holder value
-        holder = "";//resets holder
-
+        holdThat = "";//resets holder
+        holder = "";
+                
         //checks to see if the program had located the correct country.
         if(hold.equals(countryName)){
             countryDivisor = false;//tells the while loop to end
         }//end if
+                
+        return data;
         
     }//end countryDivisor
     
