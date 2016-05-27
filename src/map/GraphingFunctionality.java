@@ -596,8 +596,7 @@ public class GraphingFunctionality {
             else if(Integer.toString((int)largest).length() == 8){
                 length = " ten millions";
             }//end else if
-            
-            
+                        
             //Writes in the map legend
             StdDraw.text(x-.06, y, ("# of voters in" + length), 90);
             StdDraw.text(x+.02, y-.115, "Election year");
