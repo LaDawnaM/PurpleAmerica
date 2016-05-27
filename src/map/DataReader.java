@@ -9,8 +9,8 @@ package map;
 /** 
  * LaDawna McEnhimer, Forest Kim, Jacob Lesley
  * <p>DataReader
- * <p>Variables:  <ul>fileName - saves the name of the next .txt file. Used when creating a text file.</ul> <ul>holder - the index of the state abbreviation names. Used when determining fileName.</ul> <ul>numberTwo - saves the number of points to be plotted. Used when scrolling through the .txt files.</ul> <ul>abbreviations - A list of the .txt file names of the states. Used to determine which .txt the program should read in next.</ul> <ul>longAbbreviations - A list of the full names of the states. To be used to determine which state the program is in to be used to draw the states.</ul> <ul>years - Holds the election years. Used to sort through the election data.</ul> <ul>next - holds the country's name. Used to separate country name from the number of lat/long points.</ul> <ul>distance - holds the latitude point's distance from the center. Used when flipping the map.</ul> <ul>foundTheData - holds the wanted part of the full line of election data. Used when finding the correct country & saving the election data.</ul> <ul>founded - tells the program if its found the proper string. Used when sorting through the election data Strings.</ul> <ul>holdIt - an index for the lat/long arrays. Used whenever the lat/long arrays are used.</ul> <ul>repub - tells the program whether the republican data has been found. Used to determine which election data number the program is on.</ul> <ul>demo - tells the program whether the democratic data has been found. Used to determine which election data number the program is on.</ul> <ul>republican - holds the republican election data. Used to determine the colors of the graph.</ul> <ul>democrat - holds the democratic election data. Used to determine the colors of the graph.</ul> <ul>independent holds the independent election data. Used to determine the colors of the graph.</ul> <ul>bad - tells the program whether the name of the country exists. Used to end a while loop.</ul> <ul>notNamed - tells the program whether it has the name of the country. Used to end the while loop.</ul> <ul>countryDivisor - tells the program whether or not it's found the country name. Used to end a while loop.
- * <p>Methods:  <ul>electionData() - deciphers the election data</ul> <ul>electionData() - finds a certain state in the election data</ul> <ul>countryPoints() - finds a certain county in the election data</ul> <ul>latitude() - reverses the map</ul> <ul>countrySearch() - finds a specific country in the election data & sorts through that information. </ul> <ul>drawStates() - gets the name & number of lat/long points of a state</ul> <ul>cuntryDivisor() - finds a specific county & deciphers the election data.</ul>
+ * <p>Variables:  <ul>fileName - saves the name of the next .txt file. Used when creating a text file.</ul> <ul>holder - the index of the state abbreviation names. Used when determining fileName.</ul> <ul>numberTwo - saves the number of points to be plotted. Used when scrolling through the .txt files.</ul> <ul>abbreviations - A list of the .txt file names of the states. Used to determine which .txt the program should read in next.</ul> <ul>longAbbreviations - A list of the full names of the states. To be used to determine which state the program is in to be used to draw the states.</ul> <ul>years - Holds the election years. Used to sort through the election data.</ul> <ul>next - holds the country's name. Used to separate country name from the number of lat/long points.</ul> <ul>distance - holds the latitude point's distance from the center. Used when flipping the map.</ul> <ul>foundTheData - holds the wanted part of the full line of election data. Used when finding the correct country & saving the election data.</ul> <ul>founded - tells the program if its found the proper string. Used when sorting through the election data Strings.</ul> <ul>holdIt - an index for the lat/long arrays. Used whenever the lat/long arrays are used.</ul> <ul>repub - tells the program whether the republican data has been found. Used to determine which election data number the program is on.</ul> <ul>demo - tells the program whether the democratic data has been found. Used to determine which election data number the program is on.</ul> <ul>republican - holds the republican election data. Used to determine the colors of the graph.</ul> <ul>democrat - holds the democratic election data. Used to determine the colors of the graph.</ul> <ul>independent holds the independent election data. Used to determine the colors of the graph.</ul> <ul>bad - tells the program whether the name of the country exists. Used to end a while loop.</ul> <ul>notNamed - tells the program whether it has the name of the country. Used to end the while loop.</ul> <ul>countryDivisor - tells the program whether or not it's found the country name. Used to end a while loop. <ul>data - holds the election data. Used when figuring out what colors should be drawn.</ul> <ul>newYear - stores which year the program is currently on. Used to hold years in the main method.</ul> <ul>holdThat - holds the name of a specific country. Used to save the string so that hold can continue cycling through</ul>
+ * <p>Methods:  <ul>electionData() - deciphers the election data</ul> <ul>electionData() - finds a certain state in the election data</ul> <ul>latitude() - reverses the map</ul> <ul>countrySearch() - finds a specific country in the election data & sorts through that information. </ul> <ul>drawStates() - gets the name & number of lat/long points of a state</ul> <ul>countryDivisor() - finds a specific county & deciphers the election data.</ul>
  */
  class DataReader {
 
@@ -18,10 +18,10 @@ package map;
     ////////////////////////////////VARIABLES///////////////////////////////////    
     ////////////////////////////////////////////////////////////////////////////
         
-    static String fileName;
-    static int holder = 0;
-    static int numberTwo = 0;
-    static String countryName;
+    String fileName;
+    int holder = 0;
+    int numberTwo = 0;
+    String countryName;
     String [] abbreviations = {"AL.txt", "AR.txt", "AZ.txt", "CA.txt", "CO.txt", "CT.txt", "DC.txt", "DE.txt", "FL.txt", "GA.txt", "IA.txt", "ID.txt", "IL.txt", "IN.txt",  "KS.txt", "KY.txt",
          "LA.txt", "MA.txt", "MD.txt", "ME.txt", "MI.txt", "MN.txt", "MO.txt", "MS.txt", "MT.txt", "NC.txt", "ND.txt", "NE.txt", "NH.txt", "NJ.txt", "NM.txt", "NV.txt", "NY.txt", "OH.txt", "OK.txt",
                  "OR.txt", "PA.txt", "RI.txt", "SC.txt", "SD.txt", "TN.txt", "TX.txt", "UT.txt", "VA.txt", "VT.txt", "WA.txt", "WI.txt", "WV.txt", "WY.txt", "USA.txt"};
@@ -34,24 +34,42 @@ package map;
     String next;
     double distance;
     String foundTheData;
-    boolean founded = false;
+    boolean founded;
     
-    String holdIt = "";
-    boolean repub = true;
-    boolean demo = true;
+    String holdIt;
+    boolean repub;
+    boolean demo;
     
-    static int republican;
-    static int democrat;
-    static int independent;
+    int republican;
+    int democrat;
+    int independent;
     
-    boolean bad = true;
+    boolean bad;
     boolean notNamed;
     
     boolean countryDivisor;
-    static double[] data = new double[4];
+    double[] data;
     int newYear;
-    static String holdThat;
+    String holdThat;
 
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////CONSTRUCTOR/////////////////////////////////    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    public DataReader(){
+        data = new double[4];
+        bad = true;
+        
+        holdIt = "";
+        repub = true;
+        demo = true;
+        
+        founded = false;
+    }//end constructor
     
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////SETTERS/GETTERS/////////////////////////////    
@@ -272,40 +290,6 @@ package map;
     }//end electionData
     
     
-    public void countryPoints(){
-        
-        notNamed = true;
-        
-        while(notNamed){
-            
-            //Checks to see whether or not the next value is a number.
-            if((next.charAt(0)<65)){
-                if(next.charAt(0) == 45){//checks to see if it's a negative number
-                    
-                    //removes the negative sign
-                    for(int i=1; i<next.length(); i++){
-                        next = next + next.charAt(i);
-                    }//end for
-                
-                }//end if
-                
-                numberTwo = Integer.parseInt(next);//Saves the number of points to be plotted.
-                notNamed = false;//Tells the program to move on to drawing the country.
-                
-            }//end if
-
-            //Saves the country name
-            else if((next.charAt(0)>=65) && notNamed){
-                countryName = next;//sets the country name to the pre-saved value
-                notNamed = false;//Tells the program the country has already been named.
-
-            }//end else if
-
-    
-        }//end while      
-    
-    }//end countryPoints
-    
     
     /**
      * Reverses the map
@@ -402,7 +386,7 @@ package map;
                         else if(whole.charAt(e) == 44 && demo == false){
                             independent = Integer.parseInt(holderTwo);//resets HolderTwo
                             data[3] = independent;
-                            System.out.println(data[3]);
+                            //System.out.println(data[3]);
                             holderTwo = "";//resets holderTwo
 
                             //resets the party discerning booleans to their initial state
@@ -474,8 +458,8 @@ package map;
         
         //creates strings to hold the broken down portion of hold.
         String holderTwo = "";
-        holdThat = "";
         String holder = "";
+        holdThat = "";
         int lash = 0;
 
         //finds the country name
@@ -484,74 +468,59 @@ package map;
                 //if so, it runs through the string up until the comma, and sets that as the country name
                 for(int e=0; e<i; e++){
                     holdThat = holdThat + hold.charAt(e);
-                }
+                }//end for
                 
                 i=hold.length()+10;
                 
-            }        //sets booleans to discern republican from democratic from independent.
+            }//end if        
           lash++;      
-        }        
-        boolean repub = true;
-        boolean demo = true;
+        }//end for        
 
-                //seperates the election results by party
-                for(int e=lash; e<hold.length(); e++){
-                    holder = holder + hold.charAt(e);//starts reading in the numbers
-                    
-                    //the first comma becomes republican
-                    if(hold.charAt(e) == 44 && repub){//checks to see if it's encountered a comma
-                        republican = Integer.parseInt(holderTwo);//sets the republican value to the current answer
-                        holderTwo = "";//resets HolderTwo
-                        data[1] = republican;
-                        //System.out.println("repub: " + data[1]);
-                        repub = false;//points the program towards democratic next time
-                        demo = true;
-                    }//end if
+        //seperates the election results by party
+        for(int e=lash; e<hold.length(); e++){
+            holder = holder + hold.charAt(e);//starts reading in the numbers
 
-                    //the second comma becomes democratic
-                    else if(hold.charAt(e) == 44 && demo == true){
-                        democrat = Integer.parseInt(holderTwo);//sets the democratic value to the current answer
-                        //System.out.println("dem: " + democrat);
-                        data[2] = democrat;
-                        //System.out.println("demos: " + data[2]);
-                        holderTwo = "";//resets HolderTwo
-                        demo = false;//points the program towards independent next time
-                    }//end else if
+            //the first comma becomes republican
+            if(hold.charAt(e) == 44 && repub){//checks to see if it's encountered a comma
+                republican = Integer.parseInt(holderTwo);//sets the republican value to the current answer
+                holderTwo = "";//resets HolderTwo
+                data[1] = republican;
+                repub = false;//points the program towards democratic next time
+                demo = true;
+            }//end if
 
-                    //the third comma is independent
-                    else if(hold.charAt(e) == 44 && demo == false){
-                        independent = Integer.parseInt(holderTwo);//resets HolderTwo
-                        data[3] = independent;
-                        System.out.println(data[3]);
-                        holderTwo = "";//resets holderTwo
+            //the second comma becomes democratic
+            else if(hold.charAt(e) == 44 && demo == true){
+                democrat = Integer.parseInt(holderTwo);//sets the democratic value to the current answer
+                //System.out.println("dem: " + democrat);
+                data[2] = democrat;
+                holderTwo = "";//resets HolderTwo
+                demo = false;//points the program towards independent next time
+            }//end else if
 
-                        //resets the party discerning booleans to their initial state
-                        repub = true;
-                        demo = true;
-                        e = hold.length()+1;
-                    }//end else if
+            //the third comma is independent
+            else if(hold.charAt(e) == 44 && demo == false){
+                independent = Integer.parseInt(holderTwo);//resets HolderTwo
+                data[3] = independent;
+                holderTwo = "";//resets holderTwo
 
-                    //no commas have been encountered thus far
-                    else{
-                        holderTwo = holderTwo + hold.charAt(e);//tacks the current number on to the end, & repeats the process
-                    }//end else
+                //resets the party discerning booleans to their initial state
+                repub = true;
+                demo = true;
+                e = hold.length()+1;
+            }//end else if
 
-                }//end for
+            //no commas have been encountered thus far
+            else{
+                holderTwo = holderTwo + hold.charAt(e);//tacks the current number on to the end, & repeats the process
+            }//end else
 
-               // i = hold.length()+1;//ends the for loop
-
-         //   }//end for
-
-        //}//end for
-            //System.out.println(hold);
-                for(int i=0; i<data.length; i++){
-                //System.out.println(i  + " " + data[i]);
-                }
+        }//end for
                 
         hold = holdThat;//sets the original hold to the temporary holder value
-        //System.out.println("hold: " + hold + " holder: "+ holdThat);
 
-        holdThat = "";//resets holder
+        //resets the holders
+        holdThat = "";
         holder = "";
                 
         //checks to see if the program had located the correct country.

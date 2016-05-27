@@ -9,8 +9,6 @@
  * 
  * Future/possible improvements:
  *
- * THE PULL WORKED. CONGRATULATATIONS!
- *
  */
 package map;
 import edu.princeton.cs.introcs.*;
@@ -35,18 +33,18 @@ public class PoliticalMap {
         //Creates the different font sizes for the graph, and normal text
         Font graphFont = new Font("Arial", Font.PLAIN, 12);
         Font normalFont = new Font("Arial", Font.PLAIN, 16);
-        Font indexFont = new Font("Arial", Font.PLAIN, 9);
+        Font indexFont = new Font("Arial", Font.PLAIN, 10);
 
+        //Creates values to be increased/decreased as the program progresses.
         boolean yes = true;
         boolean reset;
         data.setHolder(data.getAbbreviations().length-1);
-        
         data.setNewYear(1960);
         colors.setTruth(true);
         
-        while(yes){
+        while(yes){//Tells the program how far back to repeat.
             
-            boolean runs = true;
+            boolean runs = true;//Tells the program that it can run through the ending loop.
 
             //Causes the program to repeat until all the countries in the states have been built.
             while(data.getHolder() < data.getAbbreviations().length-1){
@@ -122,30 +120,8 @@ public class PoliticalMap {
                                                         
                             if(scanElec.hasNext()){//checks to see if the country has election data
                                 //gets the initial data
-                                //System.out.println("continue");  
-                                String hold = scanElec.next();//holds the full line from the .txt file
-                                if(hold.equals("New")){
-                                    hold = hold + " " + scanElec.next();
-                                }
-                                if(hold.equals("West")){
-                                    hold = hold + " " + scanElec.next();
-                                }
-                                if(hold.equals("North")){
-                                    hold = hold + " " + scanElec.next();
-                                }
-                                if(hold.equals("South")){
-                                    hold = hold + " " + scanElec.next();
-                                }
-                                if(hold.equals("Rhode")){
-                                    hold = hold + " " + scanElec.next();
-                                }
-                                if(hold.equals("District")){
-                                    hold = hold + " " + scanElec.next() + " " + scanElec.next();
-                                }
-                                double[] holder = data.countryDivisor(hold);
-                                StdDraw.setFont(normalFont);
-                                colors.colorChooser(holder, hold);
-                                //System.out.println("dem: " + data.getDemocrat() + " repub: " + data.getRepublican() + " ind: " + data.getIndependent());
+                                String hold = scanElec.nextLine();//holds the full line from the .txt file
+                                colors.colorChooser(data.countryDivisor(hold), hold);//determines the colors to be drawn
                                
                             }//end if
 
@@ -154,9 +130,7 @@ public class PoliticalMap {
                             }//end else
 
                         }//end while
-                        
-                        //System.out.println("skip");  
-                        
+                                                
                         //Sets up the data to draw the shape
                         if(keepGoing == true){
 
@@ -168,21 +142,17 @@ public class PoliticalMap {
                                 //Puts the data into the arrays for the map, proportionate to the size
                                 double lat = Math.abs(((scan.nextDouble()+50)/62)+0.26);
                                 
-                                lat = data.latitude(lat);
+                                lat = data.latitude(lat);//flips the map
                                 
                                 latitude[i] = lat;//Repositions latitude to a good place on the map
                                 longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);//Retrieves and repositions longitude on the map
                                                                 
                             }//end for
                             
-                            //System.out.println(colors.getColor(1) + " " + colors.getColor(2) + " " + colors.getColor(3));
-                            //System.out.println((Math.round(colors.getColor(1))) + " " + (Math.round(colors.getColor(2))) + " " + (Math.round(colors.getColor(3))));
                             int republican = (int)(Math.round(colors.getColor(1)));
                             int democrat = (int)(Math.round(colors.getColor(2)));
                             int independent = (int)(Math.round(colors.getColor(3)));
-                            
-                            //System.out.println(republican + "," + independent + "," + democrat);
-                            
+                                                        
                             Color color = new Color(republican, independent, democrat);
                             StdDraw.setPenColor(color);
                             
@@ -190,22 +160,24 @@ public class PoliticalMap {
                             colors.setColor(2, 0);
                             colors.setColor(1, 0);
                             
-                            if(graph.getCountries()){
+                            if(graph.getCountries()){//checks to see if the counties are being drawn
                                 if(data.getHolder() == data.getAbbreviations().length-1){
                                     
+                                    //Draws the outline of the USA darker than the rest of the map
                                     StdDraw.setPenColor(StdDraw.BLACK);
                                     StdDraw.setPenRadius(0.0009);
                                     StdDraw.polygon(latitude, longitude);//Draws the shape
                                     
-                                }
+                                }//end if
                                 else{
                                     StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
-                                }
+                                }//end else
                                 
-                            }
-                            else{
+                            }//end if
+                            
+                            else{//If only the outline of the USA is being drawn
                                 StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
-                            }
+                            }//end else
                             
                             data.setNumberTwo(0);//Resets the number of states to be drawn to zero.
                             
@@ -257,20 +229,23 @@ public class PoliticalMap {
                 StdDraw.setPenColor(StdDraw.LIGHT_GRAY);//Changes the color of the pen for the box.
                 StdDraw.filledSquare(x, y, .03);//Creates a square at the appropriate place
                 
+                //Shows which button the user is on
                 if(colors.getBox(1)+.033 > y && colors.getBox(1)-.033<y){
-                    StdDraw.setPenColor(StdDraw.BOOK_BLUE);
-                }
-                else if(colors.getTruth()){
-                    StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+                    StdDraw.setPenColor(StdDraw.BOOK_BLUE);//Changes the color of the current button's text
+                }//end if
+                
+                else if(colors.getTruth()){//if this is the first time the map is being drawn
+                    StdDraw.setPenColor(StdDraw.BOOK_BLUE);//changes the color of the first button's text
                     colors.setTruth(false);
-                }
-                else{
+                }//end else if
+                
+                else{//makes the rest of the buttons black
                     StdDraw.setPenColor(StdDraw.BLACK);
-                }
+                }//end else
                 
                 StdDraw.text(x, y, year);//Draws the text
                 
-                StdDraw.setPenColor(StdDraw.BLACK);
+                StdDraw.setPenColor(StdDraw.BLACK);//Resets the pen color to it's default
 
             }//end else
 
@@ -279,6 +254,8 @@ public class PoliticalMap {
             //Creates holders for the different doubles the program needs to run
             double mX;
             double mY;
+            
+            colors.setTruth(true);
 
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////L'sAF//////////////////////////////////////////    
@@ -325,10 +302,8 @@ public class PoliticalMap {
                             //Realizes that's the proper button
                             if(mY<= y+.033 && mY>=y-.033){
                                 data.setNewYear(Integer.parseInt(data.getYears(i)));
-                                StdDraw.clear();
-                                colors.setBox(0, mX);
-                                colors.setBox(1, mY);
-                                colors.setBox(2, .04);
+                                StdDraw.clear();//Clears the map
+                                colors.setBox(1, mY);//tells the program which button the user is on
                                 
                                 runs = false;//ends the loop, so the program will redraw the map
 
@@ -362,7 +337,7 @@ public class PoliticalMap {
                                 if(y == 0.039999999999999536){//tells the user to only draw the states.
                                     runs = false;//ends the loop, so the program will redraw the map
 
-                                    graph.setCountries(false);
+                                    graph.setCountries(false);//Tells the program not to draw the buttons any more
                                     data.setHolder(data.getAbbreviations().length-1);//Moves the array holding the states back so it will redraw the USA
 
                                 }//end if
@@ -370,14 +345,14 @@ public class PoliticalMap {
                                 else{
                                     runs = false;//ends the loop, so the program will redraw the map
 
-                                    graph.setCountries(true);
+                                    graph.setCountries(true);//tells the map to draw the countries.
                                     data.setHolder(0);//Moves the array holding the states back to the beginning so it will redraw the entire map
 
                                 }//end else
 
                             }//end if
 
-                            y = y+.07;
+                            y = y+.07;//increments the y variable
 
                         }//end for
                                                 
@@ -482,13 +457,13 @@ public class PoliticalMap {
                             //checks to see if the point is present in the graph
                             if(graph.getNotPresent() == false){//if so:
                                 
+                                //Gets the names of the oddly slanted graphs.
                                 if(graph.getTrueTitle().equals("California") || graph.getTrueTitle().equals("Virginia")){
-                                    graph.setMaybePresent(true);
-                                    graph.setTrueTitle(graph.getTitle());
+                                    graph.setMaybePresent(true);//Says that if no other state claims the point, it's theirs
+                                    graph.setTrueTitle(graph.getTitle());//replaces the old state name to be compared against next time
                                 }//end if
                                                                                                 
                                 else{
-                                    
                                     z = graph.getGo()+10;//ends the loop for the states
                                     
                                     //checks to see if the point is in the same state as before
@@ -502,7 +477,7 @@ public class PoliticalMap {
                                         reset = true;//tells the graph to redraw itself
                                     }//end else
                                     
-                                    graph.setMaybePresent(false);
+                                    graph.setMaybePresent(false);//Tells the graph the point wasn't in the two odd states
                                 }//end else
                                 
                             }//end if
@@ -521,7 +496,7 @@ public class PoliticalMap {
                                 
                                 graph.setTitle(scanIt.nextLine());//sets the new title for the new state
                                 
-                                if(graph.getMaybePresent() == true){
+                                if(graph.getMaybePresent() == true){//checks to see if it's CA/VA
                                     
                                 }//end if
                                 else{
@@ -550,6 +525,7 @@ public class PoliticalMap {
 
                         }//end for # of states
 
+                        //Checks to see if CA/VA were already drawn
                         if(graph.getMaybePresent() == true){
                             graph.setMaybePresent(false);
                         
@@ -569,7 +545,14 @@ public class PoliticalMap {
                             StdDraw.setFont(graphFont);//Changes to font to the graph's font
                             graph.resetGraph(graphX, graphY, graphSize);//redraws the entire graph
                             
-
+                            if(colors.getTruth()){
+                                //Draws the graph title for the only time
+                                StdDraw.setFont(graphFont);
+                                StdDraw.text(graphX-.02, graphY+.133, "The Election Data vs. The Number of Voters over the Years");//Writes the name of the state
+                                StdDraw.setFont(normalFont);
+                                colors.setTruth(false);
+                            }
+                            
                         }//end if reset
 
                         if(reset){//checks to see if the graph was redrawn
@@ -607,22 +590,19 @@ public class PoliticalMap {
 
                                 StdDraw.setFont(graphFont);//sets the text style to fit the graph
 
-                                ////////////////////////////////////////////////
-                                ////////////////////////////////////////////////
-                                if(q==13){
+                                if(q==13){//Tells the program it's on it's final loop & to draw the points
                                     graph.setNotFixed(true);
                                 }//end if
-                                //System.out.println(data.getIndependent());
-                                graph.ratioTest(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, 1960, indexFont, graphFont);//turns the data into points to be plotted on the graph
-                                graph.setNotFixed(false);
-                                StdDraw.setFont(graphFont);
-                                ////////////////////////////////////////////////
-                                ////////////////////////////////////////////////
+                                
+                                //Gets the points for the graph
+                                graph.ratio(((double)data.getRepublican()), ((double)data.getDemocrat()), ((double)data.getIndependent()), graphX, graphY, graphSize, 1960, indexFont, graphFont);//turns the data into points to be plotted on the graph
+                                graph.setNotFixed(false);//Resets notFixed
+                                StdDraw.setFont(graphFont);//Changes the font
                                 
                                 //Sets the pen & text back to normal settings
                                 StdDraw.setPenColor(StdDraw.BLACK);
                                 StdDraw.setPenRadius(0.0005);
-                                //StdDraw.setFont(normalFont);
+
                             }//end for
                             StdDraw.setFont(normalFont);//Changes the font back to normal
 
