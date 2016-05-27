@@ -29,6 +29,7 @@ public class PoliticalMap {
         DataReader data = new DataReader();
         GraphingFunctionality graph = new GraphingFunctionality();
         Colors colors = new Colors();
+        DrawIndividualStates draw = new DrawIndividualStates();
         
         //Creates the different font sizes for the graph, and normal text
         Font graphFont = new Font("Arial", Font.PLAIN, 12);
@@ -44,7 +45,10 @@ public class PoliticalMap {
         
         while(yes){//Tells the program how far back to repeat.
             
-            data.setFirst(true);
+            draw.setFirst(true);
+            if(draw.getCleared() == false){
+                StdDraw.text(.8, .97, "Click on a state to enlarge it.");
+            }
             
             boolean runs = true;//Tells the program that it can run through the ending loop.
 
@@ -77,6 +81,8 @@ public class PoliticalMap {
                     for(int z=0; z<number; z++){    
                         //Discards the name of the country, and the abbreviation of the state 
 
+                        //data.setFirst(true);
+                        
                         boolean bad = true;//Tells the program there are still non-coordinites to be gotten rid of
                         String next;//Used to hold the non-coordinates
                         boolean notNamed = true;
@@ -141,82 +147,83 @@ public class PoliticalMap {
                             //Creates arrays to hold the latitude and longitude
                             double[] latitude = new double[data.getNumberTwo()];
                             double[] longitude = new double[data.getNumberTwo()];
-
-                            double lat;
-                            double longi;
-                                                        
-                            data.setFirst(true);
-                            
+                                         
                             for(int i=0; i<data.getNumberTwo(); i++){
-                                /*if(data.getCleared() == true){
-                                        boolean notTrue = true;
-                                        double holdLat = scan.nextDouble();
-                                        double holdLong = scan.nextDouble();
-                                                                                     
-                                        /*if(i == 0){
-                                            data.setRelativeNumber(.2);
-                                            data.setRelativeyNumber(.5);
-                                            while(notTrue){
+                                if(draw.getCleared() == true){
+                                                       
+                                double holdLat = Math.abs(scan.nextDouble());
+                                double holdLong = Math.abs(scan.nextDouble());
 
-                                                data.setLati(Math.abs(((holdLat+50)/62)+data.getRelativeNumber()));
-                                                data.setLongi(Math.abs(((holdLong+50)/25)-data.getRelativeyNumber()));
-                                        
-                                        
-                                                if(data.getLati() < .9 && data.getLati() > .1){
+                                    if(draw.getFirst()){
+                                        draw.setRelativeNumber(0.6);
+                                        draw.setRelativeyNumber(0.5);
+                                        boolean notTrue = true;
+                                        while(notTrue){
+
+                                            draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*2)+.26-draw.getRelativeNumber()));
+                                            draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*2)-2.98-draw.getRelativeyNumber()));
+
+                                            if(draw.getLati() < .59 && draw.getLati() > .5){
+                                                notTrue = false;
+                                            }
+                                            else{
+                                                draw.setRelativeNumber(draw.getRelativeNumber() + .05);
+                                            }
+
+                                            if(draw.getLongi() < .59 && draw.getLongi() > .5){
+                                                if(notTrue == false){
                                                     notTrue = false;
                                                 }
-                                                else{
-                                                    data.setRelativeNumber(data.getRelativeNumber() + .1);
-                                                }
-
-                                                if(data.getLongi() < .9 && data.getLongi() > .1){
-                                                    if(notTrue == false){
-                                                        notTrue = false;
-                                                    }
-                                                }
-                                                else{
-                                                    data.setRelativeyNumber(data.getRelativeyNumber() +.1);
-                                                    notTrue = true;
-                                                }
-
-                                                //System.out.println(i + " " + data.getRelativeyNumber() + " " + data.getLongi());
-                                                
                                             }
-                                                                                        
-                                            data.setFirst(false);
-                                                    
+                                            else{
+                                                draw.setRelativeyNumber(draw.getRelativeyNumber() +.05);
+                                                notTrue = true;
+                                            }
+
                                         }
-                                        
-                                        
-                                        
-                                        data.setLati(Math.abs(((holdLat+50)/62)+data.getRelativeNumber()));
-                                        data.setLongi(Math.abs(((holdLong+50)/25)-data.getRelativeyNumber()));
-                                        
-                                        //System.out.println(i + "next" + data.getRelativeyNumber() + "  "  + data.getLongi());
-                                        
-                                        //System.out.println(i + "one: " + data.getLati() + " " + data.getLongi());
-                                        
-                                        //System.out.println(i + "  " + data.getLati());
-                                        //System.out.println(i + "  " + data.getLongi());
-                                        //System.out.println(data.getNumberTwo());
-                                        
+
+                                        draw.setFirst(false);
+
+                                    }
+
+                                    draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*2)+.26-draw.getRelativeNumber()));
+                                    draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*2)-2.98-draw.getRelativeyNumber()));
+                                    
+                                    draw.findBoundingBox(draw.getLati(), draw.getLongi());
+                                       
                                 }//end if
                                 
-                                else{*/
+                                else{
                                     //Puts the data into the arrays for the map, proportionate to the size
-                                    data.setLati(Math.abs(((scan.nextDouble()+50)/62)+0.26));
-                                    data.setLongi(Math.abs(((scan.nextDouble()+50)/25)-2.98));
-                               // }//end else
+                                    draw.setLati(Math.abs(((scan.nextDouble()+50)/62)+0.26));
+                                    draw.setLongi(Math.abs(((scan.nextDouble()+50)/25)-2.98));
+                                    
+                                }//end else
                                 
-                                data.setLati(data.latitude(data.getLati()));//flips the map
-                                //System.out.println(i + "two: " + data.getLati());
+                                draw.setLati(data.latitude(draw.getLati()));//flips the map
+                                                                
+                                latitude[i] = draw.getLati();//Repositions latitude to a good place on the map
+                                longitude[i] = draw.getLongi();//Retrieves and repositions longitude on the map
                                 
-                                latitude[i] = data.getLati();//Repositions latitude to a good place on the map
-                                longitude[i] = data.getLongi();//Retrieves and repositions longitude on the map
-                                
+                                if(i==data.getNumberTwo()-1 && draw.getCleared() == true){
+                                    if(draw.checkBoundingBox(latitude, longitude) == true){
+                                        
+                                    }
+                                    else{
+                                        draw.improveLocation(latitude, longitude);
+                                        
+                                        
+                                    }
+                                }
+                                                                
                             }//end for
-                                                        
                             
+                            if(draw.getCleared() && draw.getOkay()){                            
+                                longitude = draw.getLonge();
+                                latitude = draw.getLat();
+                            }                                       
+                            
+                            //System.out.println(longitude[1] + " " + draw.getLonge());
                             
                             int republican = (int)(Math.round(colors.getColor(1)));
                             int democrat = (int)(Math.round(colors.getColor(2)));
@@ -256,9 +263,9 @@ public class PoliticalMap {
                     }//end for
 
                     
-                    if(data.getCleared() == true){
+                    if(draw.getCleared() == true){
                         data.setHolder(data.getAbbreviations().length);
-                        data.setCleared(false);
+                        draw.setCleared(false);
                     }//end if
 
                 }//end while
@@ -434,14 +441,14 @@ public class PoliticalMap {
                                                 
                     }//end else if
                     
-                    if(data.getCleared() == false && runs == true){
+                    if(draw.getCleared() == false && runs == true){
                         if(mX <=.935 || mX<.75 && mY>.35){
                             for(int i=0; i<50; i++){
                                 if(data.getLongAbbreviations(i).equals(graph.getTrueTitle())){
                                     StdDraw.clear();
                                     data.setHolder(i);
                                     i = 60;
-                                    data.setCleared(true);
+                                    draw.setCleared(true);
                                     runs = false;
 
                                 }//end if
