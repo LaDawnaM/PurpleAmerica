@@ -59,7 +59,7 @@ package map;
     ////////////////////////////////////////////////////////////////////////////
     
     
-    
+    //Creates a blueprint for an instance of the dataReader class.
     public DataReader(){
         data = new double[4];
         bad = true;

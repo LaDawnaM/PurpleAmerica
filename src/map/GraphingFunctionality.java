@@ -84,6 +84,7 @@ public class GraphingFunctionality {
     ////////////////////////////////////////////////////////////////////////////
     
     
+    //Creates a blueprint for an instance of the graphing class.
     public GraphingFunctionality(){
         republicanElection = new double[14];
         democratElection = new double[14];

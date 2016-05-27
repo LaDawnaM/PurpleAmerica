@@ -1,13 +1,13 @@
 /*
  * Political Map Project
- * Name: 
- * Block:
+ * Name: LaDawna McEnhimer, Forest Kim, Jacob Lesley
+ * Block: 6
  * 
- * Program Purpose:
+ * Program Purpose: This program draws the United states, and then uses a collection of data files to color the map in based on the election data from that year.
  *
- * Algorithm:
+ * Algorithm: 1. Start. 2. Create files to read in the map. 3. Create files to read in the election data. 4. Decipher the election data. 5. Use the election data and determine new colors to use to draw the map. 6. Decipher the information to draw the map. 7. Fill the map in with the colors of the election data. 8. Repeat steps 4-7 until all desired states/countires are drawn. 9. Create filled in squares numbered with the election years. 10. If a user presses a button, repeat steps 4-10 using that year's election data. 11. Draw a graph plotting every year's election data for the state the user is in. 12. Repeat steps 1-11 until the user closes the program. 13. End.
  * 
- * Future/possible improvements:
+ * Future/possible improvements: Making it so that the graph can plot the coordinates from the counties' election data, as well.
  *
  */
 package map;
@@ -121,7 +121,7 @@ public class PoliticalMap {
                             if(scanElec.hasNext()){//checks to see if the country has election data
                                 //gets the initial data
                                 String hold = scanElec.nextLine();//holds the full line from the .txt file
-                                colors.colorChooser(data.countryDivisor(hold), hold);//determines the colors to be drawn
+                                colors.colorChooser(data.countryDivisor(hold));//determines the colors to be drawn
                                
                             }//end if
 
@@ -254,8 +254,6 @@ public class PoliticalMap {
             //Creates holders for the different doubles the program needs to run
             double mX;
             double mY;
-            
-            colors.setTruth(true);
 
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////L'sAF//////////////////////////////////////////    
@@ -273,6 +271,8 @@ public class PoliticalMap {
 
                 reset = true;//Tells the program to draw the box.
 
+                boolean firstTime = true;
+                
 ////////////////////////////////////////////////////////////////////////////////  
 ////////////////////////////////eL'sAF//////////////////////////////////////////    
 ////////////////////////////////////////////////////////////////////////////////
@@ -359,13 +359,6 @@ public class PoliticalMap {
                     }//end else if
 
                 }//end if
-                
-////////////////////////////////////////////////////////////////////////////////  
-////////////////////////////////L'sAF//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////  
-////////////////////////////////L'sAF//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
                
                 if(runs){//Makes sure the program isn't being told to redraw the map.
                     
@@ -539,20 +532,23 @@ public class PoliticalMap {
                                 reset = true;//tells the graph to redraw itself
                             }//end else
                                     
-                        }
+                        }//end if
+                        
                         //Checks to see if the program needs to redraw the graph
                         if(reset){ 
                             StdDraw.setFont(graphFont);//Changes to font to the graph's font
                             graph.resetGraph(graphX, graphY, graphSize);//redraws the entire graph
                             
-                            if(colors.getTruth()){
+                            //Tells the program this is the first time its drawing the graph
+                            if(firstTime){
                                 //Draws the graph title for the only time
                                 StdDraw.setFont(graphFont);
                                 StdDraw.text(graphX-.02, graphY+.133, "The Election Data vs. The Number of Voters over the Years");//Writes the name of the state
                                 StdDraw.setFont(normalFont);
-                                colors.setTruth(false);
-                            }
+                                firstTime = false;
+                            }//end if
                             
+
                         }//end if reset
 
                         if(reset){//checks to see if the graph was redrawn
@@ -613,13 +609,7 @@ public class PoliticalMap {
                         }//end if  
                     
                     }//end if runs
-////////////////////////////////////////////////////////////////////////////////  
-////////////////////////////////eL'sAF//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////  
-////////////////////////////////eL'sAF//////////////////////////////////////////    
-////////////////////////////////////////////////////////////////////////////////
-               
+
             }//end while
     
         }//end while
