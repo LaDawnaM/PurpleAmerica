@@ -6,14 +6,15 @@
 
 package map;
 
-//import edu.princeton.cs.introcs.StdDraw;
-
 import edu.princeton.cs.introcs.StdDraw;
+import java.awt.Font;
 
 
-/**
- *
- * @author hcps-mcenhimlr
+/** 
+ * LaDawna McEnhimer
+ * <p>GraphingFunctionality
+ * <p>Variables: <ul>someLeft - tells the graph if there's something left in the String. Used to end a loop. </ul> <ul>goAhead - tells the program if the beginning words have been discarded. Used to end a loop.</ul> <ul>holdYear - holds the year the program is currently on. Used as an index.</ul> <ul>holdTitles - holds the String for the election data. Used to sort through the election data.</ul> <ul> savedTitle - holds the previous name of the country the mouse is in. Used to determine whether or not to redraw the map. </ul> <ul>independent - holds the independent data. Used to access how many independent votes there are. </ul> <ul>republican - holds the republican data. Used to access how many republican votes there are.</ul> <ul>democrat - holds the democratic data. Used to access how many democratic votes there are.</ul> <ul>longitude - holds the longitude points. Used to draw the graph. </ul> <ul>latitude - holds the latitude points. Used to draw the graph.</ul> <ul>numberTwo - holds the number of countries to be cycled through.</ul> <ul>holdIt - holds the index of the lat/long arrays. Used as a placeholder. </ul> <ul>xLargest - holds the largest x value. Used to determine the state's bounding box.</ul> <ul>yLargest - holds the largest y value. Used to determine the state's bounding box.</ul> <ul>xSmallest - holds the smallest x value. Used to determine the state's bounding box.</ul><ul>ySmallest - holds the smallest y value. Used to determine the state's bounding box.</ul><ul>xTrueLargest - holds the largest x value closest to the point. Used to determine the state's exact border.</ul><ul>xTrueSmallest - holds the smallest x value closest to the point. Used to determine the state's exact border.</ul><ul>holdYUpper - holds the y value for the larger x closest value. Used to determine the state's exact border.</ul><ul>holdYLower - holds the y value for the smaller x closest value. Used to determine the state's exact border.</ul><ul>notPresent - whether or not a point is within a state. Used to determine if a point is in a state</ul><ul>longHalf - the longitudinal half of a state</ul><ul>ratio - returned at the end of the ratio method</ul><ul>xPos - the base lat position. Used to base the points off of.</ul><ul>yPos - the base long position. Used to base the points off of.</ul><ul>trueTitle - the new name of the state them mouse is in. Used to determine whether or not to draw a state.</ul><ul>finalRound - the final time going through a method. Used to make a loop happen.</ul><ul>countries - if the program is drawing the counties. Used to determine pen size, to fill the bordering polygons, etc.</ul><ul>title - the current name of the state. Used to hold the state until certain if the point is inside.</ul><ul>go - the total # of states in a .txt. Used to determine how many times to loop through.</ul><ul>notFixed - tells the graph it's on its last loop. Used to start a while loop.</ul><ul>relativeNumber - finds a number to divide the election data by. Used to make it fit on the graph</ul><ul>republicanElection - holds the republican data. Used when plotting the points</ul><ul>democratElection - holds the democratic data. Used when plotting the points</ul><ul>independentElection - holds the independent data. Used when plotting the points</ul><ul>holdYearNumber - holds the current year for the election. Used as an index</ul><ul>maybePresent - checks to see if it's one of the odd graphs. Tells the program whether or not to continue checking states for the point.</ul><ul>largest - gets the largest number of the data. Used to determine the graph's y-index.</ul><ul>length - the number of people voting in one place. Used to create the graph's y-index.</ul><ul>devisedNumber - the index of the graph. Used to find it.</ul>
+ * <p>Methods: <ul>decipherIntro() - figures out the first line of the electionData. </ul> <ul>prepFindLocation() - deciphers lat/long data & splits it up into arrays.</ul> <ul>findLocation() - finds the specific state a point is in.</ul> <ul>ratio() - gets the election data points plotted.</ul> <ul>resetGraph() - redraws the basic features of the graph.</ul>
  */
 public class GraphingFunctionality {
 
@@ -26,51 +27,80 @@ public class GraphingFunctionality {
     
     String holdYear;
     String holdTitles;
-    static String savedTitle = "";
+    String savedTitle;
     
-    String independent = "";
-    String republican = "";
-    String democrat = "";
+    String independent;
+    String republican;
+    String democrat;
     
-    static double[] longitude;
-    static double[] latitude;
-    static int numberTwo;
-    static int holdIt;
+    double[] longitude;
+    double[] latitude;
+    int numberTwo;
+    int holdIt;
     
-    static double xLargest;
-    static double yLargest;
-    static double xSmallest;
-    static double ySmallest;
+    double xLargest;
+    double yLargest;
+    double xSmallest;
+    double ySmallest;
     
-    static double xTrueLargest;
-    static double yTrueLargest;
-    static double xTrueSmallest;
-    static double yTrueSmallest;
+    double xTrueLargest;
+    double xTrueSmallest;
     
-    static double holdYUpper;
-    static double holdYLower;
+    double holdYUpper;
+    double holdYLower;
 
-    static boolean notPresent = false;
+    boolean notPresent = false;
     
-    double latHalf;
     double longHalf;
-    
     double ratio;
-    double total;
     
-    double republicanFixed;
-    double democratFixed;
-    double independentFixed;
+    double xPos;
+    double yPos;
+    String trueTitle;
+    boolean finalRound;    
+    boolean countries;
     
-    static double xPos;
-    static String trueTitle = "Alabama";
-    static boolean finalRound;    
-    static boolean countries;
+    String title;
+    int go;
     
-    static String title;
-    static int go;
+    boolean notFixed;
+    int relativeNumber;
+    
+    double[] republicanElection;
+    double[] democratElection;
+    double[] independentElection;
+    int holdYearNumber = 0;
+
+    boolean maybePresent;
+    double largest;
+    String length;
+    
+    String devisedNumber;
 
     
+    
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////CONSTRUCTOR/////////////////////////////////    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
+    //Creates a blueprint for an instance of the graphing class.
+    public GraphingFunctionality(){
+        republicanElection = new double[14];
+        democratElection = new double[14];
+        independentElection = new double[14];
+        
+        notFixed = false;
+        trueTitle = "Virginia";
+        
+        savedTitle = "";
+        independent = "";
+        republican = "";
+        democrat = "";
+    
+    }//end constructor
+    
+        
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////SETTERS/GETTERS/////////////////////////////    
     ////////////////////////////////////////////////////////////////////////////
@@ -139,51 +169,71 @@ public class GraphingFunctionality {
     
     public void setXTrueSmallest(int s){
         xTrueSmallest = s;
-    }
+    }//end xTrueSmallest
 
     public void setXTrueLargest(int s){
         xTrueLargest = s;
-    }
+    }//end setXTrueLargest
     
     public boolean getNotPresent(){
         return notPresent;
-    }
+    }//end getNotPresent
     
     public void setNotPresent(boolean p){
         notPresent = p;
-    }
+    }//end setNorPresent
     
     public void setSavedTitles(String s){
         savedTitle = s;
-    }
+    }//end setSavedTitles
     
     public String getSavedTitles(){
         return savedTitle;
-    }
+    }//end getSavedTitles
     
     public void setXPos(double s){
         xPos = Math.abs(s-.92);
-    }
+    }//end setXPos
+    
+    public void setYPos(double y){
+        yPos = y;
+    }//end setYPos
 
     public String getTrueTitle(){
         return trueTitle;
-    }
+    }//end getTrueTitle
     
     public void setTrueTitle(String t){
         trueTitle = t;
-    }
+    }//end setTrueTitle
    
     public void setFinalRound(boolean d){
         finalRound = d;
-    }
+    }//end setFinalRound
     
     public void setCountries(boolean c){
         countries = c;
-    }
+    }//end setCountries
     
     public boolean getCountries(){
         return countries;
-    }
+    }//end getCountries
+    
+    public void setNotFixed(boolean n){
+        notFixed = n;
+    }//end setNotFixed
+    
+    public void setMaybePresent(boolean m){
+        maybePresent = m;
+    }//end setMaybePresent
+    
+    public boolean getMaybePresent(){
+        return maybePresent;
+    }//end getMaybePresent
+    
+    public void setHoldYUpper(double h){
+        holdYUpper = h;
+    }//end setHoldYUpper
     
     ////////////////////////////////////////////////////////////////////////////    
     ////////////////////////////////METHODS/////////////////////////////////////    
@@ -191,7 +241,7 @@ public class GraphingFunctionality {
     
     
     /**
-     * Deciphers the first line of the election data file. Determines which presidents were running for which party.
+     * Deciphers & saves the first line of the election data file. Determines which presidents were running for which party.
      * @param intro The line holding the election data
      */
     public void decipherIntro(String intro){
@@ -314,10 +364,6 @@ public class GraphingFunctionality {
      */
     public void findLocation(double xVal, double yVal, String title){
 
-        //gets the central-most latitude of the state
-        latHalf = (xLargest - xSmallest)/2;
-        latHalf = latHalf + xSmallest;
-
         //gets the central-most longitude of the state
         longHalf = (yLargest - ySmallest)/2;
         longHalf = longHalf + ySmallest;
@@ -357,24 +403,7 @@ public class GraphingFunctionality {
 
         }//end else if
 
-
-
-       /* if(longitude[holdIt] > yVal){//if the current longitude is larger than the y value
-
-            if(longitude[holdIt] < yTrueLargest){//if the longitude is smaller than the current closest value
-                yTrueLargest = longitude[holdIt];//set the current longitude to the closest value
-            }//end if
-
-        }//end if
-
-        else if(longitude[holdIt] < yVal){//if the current longitude is smaller than the y value
-
-            if(longitude[holdIt] > yTrueSmallest){//if the longitude is larger than the current closest value
-                yTrueSmallest = longitude[holdIt];//set the current longitude to the closest value
-            }//end if
-
-        }//end else if*/
-
+        
         //checks to see if the program is looping through for the final time
         if(finalRound){
            finalRound = false;//resets the final-time boolean
@@ -385,7 +414,7 @@ public class GraphingFunctionality {
 
                     if((xVal < xTrueLargest) && (xVal >xTrueSmallest)){//checks to see if the xValue is between the largest & smallest points
                         if((yVal > holdYLower && yVal < holdYUpper)){//checks to see if the yValue is between the highest & lowest points closest to it
-                            trueTitle = title;//replaces the new title 
+                                trueTitle = title;
                         }//end if
 
                         else{
@@ -414,51 +443,171 @@ public class GraphingFunctionality {
         }//end if
 
     }//end findLocation
-        
+    
     
     
     /**
      * It retrieves the election data, and makes it small enough to fit within the borders of the map. It draws all of the points on the graph, as well as the years beneath them, and a map legend.
-     * @param republican The republican election data
-     * @param democrat The democratic election data
-     * @param independent The independent election data
+     * @param republicanData The republican election data
+     * @param democratData The democratic election data
+     * @param independentData The independent election data
      * @param x The latitude position of the graph.
      * @param y The longitude position of the graph
      * @param graphSize The size of the graph
      * @param elecYear The current election year
+     * @param indexFont The font for the index of the graph
+     * @param graphFont The font for the rest of the graph
      * @return 
      */
-    public double ratio(double republican, double democrat, double independent, double x, double y, double graphSize, String elecYear){
-        total = republican+democrat+independent;//gets the total number of votes
+    public double ratio(double republicanData, double democratData, double independentData, double x, double y, double graphSize, int elecYear, Font indexFont, Font graphFont){
+        devisedNumber = "";
         
+        
+        republicanElection[holdYearNumber] = republicanData;
+        democratElection[holdYearNumber] = democratData;
+        independentElection[holdYearNumber] = independentData;
+        holdYearNumber++;
+                        
+        if(republicanData > largest){
+            largest = republicanData;
+        }//end if
+        if(democratData > largest){
+            largest = democratData;
+        }//end if
+        if(independentData > largest){
+            largest = independentData;
+        }//end if 
+                
         //sets the election data to a number less than one to fit on the graph
-        republicanFixed = republican/45000000;
-        democratFixed = democrat/45000000;
-        independentFixed = independent/45000000;
-        
-        xPos = xPos+.009;//sets the initial position of the points
-        
-        StdDraw.setPenRadius(.005);//increases the pen size
-        
-        //Draws the republican point
-        StdDraw.setPenColor(StdDraw.RED);
-        StdDraw.point((xPos), (y-.043)+republicanFixed);
-        
-        //Draws the democratic point
-        StdDraw.setPenColor(StdDraw.BLUE);
-        StdDraw.point((xPos), (y-.043)+democratFixed);
-        
-        //draws the independent point
-        StdDraw.setPenColor(StdDraw.GREEN);
-        StdDraw.point((xPos), (y-.043)+independentFixed);
-        
-        //sets the pen back to normal settings
-        StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(.0005);
-        
-        StdDraw.text(xPos, (y-.043)-.04, elecYear, 90);//writes the election years at the bottom
-               
-        return ratio;//??? Breaks without it...
+        if(notFixed){
+            
+            //Resets relativeNumber & tells the graph to go
+            relativeNumber = 1000000;
+            goAhead = true;
+            
+            //Gets the numbers below a certain value
+            while(goAhead){                
+                if(largest/relativeNumber < .145){
+                    //Ends the loops
+                    notFixed = false;
+                    goAhead = false;
+                }//end if
+                
+                else{//otherwise, it increments relativeNumber
+                    relativeNumber = relativeNumber+100000;
+                }//end else
+                
+            }//end while
+
+            devisedNumber = devisedNumber + Integer.toString(relativeNumber).charAt(0);//Finds the index of the graph 
+
+            for(int i=0; i<republicanElection.length; i++){   
+
+                xPos = xPos+.009;//sets the initial position of the points
+                
+                //increases the pen size & font
+                StdDraw.setPenRadius(.005);
+                StdDraw.setFont(graphFont);
+
+                //Draws the republican point
+                StdDraw.setPenColor(StdDraw.RED);
+                StdDraw.point((xPos), (y-.043)+(republicanElection[i]/relativeNumber));
+
+                //Draws the democratic point
+                StdDraw.setPenColor(StdDraw.BLUE);
+                StdDraw.point((xPos), (y-.043)+(democratElection[i]/relativeNumber));
+
+                //draws the independent point
+                StdDraw.setPenColor(0, 160, 0);
+                StdDraw.point((xPos), (y-.043)+(independentElection[i]/relativeNumber));
+                
+                //sets the pen back to normal settings
+                StdDraw.setPenColor(StdDraw.BLACK);
+                StdDraw.setPenRadius(.0005);
+
+                StdDraw.text(xPos, (y-.043)-.04, String.valueOf(elecYear), 90);//writes the election years at the bottom
+                elecYear = elecYear + 4;//increments the year
+                
+                StdDraw.setFont(indexFont);//Makes the graph font small for the index
+                if((republicanElection.length - i) <= Integer.valueOf(devisedNumber)+1){//checks to see if the graph index size needs to be incremented
+                    StdDraw.text(.102, yPos, (String.valueOf(Math.abs(Integer.valueOf(devisedNumber)+1-(republicanElection.length-i)))));//writes the election years at the bottom
+                    if(Integer.valueOf(devisedNumber) < 8){//checks to see if the graph index size needs to be incremented
+                        
+                        //Finds the number of necessary points & changes the index accordingly
+                        if(Integer.valueOf(devisedNumber) == 7){
+                            yPos = yPos + .023;
+                        }//end if
+                        
+                        //Finds the number of necessary points & changes the index accordingly
+                        if(Integer.valueOf(devisedNumber) == 6){
+                            yPos = yPos + .027;
+                        }//end if
+                        
+                        //Finds the number of necessary points & changes the index accordingly
+                        if(Integer.valueOf(devisedNumber) == 5){
+                            yPos = yPos + .032;
+                        }//end if
+                        
+                        //Finds the number of necessary points & changes the index accordingly
+                        if(Integer.valueOf(devisedNumber) == 4){
+                            yPos = yPos + .038;
+                        }//end if
+                        
+                        //Finds the number of necessary points & changes the index accordingly
+                        if(Integer.valueOf(devisedNumber) == 3){
+                            yPos = yPos + .053;
+                        }//end if
+                        
+                        //Finds the number of necessary points & changes the index accordingly
+                        if(Integer.valueOf(devisedNumber) == 2){
+                            yPos = yPos + .08;
+                        }//end if
+                        
+                        //Finds the number of necessary points & changes the index accordingly
+                        if(Integer.valueOf(devisedNumber) == 1){
+                            yPos = yPos + .16;
+                        }//end if
+                        
+                    }//end if
+                    
+                    else{
+                        yPos = yPos + .02;//Otherwise, it increments normally
+                    }//end if
+                }//end if
+                
+            }//end for
+            
+            //Finds the number of people voting per city
+            if(Integer.toString((int)largest).length() == 5){
+                length = " ten thousands";
+            }//end if
+            
+            //Finds the number of people voting per city
+            else if(Integer.toString((int)largest).length() == 6){
+                length = " hundred thousands";
+            }//end else if
+            
+            //Finds the number of people voting per city
+            else if(Integer.toString((int)largest).length() == 7){
+                length = " millions";
+            }//end else if
+            
+            //Finds the number of people voting per city
+            else if(Integer.toString((int)largest).length() == 8){
+                length = " ten millions";
+            }//end else if
+                        
+            //Writes in the map legend
+            StdDraw.text(x-.06, y, ("# of voters in" + length), 90);
+            StdDraw.text(x+.02, y-.115, "Election year");
+                                 
+            //resets the largest number & the index
+            holdYearNumber = 0;
+            largest = 0;
+            
+        }//end notFixed 
+                
+        return ratio;
   
     }//end ratio
     
@@ -473,37 +622,35 @@ public class GraphingFunctionality {
     public void resetGraph(double graphX, double graphY, double graphSize){
         
         StdDraw.setPenRadius(0.0009);//changes the pen size
- 
-        //Draws the box & graph lines
-        
-        //Draws the box
+         
+        //Draws the graph's box
         StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-        StdDraw.filledSquare(graphX, graphY, graphSize);//box
-        StdDraw.filledSquare(graphX, graphY, graphSize);//box
+        StdDraw.filledSquare(graphX-.02, graphY, graphSize);//box
+        StdDraw.filledSquare(graphX-.02, graphY, graphSize);//box
         
         //Draws the lines of graph
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.line(graphX-.05, graphX-.05, graphX+.08, graphX-.05);//lower line (x)
-        StdDraw.line(graphX-.05, graphX-.05, graphX-.05, graphX+.08);//upper line (y)
+        StdDraw.line(graphX-.04, graphX-.07, graphX+.09, graphX-.07);//lower line (x)
+        StdDraw.line(graphX-.04, graphX-.07, graphX-.04, graphX+.095);//upper line (y)
 
         
-        //Draws the graph legend
+        //DRAWS THE GRAPH LEGEND
         
         //writes republican
         StdDraw.setPenColor(StdDraw.RED);
-        StdDraw.text(graphX-.09, graphY+.03, "Republican");
+        StdDraw.text(graphX-.1, graphY+.03, "Republican");
         
         //writes democratic
         StdDraw.setPenColor(StdDraw.BLUE);
-        StdDraw.text(graphX-.09, graphY, "Democratic");
+        StdDraw.text(graphX-.1, graphY, "Democratic");
         
         //writes independent
-        StdDraw.setPenColor(StdDraw.GREEN);
-        StdDraw.text(graphX-.09, graphY-.03, "Independent");
+        StdDraw.setPenColor(0, 160, 0);
+        StdDraw.text(graphX-.1, graphY-.03, "Independent");
 
         //Sets the pen back to normal
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.text(graphX-.09, graphY+.06, trueTitle);//Writes the name of the state
+        StdDraw.text(graphX-.1, graphY+.06, trueTitle);//Writes the name of the state
         StdDraw.setPenRadius(0.0005);
 
     }//end reset Graph
