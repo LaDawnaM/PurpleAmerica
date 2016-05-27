@@ -44,11 +44,13 @@ public class PoliticalMap {
         
         while(yes){//Tells the program how far back to repeat.
             
+            data.setFirst(true);
+            
             boolean runs = true;//Tells the program that it can run through the ending loop.
 
             //Causes the program to repeat until all the countries in the states have been built.
             while(data.getHolder() < data.getAbbreviations().length-1){
-
+                                
                 boolean keepGoing = true;//A variable later used to tell the program whether or not it has another country to construct.
 
                 File file = new File("src\\data\\" + data.newCountyName());//Creates a file of the state about to be drawn.
@@ -130,6 +132,8 @@ public class PoliticalMap {
                             }//end else
 
                         }//end while
+                        
+                        
                                                 
                         //Sets up the data to draw the shape
                         if(keepGoing == true){
@@ -138,16 +142,81 @@ public class PoliticalMap {
                             double[] latitude = new double[data.getNumberTwo()];
                             double[] longitude = new double[data.getNumberTwo()];
 
+                            double lat;
+                            double longi;
+                                                        
+                            data.setFirst(true);
+                            
                             for(int i=0; i<data.getNumberTwo(); i++){
-                                //Puts the data into the arrays for the map, proportionate to the size
-                                double lat = Math.abs(((scan.nextDouble()+50)/62)+0.26);
+                                /*if(data.getCleared() == true){
+                                        boolean notTrue = true;
+                                        double holdLat = scan.nextDouble();
+                                        double holdLong = scan.nextDouble();
+                                                                                     
+                                        /*if(i == 0){
+                                            data.setRelativeNumber(.2);
+                                            data.setRelativeyNumber(.5);
+                                            while(notTrue){
+
+                                                data.setLati(Math.abs(((holdLat+50)/62)+data.getRelativeNumber()));
+                                                data.setLongi(Math.abs(((holdLong+50)/25)-data.getRelativeyNumber()));
+                                        
+                                        
+                                                if(data.getLati() < .9 && data.getLati() > .1){
+                                                    notTrue = false;
+                                                }
+                                                else{
+                                                    data.setRelativeNumber(data.getRelativeNumber() + .1);
+                                                }
+
+                                                if(data.getLongi() < .9 && data.getLongi() > .1){
+                                                    if(notTrue == false){
+                                                        notTrue = false;
+                                                    }
+                                                }
+                                                else{
+                                                    data.setRelativeyNumber(data.getRelativeyNumber() +.1);
+                                                    notTrue = true;
+                                                }
+
+                                                //System.out.println(i + " " + data.getRelativeyNumber() + " " + data.getLongi());
+                                                
+                                            }
+                                                                                        
+                                            data.setFirst(false);
+                                                    
+                                        }
+                                        
+                                        
+                                        
+                                        data.setLati(Math.abs(((holdLat+50)/62)+data.getRelativeNumber()));
+                                        data.setLongi(Math.abs(((holdLong+50)/25)-data.getRelativeyNumber()));
+                                        
+                                        //System.out.println(i + "next" + data.getRelativeyNumber() + "  "  + data.getLongi());
+                                        
+                                        //System.out.println(i + "one: " + data.getLati() + " " + data.getLongi());
+                                        
+                                        //System.out.println(i + "  " + data.getLati());
+                                        //System.out.println(i + "  " + data.getLongi());
+                                        //System.out.println(data.getNumberTwo());
+                                        
+                                }//end if
                                 
-                                lat = data.latitude(lat);//flips the map
+                                else{*/
+                                    //Puts the data into the arrays for the map, proportionate to the size
+                                    data.setLati(Math.abs(((scan.nextDouble()+50)/62)+0.26));
+                                    data.setLongi(Math.abs(((scan.nextDouble()+50)/25)-2.98));
+                               // }//end else
                                 
-                                latitude[i] = lat;//Repositions latitude to a good place on the map
-                                longitude[i] = Math.abs(((scan.nextDouble()+50)/25)-2.98);//Retrieves and repositions longitude on the map
-                                                                
+                                data.setLati(data.latitude(data.getLati()));//flips the map
+                                //System.out.println(i + "two: " + data.getLati());
+                                
+                                latitude[i] = data.getLati();//Repositions latitude to a good place on the map
+                                longitude[i] = data.getLongi();//Retrieves and repositions longitude on the map
+                                
                             }//end for
+                                                        
+                            
                             
                             int republican = (int)(Math.round(colors.getColor(1)));
                             int democrat = (int)(Math.round(colors.getColor(2)));
@@ -169,6 +238,7 @@ public class PoliticalMap {
                                     StdDraw.polygon(latitude, longitude);//Draws the shape
                                     
                                 }//end if
+                                                                
                                 else{
                                     StdDraw.filledPolygon(latitude, longitude);//Draws the shape.
                                 }//end else
@@ -184,6 +254,12 @@ public class PoliticalMap {
                         }//end if
 
                     }//end for
+
+                    
+                    if(data.getCleared() == true){
+                        data.setHolder(data.getAbbreviations().length);
+                        data.setCleared(false);
+                    }//end if
 
                 }//end while
             
@@ -282,7 +358,7 @@ public class PoliticalMap {
                 
             //Creates a neverending loop, so the program is constantly checking for user input.
             while(runs){
-
+                
                 //Checks to see if a button has been pressed.
                 if(StdDraw.mousePressed()){
 
@@ -357,6 +433,21 @@ public class PoliticalMap {
                         }//end for
                                                 
                     }//end else if
+                    
+                    if(data.getCleared() == false && runs == true){
+                        if(mX <=.935 || mX<.75 && mY>.35){
+                            for(int i=0; i<50; i++){
+                                if(data.getLongAbbreviations(i).equals(graph.getTrueTitle())){
+                                    StdDraw.clear();
+                                    data.setHolder(i);
+                                    i = 60;
+                                    data.setCleared(true);
+                                    runs = false;
+
+                                }//end if
+                            }//end for
+                        }//end if
+                    }//end if     
 
                 }//end if
                
@@ -607,7 +698,7 @@ public class PoliticalMap {
                         reset = false;//tells the program everything is the way it should be
                     
                         }//end if  
-                    
+                                        
                     }//end if runs
 
             }//end while
