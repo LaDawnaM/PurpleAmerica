@@ -210,7 +210,7 @@ public class PoliticalMap {
                                     if(draw.checkBoundingBox(latitude, longitude) == true){
                                     }
                                     else{
-                                        draw.improveLocation(latitude, longitude);
+                                        draw.improveLocation(latitude, longitude, graph.getTrueTitle());
                                                                                 
                                     }
                                 }

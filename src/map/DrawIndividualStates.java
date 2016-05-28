@@ -43,8 +43,8 @@ public class DrawIndividualStates {
     double yHalf;
     boolean repeat;
     
-    double xSubtract = .5;
-    double ySubtract = .5;
+    double xSubtract;
+    double ySubtract;
     
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////CONSTRUCTOR/////////////////////////////////    
@@ -165,7 +165,7 @@ public class DrawIndividualStates {
         
     }
     
-    public void improveLocation(double[] latitude, double[] longitude){
+    public void improveLocation(double[] latitude, double[] longitude, String title){
         
         xHalf = (xLargest - xSmallest) + xSmallest;
         yHalf = (yLargest - ySmallest) + ySmallest;
@@ -173,117 +173,102 @@ public class DrawIndividualStates {
         xSubtract = 0;
         ySubtract = 0;
         
-        repeat = true;
-        
-        while(repeat){
-            if(xHalf < .2 || xHalf > .8){
-                if(xHalf > .5){
-                    xHalf = xHalf - xSubtract;
-                    if(xHalf > .4 && xHalf < .6){
-                        repeat = false;
-                        
-                        for(int i=0; i<latitude.length; i++){
-                                latitude[i] = Math.abs(latitude[i] - xSubtract);
-
-
-                        }
-                        
-                    }
-                    else{
-                        xSubtract = xSubtract + .5;
-                        System.out.println(xSubtract);
-                    }
-                }
-                else if(xHalf < .5){
-                    xHalf = xHalf + xSubtract;
-                    if(xHalf > .4 && xHalf < .6){
-                        repeat = false;
-                        
-                        for(int i=0; i<latitude.length; i++){
-
-                            latitude[i] = Math.abs(latitude[i] + xSubtract);
-
-
-                    }
-                        
-                    }
-                    else{
-                        xSubtract = xSubtract + .5;
-                        System.out.println(xSubtract);
-                    }
-                }
-                
+        if(title.equals("Texas")){
+            for(int i=0; i<latitude.length; i++){
+                latitude[i] = latitude[i] + .2;
             }
-            else{
-                repeat = false;
-            }
-            
-            
         }
         
-        repeat = true;
         
-        while(repeat){
-            if(yHalf < .2 || yHalf > .8){
-                if(yHalf > .5){
+        else{
+            repeat = true;
 
-                    yHalf = yHalf - ySubtract;
-                    if(yHalf > .4 && yHalf < .6){
-                        repeat = false;
-                        for(int i=0; i<longitude.length; i++){
-            
-                                longitude[i] = Math.abs(longitude[i] + ySubtract);
-            
-            
+            while(repeat){
+                if(xHalf < .2 || xHalf > .8){
+                    if(xHalf > .5){
+                        xHalf = xHalf - xSubtract;
+                        if(xHalf > .4 && xHalf < .6){
+                            repeat = false;
+                            for(int i=0; i<latitude.length; i++){
+                                    latitude[i] = Math.abs(latitude[i] - xSubtract);
+
+
+                            }
+
                         }
-                        
+                        else{
+                            xSubtract = xSubtract + .5;
+                        }
                     }
-                    else{
-                        ySubtract = ySubtract + .5;
-                        System.out.println(" y: " + ySubtract);
+                    else if(xHalf < .5){
+                        xHalf = xHalf + xSubtract;
+                        if(xHalf > .4 && xHalf < .6){
+                            repeat = false;
+
+                            for(int i=0; i<latitude.length; i++){
+
+                                latitude[i] = Math.abs(latitude[i] + xSubtract);
+
+
+                        }
+
+                        }
+                        else{
+                            xSubtract = xSubtract + .5;
+                        }
                     }
+
+                }
+                else{
+                    repeat = false;
                 }
 
-                else if(yHalf < .5){
-                    yHalf = yHalf + ySubtract;
-                    if(yHalf > .4 && yHalf < .6){
-                        repeat = false;
-                        
-                        for(int i=0; i<longitude.length; i++){
-                            longitude[i] = Math.abs(longitude[i] - ySubtract);
+
+            }
+
+            repeat = true;
+
+            while(repeat){
+                if(yHalf < .2 || yHalf > .8){
+                    if(yHalf > .5){
+
+                        yHalf = yHalf - ySubtract;
+                        if(yHalf > .4 && yHalf < .6){
+                            repeat = false;
+                            for(int i=0; i<longitude.length; i++){
+
+                                    longitude[i] = Math.abs(longitude[i] - ySubtract);
+
+
+                            }
+
                         }
-                        
+                        else{
+                            ySubtract = ySubtract + .5;
+                        }
                     }
-                    else{
-                        ySubtract = ySubtract + .5;
-                        System.out.println(" y" + ySubtract);
+
+                    else if(yHalf < .5){
+                        yHalf = yHalf + ySubtract;
+                        if(yHalf > .4 && yHalf < .6){
+                            repeat = false;
+                            for(int i=0; i<longitude.length; i++){
+                                longitude[i] = Math.abs(longitude[i] - ySubtract);
+                            }
+
+                        }
+                        else{
+                            ySubtract = ySubtract + .5;
+                        }
                     }
                 }
-            }
-            else{
-                repeat = false;
+                else{
+                    repeat = false;
+                }
+
             }
             
-            //System.out.println(ySubtract);
         }
-            
-       /* for(int i=0; i<latitude.length; i++){
-            if(xLargest > .8){
-                latitude[i] = Math.abs(latitude[i] - xSubtract);
-            }
-            if(xSmallest < .2){
-                latitude[i] = Math.abs(latitude[i] + xSubtract);
-            }
-            if(yLargest > .8){
-                longitude[i] = Math.abs(longitude[i] - ySubtract);
-            }
-            if(ySmallest < .2){
-                longitude[i] = Math.abs(longitude[i] + ySubtract);
-            }
-            
-           // System.out.println("lat: " + latitude[i] + " lat: "  + xSubtract + " long: " + longitude[i] + " ySub: " + ySubtract);
-            
-        }*/
         
         lat = latitude;
         longe = longitude;
@@ -338,7 +323,6 @@ public class DrawIndividualStates {
                 if(longi < .59 && longi > .49){
                     if(notTrue == false){
                         notTrue = false;
-                        System.out.println(longi);
                     }
                 }
                 else{
