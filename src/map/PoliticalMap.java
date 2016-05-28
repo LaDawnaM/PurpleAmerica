@@ -147,49 +147,81 @@ public class PoliticalMap {
                             //Creates arrays to hold the latitude and longitude
                             double[] latitude = new double[data.getNumberTwo()];
                             double[] longitude = new double[data.getNumberTwo()];
-                                         
+                            
+                            //Scrolls through the different lat/long points that make up a state.
                             for(int i=0; i<data.getNumberTwo(); i++){
-                                if(draw.getCleared() == true){
-                                                       
+                                if(draw.getCleared() == true){//Checks to see if the program is only drawing one state.
+                                                   
+                                //Creates variables to hold the most recent lat/long points
                                 double holdLat = Math.abs(scan.nextDouble());
                                 double holdLong = Math.abs(scan.nextDouble());
-
-                                    if(draw.getFirst()){
+                                    
+                                
+                                    if(draw.getFirst()){//Checks to see if the graph is scrolling through for the first time.
+                                        
+                                        //Creates an norm number to subtract all of the points by
                                         draw.setRelativeNumber(0.6);
                                         draw.setRelativeyNumber(0.5);
-                                        boolean notTrue = true;
-                                        while(notTrue){
-
-                                            draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*2)+.26-draw.getRelativeNumber()));
-                                            draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*2)-2.98-draw.getRelativeyNumber()));
-
+                                        
+                                        boolean notTrue = true;//Creates a conditional to find the correct values of the states
+                                        
+                                        while(notTrue){//Checks random values
+                                            
+                                            //Makes the smallest states bigger
+                                            if(graph.getTrueTitle().equals("New Hampshire") || graph.getTrueTitle().equals("Vermont") || graph.getTrueTitle().equals("West Virginia") || 
+                                                    graph.getTrueTitle().equals("Maryland") || graph.getTrueTitle().equals("Delaware") || graph.getTrueTitle().equals("Rhode Island") ||
+                                                    graph.getTrueTitle().equals("Connecticut") || graph.getTrueTitle().equals("Massachusetts") || graph.getTrueTitle().equals("New Jersey")){
+                                                draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*5)+.26-draw.getRelativeNumber()));
+                                                draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*5)-2.98-draw.getRelativeyNumber()));
+                                            }//end if
+                                            
+                                            //Keeps the other states the same size
+                                            else{
+                                                draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*2)+.26-draw.getRelativeNumber()));
+                                                draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*2)-2.98-draw.getRelativeyNumber()));
+                                            }//end else
+                                            
+                                            //Checks to see if the latitude is within a certain range
                                             if(draw.getLati() < .59 && draw.getLati() > .5){
-                                                notTrue = false;
-                                            }
+                                                notTrue = false;//if so, the loop ends
+                                            }//end if
                                             else{
-                                                draw.setRelativeNumber(draw.getRelativeNumber() + .05);
-                                            }
-
+                                                draw.setRelativeNumber(draw.getRelativeNumber() + .05);//otherwise, the number decreasing the latitude is decreased
+                                            }//end else
+                                            
+                                            //Checks to see if the longitude is within a certain range
                                             if(draw.getLongi() < .59 && draw.getLongi() > .5){
-                                                if(notTrue == false){
-                                                    notTrue = false;
-                                                }
-                                            }
+                                                if(notTrue == false){//if the latitude has been dealt with...
+                                                    notTrue = false;//& it's within the range, the loop ends
+                                                }//end if
+                                            }//end if
+                                            
                                             else{
-                                                draw.setRelativeyNumber(draw.getRelativeyNumber() +.05);
-                                                notTrue = true;
-                                            }
+                                                draw.setRelativeyNumber(draw.getRelativeyNumber() +.05);//Otherwise, the relative number increases...
+                                                notTrue = true;//& the loop keeps on going.
+                                            }//end else
 
-                                        }
+                                        }//end while
 
-                                        draw.setFirst(false);
+                                        draw.setFirst(false);//Tells the program its finished its first loop
 
-                                    }
+                                    }//end if
 
-                                    draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*2)+.26-draw.getRelativeNumber()));
-                                    draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*2)-2.98-draw.getRelativeyNumber()));
+                                    //Makes the smallest states bigger for the normal states
+                                    if(graph.getTrueTitle().equals("New Hampshire") || graph.getTrueTitle().equals("Vermont") || graph.getTrueTitle().equals("West Virginia") || 
+                                            graph.getTrueTitle().equals("Maryland") || graph.getTrueTitle().equals("Delaware") || graph.getTrueTitle().equals("Rhode Island") ||
+                                            graph.getTrueTitle().equals("Connecticut") || graph.getTrueTitle().equals("Massachusetts") || graph.getTrueTitle().equals("New Jersey")){
+                                        draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*5)+.26-draw.getRelativeNumber()));
+                                        draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*5)-2.98-draw.getRelativeyNumber()));
+                                    }//end if
+
+                                    //Keeps the other states the same size
+                                    else{
+                                        draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*2)+.26-draw.getRelativeNumber()));
+                                        draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*2)-2.98-draw.getRelativeyNumber()));
+                                    }//end else
                                     
-                                    draw.findBoundingBox(draw.getLati(), draw.getLongi());
+                                    draw.findBoundingBox(draw.getLati(), draw.getLongi());//gets the bounding box of the state
                                        
                                 }//end if
                                 
@@ -205,32 +237,36 @@ public class PoliticalMap {
                                 latitude[i] = draw.getLati();//Repositions latitude to a good place on the map
                                 longitude[i] = draw.getLongi();//Retrieves and repositions longitude on the map
 
-                                if(i==data.getNumberTwo()-1 && draw.getCleared() == true){
+                                //On the last loop, it can resize the shape
+                                if(i==data.getNumberTwo()-1 && draw.getCleared() == true){//If the program is only drawing one state...
 
-                                    if(draw.checkBoundingBox(latitude, longitude) == true){
-                                    }
+                                    if(draw.checkBoundingBox(latitude, longitude) == true){//if the bounding box is within the screen, nothing happens
+                                    }//end if
+                                    
                                     else{
-                                        draw.improveLocation(latitude, longitude, graph.getTrueTitle());
-                                                                                
-                                    }
-                                }
+                                        draw.improveLocation(latitude, longitude, graph.getTrueTitle());//otherwise, the program changes the lat/long until it;s within the screen
+                                    }//end else
+                                    
+                                }//end if
                                                                 
                             }//end for
                             
-                            if(draw.getCleared() && draw.getOkay()){                            
+                            //Checks to see if the program is drawing only one state
+                            if(draw.getCleared() && draw.getOkay()){//if so, the lat/long arrays are reset as the newly altered ones.                            
                                 longitude = draw.getLonge();
                                 latitude = draw.getLat();
-                            }                                       
+                            }//end if                                       
+                                                        
                             
-                            //System.out.println(longitude[1] + " " + draw.getLonge());
-                            
+                            //Gets the values for the colors
                             int republican = (int)(Math.round(colors.getColor(1)));
                             int democrat = (int)(Math.round(colors.getColor(2)));
                             int independent = (int)(Math.round(colors.getColor(3)));
                                                         
-                            Color color = new Color(republican, independent, democrat);
-                            StdDraw.setPenColor(color);
+                            Color color = new Color(republican, independent, democrat);//Creates a new instance of the color class
+                            StdDraw.setPenColor(color);//sets the pen to that color
                             
+                            //Resets the color values
                             colors.setColor(3, 0);
                             colors.setColor(2, 0);
                             colors.setColor(1, 0);
@@ -260,17 +296,20 @@ public class PoliticalMap {
                         }//end if
 
                     }//end for
+                    
+                    
 
                     
+                    //Checks to see if the program drew only one state
                     if(draw.getCleared() == true){
-                        data.setHolder(data.getAbbreviations().length);
-                        draw.setCleared(false);
+                        data.setHolder(data.getAbbreviations().length);//Ends the large loop
+                        draw.setCleared(false);//Tells the program to reset the singular map
+                        
                     }//end if
 
                 }//end while
             
-
-            
+           
             
             
         //Creates holders for the different ints/String the program needs to run

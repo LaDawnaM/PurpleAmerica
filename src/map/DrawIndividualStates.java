@@ -7,9 +7,10 @@
 package map;
 
 /**
- *
- * <ul>cleared - tells the map if its drawing a single country. Used to determine how much to draw.</ul> <ul>lati - the final latitude. Used to hold the double statically.</ul><ul>longi - the final longitude. Used to hold the double statically</ul> <ul>first - the first time running through that loop. Used to determine whether to get new relative numbers</ul> <ul>relativeNumber - the lat relative number. Used to save the static version of the relativeNumber.</ul><ul> relativeyNumber - the long relative number. Used to save the static version of the relativeyNumber.</ul> <ul>xLargest - holds the largest x value. Used to determine the state's bounding box.</ul> <ul>yLargest - holds the largest y value. Used to determine the state's bounding box.</ul> <ul>xSmallest - holds the smallest x value. Used to determine the state's bounding box.</ul><ul>ySmallest - holds the smallest y value. Used to determine the state's bounding box.</ul> <ul>okay - holds whether or not the map is within the bounding box. Tells the map whether it needs to repeat.</ul>
- * @author hcps-mcenhimlr
+ * LaDawna McEnhimer, Forest Kim, Jacob Lesley
+ * <p> DrawIndividualStates
+ * <p> VARIABLES: <ul>cleared - tells the map if its drawing a single country. Used to determine how much to draw.</ul> <ul>lati - the final latitude. Used to hold the double statically.</ul><ul>longi - the final longitude. Used to hold the double statically</ul> <ul>first - the first time running through that loop. Used to determine whether to get new relative numbers</ul> <ul>relativeNumber - the lat relative number. Used to save the static version of the relativeNumber.</ul><ul> relativeyNumber - the long relative number. Used to save the static version of the relativeyNumber.</ul> <ul>xLargest - holds the largest x value. Used to determine the state's bounding box.</ul> <ul>yLargest - holds the largest y value. Used to determine the state's bounding box.</ul> <ul>xSmallest - holds the smallest x value. Used to determine the state's bounding box.</ul><ul>ySmallest - holds the smallest y value. Used to determine the state's bounding box.</ul> <ul>okay - holds whether or not the map is within the bounding box. Tells the map whether it needs to repeat.</ul><ul>longe - an array holding the longitudinal points. Used to save the revised longitude points.</ul><ul>lat - an array holding the latitudinal points. Used to save the revised latitudinal points.</ul><ul> xHalf - holds the central latitude point of a state. Used to get states as close to the center of the map as possible</ul><ul> yHalf - holds the central longitude point of a state. Used to get states as close to the center of the map as possible</ul><ul> repeat - tells the program whether or not the correct value to add/subtract by has been found. Used to end/start a loop. </ul><ul> xSubtract - the x value to add/subtract from. Used to subtract a devised value & put the map in place.</ul><ul> ySubtract - the y value to add/subtract from. Used to subtract a devised value & put the map in place.</ul><ul>
+ * <p> METHODS: <ul>findBoundingBox() - finds the outermost points of the state to be plotted.</ul><ul>checkBoundingBox() - checks to see if the bounding box is on the map.</ul><ul> improveLocation() - moves the map to a more preferable location.</ul>
  */
 public class DrawIndividualStates {
     
@@ -63,15 +64,15 @@ public class DrawIndividualStates {
     
     public double[] getLonge(){
         return longe;
-    }
+    }//end getLonge
     
     public double[] getLat(){
         return lat;
-    }
+    }//end getLat
     
     public boolean getOkay(){
         return okay;
-    }
+    }//end getOkay
     
     public void setRelativeNumber(double r){
         relativeNumber = r;
@@ -121,6 +122,22 @@ public class DrawIndividualStates {
         return cleared;
     }//end cleared
     
+    public void setXSmallest(int s){
+        xSmallest = s;
+    }//end setXSmallest
+    
+    public void setYSmallest(int s){
+        ySmallest = s;
+    }//end setYSmallest
+    
+    public void setXLargest(int s){
+        xLargest = s;
+    }//end setXLargest
+    
+    public void setYLargest(int s){
+        yLargest = s;
+    }//end setYLargest
+    
     
         
     ////////////////////////////////////////////////////////////////////////////
@@ -129,9 +146,8 @@ public class DrawIndividualStates {
     
     
     public void findBoundingBox(double holdLat, double holdLong){
-        
+
         //Checks for the bounding box of the state
-        
         if(holdLat > xLargest){//If that latitude point is the farthest to the right so far
             xLargest = holdLat;//the latitude point becomes the new farthest latitude
         }//end if
@@ -153,195 +169,150 @@ public class DrawIndividualStates {
     
     
     public boolean checkBoundingBox(double[] latitude, double[] longitude){
-        okay = false;
+        okay = false;//Resets okay
         
-        if(xLargest < .9 && xSmallest > .1){
-            if(yLargest < .9 && ySmallest > .1){
-                okay = true;
-            }
-        }
+        if(xLargest < .7 && xSmallest > .3){//checks to see if the longitude is on the screen
+            if(yLargest < .7 && ySmallest > .3){//checks to see if the latitude is on the screen
+                okay = true;//Tells the program the state isn't on the screen
+            }//end if
+        }//end if
         
         return okay;
         
-    }
+    }//end checkBoundingBox
+    
+    
     
     public void improveLocation(double[] latitude, double[] longitude, String title){
         
+        //Gets the points in the center of the graph
         xHalf = (xLargest - xSmallest) + xSmallest;
         yHalf = (yLargest - ySmallest) + ySmallest;
         
+        //Resets the points the program is going to subtract from
         xSubtract = 0;
         ySubtract = 0;
         
+        //An exception for Texas
         if(title.equals("Texas")){
             for(int i=0; i<latitude.length; i++){
-                latitude[i] = latitude[i] + .2;
-            }
-        }
-        
-        
-        else{
-            repeat = true;
-
-            while(repeat){
-                if(xHalf < .2 || xHalf > .8){
-                    if(xHalf > .5){
-                        xHalf = xHalf - xSubtract;
-                        if(xHalf > .4 && xHalf < .6){
-                            repeat = false;
-                            for(int i=0; i<latitude.length; i++){
-                                    latitude[i] = Math.abs(latitude[i] - xSubtract);
-
-
-                            }
-
-                        }
-                        else{
-                            xSubtract = xSubtract + .5;
-                        }
-                    }
-                    else if(xHalf < .5){
-                        xHalf = xHalf + xSubtract;
-                        if(xHalf > .4 && xHalf < .6){
-                            repeat = false;
-
-                            for(int i=0; i<latitude.length; i++){
-
-                                latitude[i] = Math.abs(latitude[i] + xSubtract);
-
-
-                        }
-
-                        }
-                        else{
-                            xSubtract = xSubtract + .5;
-                        }
-                    }
-
-                }
-                else{
-                    repeat = false;
-                }
-
-
-            }
-
-            repeat = true;
-
-            while(repeat){
-                if(yHalf < .2 || yHalf > .8){
-                    if(yHalf > .5){
-
-                        yHalf = yHalf - ySubtract;
-                        if(yHalf > .4 && yHalf < .6){
-                            repeat = false;
-                            for(int i=0; i<longitude.length; i++){
-
-                                    longitude[i] = Math.abs(longitude[i] - ySubtract);
-
-
-                            }
-
-                        }
-                        else{
-                            ySubtract = ySubtract + .5;
-                        }
-                    }
-
-                    else if(yHalf < .5){
-                        yHalf = yHalf + ySubtract;
-                        if(yHalf > .4 && yHalf < .6){
-                            repeat = false;
-                            for(int i=0; i<longitude.length; i++){
-                                longitude[i] = Math.abs(longitude[i] - ySubtract);
-                            }
-
-                        }
-                        else{
-                            ySubtract = ySubtract + .5;
-                        }
-                    }
-                }
-                else{
-                    repeat = false;
-                }
-
-            }
-            
-        }
-        
-        lat = latitude;
-        longe = longitude;
-        
-    }
-    
-    
-    
-    
-    public boolean comparisons(){
-        if(lati < .65 && lati > .45){
-            notTrue = false;
-        }
-        else{
-            relativeNumber = relativeNumber + .05;
-        }
-
-        if(longi < .65 && longi > .45){
-            if(notTrue == false){
-                notTrue = false;
-            }
-        }
-        else{
-            relativeyNumber = relativeyNumber +.05;
-            notTrue = true;
-        }
-        
-        return notTrue;
-    }
-    
-    
-    
-    public void drawTheStates(double holdLat, double holdLong){
-        
-    
-        if(first == true){
-            relativeNumber = 0.6;
-            relativeyNumber = 0.5;
-            notTrue = true;
-            while(notTrue){
-
-                lati = Math.abs(((Math.abs(((holdLat+50)/62)+.26))*5)+.26-relativeNumber);
-                longi = Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*5)-2.98-relativeyNumber);
-
-                if(lati < .59 && lati > .49){
-                    notTrue = false;
-                }
-                else{
-                    relativeNumber = relativeNumber + .5;
-                }
-
-                if(longi < .59 && longi > .49){
-                    if(notTrue == false){
-                        notTrue = false;
-                    }
-                }
-                else{
-                    relativeyNumber = relativeyNumber +.5;
-                    notTrue = true;
-                }
-
-
-            }
-
-            first = false;
-
+                latitude[i] = latitude[i] + .2;//Changes Texas by the degree it requires
+            }//end for
         }//end if
-
-
-        lati = Math.abs(((Math.abs(((holdLat+50)/62)+.26))*5)+.26-relativeNumber);
-        longi = Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*5)-2.98-relativeyNumber);
-
         
-    }
+        //An exception for Idaho
+        else if(title.equals("Idaho")){
+            for(int i=0; i<longitude.length; i++){
+                longitude[i] = longitude[i] - .2;//Changes Idaho by the degree it requires
+            }//end for
+        }//end else if
+        
+        else{
+            repeat = true;//tells the program to repeat the first loop
+
+            //the x value's while loop
+            while(repeat){
+                if(xHalf < .2 || xHalf > .8){//If the x value isn't on the screen...
+                    if(xHalf > .5){//If the x value is more than halfway down...
+                        xHalf = xHalf - xSubtract;//Sets an normalized number to see how much the program needs taken away.
+                        if(xHalf > .4 && xHalf < .6){//Checks to see if the state is positioned properly
+                            repeat = false;//Ends the loop
+                            
+                            for(int i=0; i<latitude.length; i++){
+                                    latitude[i] = Math.abs(latitude[i] - xSubtract);//Alters each latitude point to be positioned properly
+
+                            }//end for
+
+                        }//end if
+                        
+                        else{//Otherwise, the number to be subtracted by is incremented
+                            xSubtract = xSubtract + .5;
+                        }//end else
+                    }
+                    else if(xHalf < .5){//If the x value is less than halfway down...
+                        xHalf = xHalf + xSubtract;//Sets an normalized number to see how much the program needs taken away.
+                        if(xHalf > .4 && xHalf < .6){//Checks to see if the state is positioned properly
+                            repeat = false;//ends the loop
+
+                            for(int i=0; i<latitude.length; i++){
+                                latitude[i] = Math.abs(latitude[i] + xSubtract);//Alters each latitude point to be positioned properly
+                            }//end for
+
+                        }//end if
+                        
+                        else{
+                            xSubtract = xSubtract + .5;
+                        }//end else
+                        
+                    }//end else if
+
+                }//end if
+                
+                else{
+                    repeat = false;//otherwise, ends the loop
+                }//end else
+
+
+            }//end while
+
+            repeat = true;//tells the program to repeat the second loop
+
+            //the y value's while loop
+            while(repeat){
+                if(yHalf < .2 || yHalf > .8){//If the y value isn't on the screen...
+                    if(yHalf > .5){//If the y value is more than halfway down...
+
+                        yHalf = yHalf - ySubtract;//Sets an normalized number to see how much the program needs taken away.
+                        if(yHalf > .4 && yHalf < .6){//Checks to see if the state is positioned properly
+                            repeat = false;//ends the loop
+                            
+                            for(int i=0; i<longitude.length; i++){
+                                    longitude[i] = Math.abs(longitude[i] - ySubtract);//Alters each latitude point to be positioned properly
+                            }//end for
+
+                        }//end if
+                        
+                        else{//Otherwise, the number to be subtracted by is incremented
+                            ySubtract = ySubtract + .5;
+                        }//end else
+                        
+                    }//end if
+
+                    else if(yHalf < .5){//If the y value is less than halfway down...
+
+                        yHalf = yHalf + ySubtract;//Sets an normalized number to see how much the program needs taken away.
+                        if(yHalf > .4 && yHalf < .6){//Checks to see if the state is positioned properly
+                            repeat = false;//ends the loop
+                            
+                            for(int i=0; i<longitude.length; i++){
+                                longitude[i] = Math.abs(longitude[i] - ySubtract);//Alters each latitude point to be positioned properly
+                            }//end for
+
+                        }//end if
+                        
+                        else{//Otherwise, the number to be subtracted by is incremented
+                            ySubtract = ySubtract + .5;
+                        }//end else
+                        
+                    }//end else if
+                    
+                }//end if
+                
+                else{
+                    repeat = false;//ends the loop
+                }//end else
+
+            }//end while
+        
+    }//end else
+        
+        
+    //Sets arrays the program can retrieve to lat/long
+    lat = latitude;
+    longe = longitude;
     
-}
+    
+    }//end improveLocation
+    
+    
+}//end class
