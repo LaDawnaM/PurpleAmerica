@@ -46,15 +46,23 @@ public class PoliticalMap {
         while(yes){//Tells the program how far back to repeat.
             
             draw.setFirst(true);
-            if(draw.getCleared() == false){
-                StdDraw.text(.8, .97, "Click on a state to enlarge it.");
-            }
+            
             
             boolean runs = true;//Tells the program that it can run through the ending loop.
 
             //Causes the program to repeat until all the countries in the states have been built.
             while(data.getHolder() < data.getAbbreviations().length-1){
-                                
+                
+                
+                //Sends the user messages on how to use individual states
+                if(draw.getCleared() == false){
+                    StdDraw.text(.8, .97, "Click on a state to enlarge it.");//Tells the user how to make it single
+                }//end if    
+                else{
+                    StdDraw.text(.8, .97, "Press on a button to return to the normal map.");//Tells the user how to make it multiple
+                }//end else
+                
+                
                 boolean keepGoing = true;//A variable later used to tell the program whether or not it has another country to construct.
 
                 File file = new File("src\\data\\" + data.newCountyName());//Creates a file of the state about to be drawn.
@@ -171,6 +179,7 @@ public class PoliticalMap {
                                             if(graph.getTrueTitle().equals("New Hampshire") || graph.getTrueTitle().equals("Vermont") || graph.getTrueTitle().equals("West Virginia") || 
                                                     graph.getTrueTitle().equals("Maryland") || graph.getTrueTitle().equals("Delaware") || graph.getTrueTitle().equals("Rhode Island") ||
                                                     graph.getTrueTitle().equals("Connecticut") || graph.getTrueTitle().equals("Massachusetts") || graph.getTrueTitle().equals("New Jersey")){
+                                                
                                                 draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*5)+.26-draw.getRelativeNumber()));
                                                 draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*5)-2.98-draw.getRelativeyNumber()));
                                             }//end if
@@ -298,6 +307,7 @@ public class PoliticalMap {
 
                     }//end for
                     
+                    //If the graph is one that pushes the points far out of proportion...
                     if(graph.getTrueTitle().equals("Texas") || graph.getTrueTitle().equals("Idaho") || graph.getTrueTitle().equals("California")){
                         //resets the smallest/largest points to their base forms
                         draw.setXSmallest(1);
@@ -312,7 +322,7 @@ public class PoliticalMap {
                     //Checks to see if the program drew only one state
                     if(draw.getCleared() == true){
                         data.setHolder(data.getAbbreviations().length);//Ends the large loop
-                        draw.setCleared(false);//Tells the program to reset the singular map
+                        
                         
                     }//end if
 
@@ -416,6 +426,8 @@ public class PoliticalMap {
                 //Checks to see if a button has been pressed.
                 if(StdDraw.mousePressed()){
 
+                    draw.setCleared(false);
+                    
                     //Saves the values for the location the mouse is currently hovering over.
                     mX = StdDraw.mouseX();
                     mY = StdDraw.mouseY();
@@ -453,7 +465,6 @@ public class PoliticalMap {
 
                     //checks to see if the user pressed a states vs. counties button
                     else if(mX>=.87 && mX<=.93){
-
                         y=0.039999999999999536;//resets y to it's lowest value
 
                         //Checks to see which button the user pressed.
@@ -516,9 +527,12 @@ public class PoliticalMap {
                     //Gets the current lat/long values of the mouse
                     mX = StdDraw.mouseX();
                     mY = StdDraw.mouseY();
-
+                    
+                    if(draw.getCleared() == false){//Makes sure the graph isn't on a single state
+                        
+                    
                     if(mX <=.935 || mX<.75 && mY>.35){//Ensures the mouse is closer to the map than the buttons
-
+                                                
                         File file = new File("src\\data\\" + "USA.txt");//Creates a file of the state about to be drawn.
                         Scanner scanIt = new Scanner(file);//Makes the scanner to read from the file.
 
@@ -757,6 +771,8 @@ public class PoliticalMap {
                     
                         reset = false;//tells the program everything is the way it should be
                     
+                        }//end if
+                        
                         }//end if  
                                         
                     }//end if runs
