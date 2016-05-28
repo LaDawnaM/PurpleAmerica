@@ -171,7 +171,7 @@ public class DrawIndividualStates {
     public boolean checkBoundingBox(double[] latitude, double[] longitude){
         okay = false;//Resets okay
         
-        if(xLargest < .7 && xSmallest > .3){//checks to see if the longitude is on the screen
+        if(xLargest < .6 && xSmallest > .4){//checks to see if the longitude is on the screen
             if(yLargest < .7 && ySmallest > .3){//checks to see if the latitude is on the screen
                 okay = true;//Tells the program the state isn't on the screen
             }//end if

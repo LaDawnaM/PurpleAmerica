@@ -5,7 +5,7 @@
  * 
  * Program Purpose: This program draws the United states, and then uses a collection of data files to color the map in based on the election data from that year.
  *
- * Algorithm: 1. Start. 2. Create files to read in the map. 3. Create files to read in the election data. 4. Decipher the election data. 5. Use the election data and determine new colors to use to draw the map. 6. Decipher the information to draw the map. 7. Fill the map in with the colors of the election data. 8. Repeat steps 4-7 until all desired states/countires are drawn. 9. Create filled in squares numbered with the election years. 10. If a user presses a button, repeat steps 4-10 using that year's election data. 11. Draw a graph plotting every year's election data for the state the user is in. 12. Repeat steps 1-11 until the user closes the program. 13. End.
+ * Algorithm: 1. Start. 2. Create files to read in the map. 3. Create files to read in the election data. 4. Decipher the election data. 5. Use the election data and determine new colors to use to draw the map. 6. Decipher the information to draw the map. 7. Fill the map in with the colors of the election data. 8. Repeat steps 4-7 until all desired states/countires are drawn. 9. Create filled in squares numbered with the election years. 10. If a user presses a button, repeat steps 4-10 using that year's election data. 11. Draw a graph plotting every year's election data for the state the user is in. 12. Repeat steps 1-11 until the user closes the program. 13. If the user clicked on an individual state, draw that state alone on the map. 14. End.
  * 
  * Future/possible improvements: Making it so that the graph can plot the coordinates from the counties' election data, as well.
  *
@@ -177,8 +177,9 @@ public class PoliticalMap {
                                             
                                             //Makes the smallest states bigger
                                             if(graph.getTrueTitle().equals("New Hampshire") || graph.getTrueTitle().equals("Vermont") || graph.getTrueTitle().equals("West Virginia") || 
-                                                    graph.getTrueTitle().equals("Maryland") || graph.getTrueTitle().equals("Delaware") || graph.getTrueTitle().equals("Rhode Island") ||
-                                                    graph.getTrueTitle().equals("Connecticut") || graph.getTrueTitle().equals("Massachusetts") || graph.getTrueTitle().equals("New Jersey")){
+                                            graph.getTrueTitle().equals("Maryland") || graph.getTrueTitle().equals("Delaware") || graph.getTrueTitle().equals("Rhode Island") ||
+                                            graph.getTrueTitle().equals("Connecticut") || graph.getTrueTitle().equals("Massachusetts") || graph.getTrueTitle().equals("New Jersey")
+                                            || graph.getTrueTitle().equals("South Carolina")){
                                                 
                                                 draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*5)+.26-draw.getRelativeNumber()));
                                                 draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*5)-2.98-draw.getRelativeyNumber()));
@@ -219,7 +220,8 @@ public class PoliticalMap {
                                     //Makes the smallest states bigger for the normal states
                                     if(graph.getTrueTitle().equals("New Hampshire") || graph.getTrueTitle().equals("Vermont") || graph.getTrueTitle().equals("West Virginia") || 
                                             graph.getTrueTitle().equals("Maryland") || graph.getTrueTitle().equals("Delaware") || graph.getTrueTitle().equals("Rhode Island") ||
-                                            graph.getTrueTitle().equals("Connecticut") || graph.getTrueTitle().equals("Massachusetts") || graph.getTrueTitle().equals("New Jersey")){
+                                            graph.getTrueTitle().equals("Connecticut") || graph.getTrueTitle().equals("Massachusetts") || graph.getTrueTitle().equals("New Jersey")
+                                            || graph.getTrueTitle().equals("South Carolina")){
                                         draw.setLati(Math.abs(((Math.abs(((holdLat+50)/62)+.26))*5)+.26-draw.getRelativeNumber()));
                                         draw.setLongi(Math.abs(((Math.abs(((holdLong+50)/25)+2.98))*5)-2.98-draw.getRelativeyNumber()));
                                     }//end if
