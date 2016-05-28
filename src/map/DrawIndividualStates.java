@@ -147,8 +147,6 @@ public class DrawIndividualStates {
     
     public void findBoundingBox(double holdLat, double holdLong){
         
-        System.out.println(xLargest + "  " + xSmallest + " " + ySmallest + " " + yLargest);
-
         //Checks for the bounding box of the state
         if(holdLat > xLargest){//If that latitude point is the farthest to the right so far
             xLargest = holdLat;//the latitude point becomes the new farthest latitude
@@ -253,6 +251,7 @@ public class DrawIndividualStates {
                 else{
                     repeat = false;//otherwise, ends the loop
                 }//end else
+                
 
 
             }//end while

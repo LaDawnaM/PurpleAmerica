@@ -252,9 +252,10 @@ public class PoliticalMap {
                             }//end for
                             
                             //Checks to see if the program is drawing only one state
-                            if(draw.getCleared() && draw.getOkay()){//if so, the lat/long arrays are reset as the newly altered ones.                            
-                                longitude = draw.getLonge();
-                                latitude = draw.getLat();
+                            if(draw.getCleared() && draw.getOkay() && graph.getTitle().equals("New Hampshire")){//if so, the lat/long arrays are reset as the newly altered ones.                            
+                                   longitude = draw.getLonge();
+                                   latitude = draw.getLat();
+                                
                             }//end if                                       
                                                         
                             
@@ -296,6 +297,14 @@ public class PoliticalMap {
                         }//end if
 
                     }//end for
+                    
+                    if(graph.getTrueTitle().equals("Texas") || graph.getTrueTitle().equals("Idaho") || graph.getTrueTitle().equals("California")){
+                        //resets the smallest/largest points to their base forms
+                        draw.setXSmallest(1);
+                        draw.setXLargest(0);
+                        draw.setYSmallest(1);
+                        draw.setYLargest(0);
+                    }
                     
 
                     
@@ -491,12 +500,6 @@ public class PoliticalMap {
                                     i = 60;//ends the loop
                                     draw.setCleared(true);//Tells the graph to draw only the one state
                                     runs = false;//ends the loop
-                                    
-                                   /* //resets the smallest/largest points to their base forms
-                                    draw.setXSmallest(1);
-                                    draw.setXLargest(0);
-                                    draw.setYSmallest(1);
-                                    draw.setYLargest(0);*/
                                     
                                 }//end if
                                 
