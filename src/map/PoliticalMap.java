@@ -204,15 +204,14 @@ public class PoliticalMap {
                                                                 
                                 latitude[i] = draw.getLati();//Repositions latitude to a good place on the map
                                 longitude[i] = draw.getLongi();//Retrieves and repositions longitude on the map
-                                
+
                                 if(i==data.getNumberTwo()-1 && draw.getCleared() == true){
+
                                     if(draw.checkBoundingBox(latitude, longitude) == true){
-                                        
                                     }
                                     else{
                                         draw.improveLocation(latitude, longitude);
-                                        
-                                        
+                                                                                
                                     }
                                 }
                                                                 
@@ -410,11 +409,10 @@ public class PoliticalMap {
                         y=0.039999999999999536;//resets y to it's lowest value
 
                         //Checks to see which button the user pressed.
-                        for(int i=0; i<14; i++){
+                        for(int i=0; i<2; i++){
 
                             //Realizes which button (if it is a button) was pressed
                             if(mY<= y+.033 && mY>=y-.033){
-                                
                                 StdDraw.clear();//clears the canvas
                                 
                                 if(y == 0.039999999999999536){//tells the user to only draw the states.
