@@ -297,8 +297,8 @@ public class PoliticalMap {
 
                     }//end for
                     
-                    
 
+                    
                     
                     //Checks to see if the program drew only one state
                     if(draw.getCleared() == true){
@@ -478,19 +478,32 @@ public class PoliticalMap {
                                                 
                     }//end else if
                     
-                    if(draw.getCleared() == false && runs == true){
-                        if(mX <=.935 || mX<.75 && mY>.35){
-                            for(int i=0; i<50; i++){
-                                if(data.getLongAbbreviations(i).equals(graph.getTrueTitle())){
-                                    StdDraw.clear();
-                                    data.setHolder(i);
-                                    i = 60;
-                                    draw.setCleared(true);
-                                    runs = false;
-
+                    if(draw.getCleared() == false && runs == true){//checks to see if the user is clicking on a state/button
+                        
+                        if(mX <=.935 || mX<.75 && mY>.35){//Makes sure the user isn't on the buttons
+                            
+                            for(int i=0; i<50; i++){//Scrolls through the state name array to get the name of the state
+                                
+                                if(data.getLongAbbreviations(i).equals(graph.getTrueTitle())){//Comapres the full names to the abbreviations to get the correct state
+                                    
+                                    StdDraw.clear();//Resets the canvas
+                                    data.setHolder(i);//Sets the overarching index to the single state the user's in
+                                    i = 60;//ends the loop
+                                    draw.setCleared(true);//Tells the graph to draw only the one state
+                                    runs = false;//ends the loop
+                                    
+                                   /* //resets the smallest/largest points to their base forms
+                                    draw.setXSmallest(1);
+                                    draw.setXLargest(0);
+                                    draw.setYSmallest(1);
+                                    draw.setYLargest(0);*/
+                                    
                                 }//end if
+                                
                             }//end for
+                            
                         }//end if
+                        
                     }//end if     
 
                 }//end if
